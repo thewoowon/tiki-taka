@@ -1,6 +1,5 @@
 "use client";
 import ImageSequence from "@/components/Animation/ImageSequence";
-import TikitakaMain from "@/public/svg/tikitaka-main.svg";
 import styled from "@emotion/styled";
 
 export default function Home() {

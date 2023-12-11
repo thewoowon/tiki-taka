@@ -8,8 +8,8 @@ import { TikitakaText } from "@/components/svg";
 import Typography from "@/components/Element/Typography";
 
 const CONSTANT_ROUTER = [
-  { pathname: "/", label: "AI면접" },
-  { pathname: "/product", label: "히스토리" },
+  { pathname: "/interview", label: "AI 면접" },
+  { pathname: "/history", label: "히스토리" },
   { pathname: "/auth/kakao", label: "로그인" },
 ];
 

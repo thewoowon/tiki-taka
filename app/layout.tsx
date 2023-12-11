@@ -150,8 +150,10 @@ export default function RootLayout({
       <body className={""}>
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
-            <SideBar />
-            <div className="min-h-screen flex flex-col mx-auto">{children}</div>
+            <div className="min-h-screen flex flex-row mx-auto">
+              <SideBar />
+              <div className="flex flex-grow">{children}</div>
+            </div>
           </RecoilRoot>
           <Toaster />
         </QueryClientProvider>

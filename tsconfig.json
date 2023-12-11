@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@components/*": ["./components/*"],
+      "@storybook/*": ["./.storybook/*"]
     },
     "typeRoots": ["./global.d.ts"]
   },

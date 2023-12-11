@@ -3,7 +3,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
-import { Footer, Header } from "@/components/Layout";
+import { Footer, SideBar } from "@/components/Layout";
 import Script from "next/script";
 
 export default function RootLayout({
@@ -150,9 +150,8 @@ export default function RootLayout({
       <body className={""}>
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
-            <Header />
+            <SideBar />
             <div className="min-h-screen flex flex-col mx-auto">{children}</div>
-            <Footer />
           </RecoilRoot>
           <Toaster />
         </QueryClientProvider>

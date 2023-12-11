@@ -4,12 +4,18 @@
 @tailwind utilities;
 
 :root {
-  --background-color-hex: #ffffff;
-
-  --core-hex-1: #00ce72;
-  --core-hex-2: #b2ffd1;
-  --core-hex-3: #040404;
-  --core-hex-4: #ffffff;
+  --tiki-green: #0bcd76;
+  --tiki-dark-green: #00bb67;
+  --tiki-light-green: #b2ffd1;
+  --tiki-black: #040404;
+  --error-red: #ff3636;
+  --light-bg: #3e3e3e;
+  --dark-bg: #1d1d1d;
+  --text: #121212;
+  --white: #ffffff;
+  --gray100: #e8e8e8;
+  --gray200: #cccccc;
+  --gray400: #b9b9b9;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,5 +31,5 @@ body {
     BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  background-color: var(--background-color-hex);
+  background-color: var(--light-bg);
 }

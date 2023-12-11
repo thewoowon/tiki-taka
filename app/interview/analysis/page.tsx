@@ -4,8 +4,11 @@ import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import React from "react";
 
-const InterviewPage = () => {
+const AnalysisPage = () => {
+  const params = useParams();
   const router = useRouter();
   return (
     <Container>
@@ -34,19 +37,12 @@ const InterviewPage = () => {
             면접은 중간에 그만 둘 수 있어요. 부담 없이 시작해 보세요.
           </Typography>
         </div>
-        <Button
-          onClick={() => {
-            router.push("/interview/document");
-          }}
-        >
-          면접 시작하기
-        </Button>
       </Box>
     </Container>
   );
 };
 
-export default InterviewPage;
+export default AnalysisPage;
 
 const Container = styled.main`
   display: flex;

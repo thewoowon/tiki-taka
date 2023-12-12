@@ -53,14 +53,14 @@ const SideBar = () => {
               <li
                 key={item.pathname}
                 onClick={() => router.push(item.pathname)}
-                className={pathname === item.pathname ? "active" : ""}
+                className={pathname.startsWith(item.pathname) ? "active" : ""}
               >
                 {item.label}
               </li>
             ))}
             <li
-              onClick={() => router.push(pathname)}
-              className={pathname === pathObj.pathname ? "active" : ""}
+              onClick={() => router.push(pathObj.pathname)}
+              className={pathname.startsWith(pathObj.pathname) ? "active" : ""}
             >
               {pathObj.label}
             </li>
@@ -152,6 +152,11 @@ const Ul = styled.ul`
   align-items: flex-start;
   list-style: none;
   gap: 30px;
+
+  .active {
+    color: ${COLORS.TIKI_GREEN};
+  }
+
   li {
     cursor: pointer;
     font-size: 18px;

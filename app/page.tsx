@@ -11,8 +11,10 @@ import Question from "@/public/svg/question.svg";
 import BlackLogo from "@/public/svg/black-logo.svg";
 import RightArrow from "@/public/svg/right-arrow.svg";
 import Sunglasses from "@/public/svg/sunglasses.svg";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <Main>
       <Box
@@ -105,7 +107,13 @@ export default function Home() {
             </defs>
           </svg>
         </Typography>
-        <Button>티키타카 하러가기</Button>
+        <Button
+          onClick={() => {
+            router.push("/interview");
+          }}
+        >
+          티키타카 하러가기
+        </Button>
       </Box>
       <Box
         sx={{
@@ -305,9 +313,10 @@ const Button = styled.button`
   border-radius: 5px;
   background: linear-gradient(270deg, #04e580 0.14%, #00aa5e 97.77%);
   color: ${COLORS.WHITE};
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 
   &:hover {
-    cursor: pointer;
-    background-color: ${COLORS.TIKI_GREEN};
+    background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);
   }
 `;

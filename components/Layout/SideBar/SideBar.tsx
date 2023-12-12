@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
@@ -10,12 +10,26 @@ import Typography from "@/components/Element/Typography";
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
   { pathname: "/history", label: "히스토리" },
-  { pathname: "/auth/kakao", label: "로그인" },
 ];
 
 const SideBar = () => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [pathObj, setPathObj] = useState<{ pathname: string; label: string }>({
+    pathname: "/auth/kakao",
+    label: "로그인",
+  });
+
+  useEffect(() => {
+    // 일단 로컬스토리지에 토큰이 있는지 확인
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setIsLoggedIn(true);
+      setPathObj({ pathname: "/mypage", label: "마이페이지" });
+    }
+  }, []);
   return (
     <Container>
       <Wrapper>
@@ -44,6 +58,12 @@ const SideBar = () => {
                 {item.label}
               </li>
             ))}
+            <li
+              onClick={() => router.push(pathname)}
+              className={pathname === pathObj.pathname ? "active" : ""}
+            >
+              {pathObj.label}
+            </li>
           </Ul>
         </Flex>
         <Flex direction="column" gap={30} align="flex-start">

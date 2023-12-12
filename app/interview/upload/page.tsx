@@ -1,16 +1,32 @@
 "use client";
+import ImageUpload from "@/components/Element/ImageUpload";
 import { COLORS } from "@/style/color";
+import { modalStyle } from "@/style/modal";
 import styled from "@emotion/styled";
-import { Typography, Button, Box } from "@mui/material";
+import { Typography, Button, Box, Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
-const AnalysisPage = () => {
+const UploadPage = () => {
   const params = useParams();
   const router = useRouter();
   const [textOrImage, setTextOrImage] = useState<"text" | "image" | null>(null);
   const [content, setContent] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [open2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
+
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleImageUpload = (file: File) => {
+    setFile(file);
+  };
+
   return (
     <Container>
       {!textOrImage && (
@@ -260,7 +276,9 @@ const AnalysisPage = () => {
                 lineHeight: "16px",
               }}
               onClick={() => {
-                setTextOrImage("image");
+                // 입력한 텍스트 validation
+                // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
+                router.push("/interview/history");
               }}
             >
               다음
@@ -269,24 +287,164 @@ const AnalysisPage = () => {
         </Box>
       )}
       {textOrImage === "image" && (
-        <Box>
-          <Box className="flex flex-col gap-[8px] pt-[10px]">
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: "1040px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "40px",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box className="flex flex-col justify-center items-center gap-[8px] pt-[10px]">
             <Typography
-              fontSize={24}
-              color={COLORS.WHITE}
-              textAlign="center"
-              fontWeight={700}
+              sx={{
+                fontSize: "24px",
+                fontWeight: 700,
+                color: COLORS.WHITE,
+                lineHeight: "36px",
+              }}
             >
-              어떤 회사의 직무에 지원하시나요?
+              채용 공고 내용 캡처하여 업로드 해주세요
             </Typography>
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: 400,
+                color: COLORS.GRAY100,
+                lineHeight: "24px",
+              }}
+            >
+              본인이 해당하는 직무 부분만 캡쳐하여 넣어 주세요.
+            </Typography>
+          </Box>
+          <ImageUpload
+            open={open2}
+            onClose={handleClose2}
+            onChange={handleImageUpload}
+          />
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: "30px",
+            }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                padding: "18px 24px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                backgroundColor: COLORS.DARK_BG + " !important",
+                color: COLORS.WHITE,
+                fontSize: "16px",
+                fontWeight: 600,
+                lineHeight: "16px",
+              }}
+              onClick={() => {
+                setTextOrImage("text");
+              }}
+            >
+              텍스트로 넣을래요
+            </Button>
+            <Button
+              sx={{
+                display: "flex",
+                padding: "18px 24px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                color: COLORS.WHITE,
+                fontSize: "16px",
+                fontWeight: 600,
+                lineHeight: "16px",
+              }}
+              onClick={() => {
+                // 입력한 이미지 validation
+                // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
+                router.push("/interview/history");
+              }}
+            >
+              다음
+            </Button>
           </Box>
         </Box>
       )}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography
+            sx={{
+              textAlign: "center",
+              fontSize: "23px",
+              color: COLORS.WHITE,
+              fontWeight: 700,
+              lineHeight: "36px",
+              fontStyle: "normal",
+            }}
+          >
+            채용 공고를 불러오는 데 실패했어요
+          </Typography>
+          <Typography
+            sx={{
+              color: COLORS.GRAY100,
+              textAlign: "center",
+              fontSize: "16px",
+              fontStyle: "normal",
+              fontWeight: 400,
+              lineHeight: "24px",
+            }}
+          >
+            잠시 후 다시 시도해 주세요.
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+              pt: "20px",
+            }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                width: "100%",
+                padding: "18px 20px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                color: COLORS.WHITE,
+              }}
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              확인
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Container>
   );
 };
 
-export default AnalysisPage;
+export default UploadPage;
 
 const Container = styled.main`
   display: flex;

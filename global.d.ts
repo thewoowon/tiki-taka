@@ -63,6 +63,18 @@ declare global {
     rightMessage?: React.ReactNode | null;
   };
 
+  type HistoryElementType = {
+    id: number;
+    title: string;
+    status: string;
+    lastUsed: string;
+  };
+
+  type QuestionElementType = {
+    id: number;
+    content: string;
+  };
+
   interface Window {
     naver: any;
     Kakao: any; // 나중에 설명할 카카오 로그인을 위해 이 부분도 추가해주세요!

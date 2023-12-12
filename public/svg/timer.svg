@@ -1,0 +1,17 @@
+<svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="50" height="50" rx="5" fill="#00CE72" />
+    <path
+        d="M25 44C35.4934 44 44 35.4934 44 25C44 14.5066 35.4934 6 25 6C14.5066 6 6 14.5066 6 25C6 35.4934 14.5066 44 25 44Z"
+        fill="#040404" />
+    <path
+        d="M25 39C32.732 39 39 32.732 39 25C39 17.268 32.732 11 25 11C17.268 11 11 17.268 11 25C11 32.732 17.268 39 25 39Z"
+        fill="white" />
+    <rect x="24" y="19" width="2" height="7" rx="1" fill="#040404" />
+    <rect x="30.6348" y="27.5" width="2" height="6.57804" rx="1" transform="rotate(122.146 30.6348 27.5)"
+        fill="#040404" />
+    <rect x="24" y="13" width="2" height="4" rx="1" fill="#00CE72" />
+    <rect x="23.5" y="23.5" width="3" height="3" rx="1.5" fill="#040404" stroke="#040404" stroke-width="0.5" />
+    <rect x="24" y="33" width="2" height="4" rx="1" fill="#00CE72" />
+    <rect x="33" y="26" width="2" height="4" rx="1" transform="rotate(-90 33 26)" fill="#00CE72" />
+    <rect x="13" y="26" width="2" height="4" rx="1" transform="rotate(-90 13 26)" fill="#00CE72" />
+</svg>

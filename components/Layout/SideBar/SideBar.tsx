@@ -106,6 +106,10 @@ const Container = styled.nav`
   min-width: 250px;
   max-width: 250px;
   height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
 `;
 
 const Wrapper = styled.div`

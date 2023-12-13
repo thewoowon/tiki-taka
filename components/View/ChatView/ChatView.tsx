@@ -94,13 +94,6 @@ const ChatView = ({
                     >
                       {m.content}
                     </Typography>
-                    <div className="text-[12px] font-light">{`${new Date()
-                      .getHours()
-                      .toString()
-                      .padStart(2, "0")}:${new Date()
-                      .getMinutes()
-                      .toString()
-                      .padStart(2, "0")}`}</div>
                   </UserChatBox>
                 </div>
               ) : m.role === "interviewer" ? (
@@ -349,12 +342,13 @@ export default ChatView;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
   padding: 32px 32px;
   overflow-y: scroll;
   overflow-x: hidden;
+  margin-top: 104px;
 `;
 
 const Answer = styled.div`
@@ -368,7 +362,6 @@ const Answer = styled.div`
   placeholder {
     color: #333333;
   }
-  height: 600px;
   resize: none;
   display: flex;
   align-items: flex-start;

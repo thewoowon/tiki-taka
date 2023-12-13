@@ -3,7 +3,7 @@ import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import { Box, Typography, Button, Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HistoryElement from "./HistoryElement/HistoryElement";
 import ExclamationMark from "@/public/svg/exclamation-mark.svg";
 
@@ -21,7 +21,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     },
     {
       id: 2,
-      title: "네이버페이_서비스기획자F",
+      title: "네이버페이_서비스기획자",
       status: "중단",
       lastUsed: "2022-10-10",
     },
@@ -31,10 +31,28 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
       status: "진행중",
       lastUsed: "2023-06-01",
     },
+    {
+      id: 4,
+      title: "오늘밤 주인공은 나야나",
+      status: "마감",
+      lastUsed: "2023-06-01",
+    },
+    {
+      id: 5,
+      title: "돈 내고 보는 이력서",
+      status: "진행중",
+      lastUsed: "2023-06-01",
+    },
   ]);
 
   const [currentHistory, setCurrentHistory] =
     useState<HistoryElementType | null>(null);
+
+  useEffect(() => {
+    if (histories.length < HISTORY_COUNT_LIMIT) {
+      router.push("/interview/chat");
+    }
+  }, [histories, router]);
 
   return (
     <Box

@@ -1,4 +1,5 @@
 "use client";
+import { Simulation01 } from "@/components/Element/Loading";
 import Typography from "@/components/Element/Typography";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
@@ -10,12 +11,7 @@ const InterviewPage = () => {
   return (
     <Container>
       <Box>
-        <Image
-          width={400}
-          height={200}
-          alt="interview"
-          src={"/assets/tikitaka-thumbnail.png"}
-        />
+        <Simulation01 />
         <div className="flex flex-col gap-[8px] pt-[10px]">
           <Typography
             fontSize={24}

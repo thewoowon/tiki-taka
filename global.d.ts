@@ -75,6 +75,12 @@ declare global {
     content: string;
   };
 
+  type QuestionType = {
+    id: number;
+    role: string;
+    content: string;
+  };
+
   interface Window {
     naver: any;
     Kakao: any; // 나중에 설명할 카카오 로그인을 위해 이 부분도 추가해주세요!

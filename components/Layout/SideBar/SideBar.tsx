@@ -1,11 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
 import { COLORS } from "@/style/color";
 import { TikitakaText } from "@/components/svg";
 import Typography from "@/components/Element/Typography";
+import { useMe } from "@/hooks/useMe";
+import { useRecoilState } from "recoil";
+import { loginState } from "@/states";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -15,21 +18,21 @@ const CONSTANT_ROUTER = [
 const SideBar = () => {
   const router = useRouter();
   const pathname = usePathname();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pathObj, setPathObj] = useState<{ pathname: string; label: string }>({
     pathname: "/auth/kakao",
     label: "로그인",
   });
 
+  const [isLoggedIn] = useRecoilState(loginState);
+
   useEffect(() => {
-    // 일단 로컬스토리지에 토큰이 있는지 확인
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      setIsLoggedIn(true);
+    if (isLoggedIn) {
       setPathObj({ pathname: "/mypage", label: "마이페이지" });
+    } else {
+      setPathObj({ pathname: "/auth/kakao", label: "로그인" });
     }
-  }, []);
+  }, [isLoggedIn]);
+
   return (
     <Container>
       <Wrapper>

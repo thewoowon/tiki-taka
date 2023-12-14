@@ -1,27 +1,30 @@
-import { useEffect, useState } from "react";
-import DocumentElement from "./DocumentElement";
+import { useRef, useState } from "react";
 import { PDF_FILE_COUNT_LIMIT } from "@/constants/limit";
 import { Box, Button, Modal, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
+import SimpleDocumentElement from "./SimpleDocumentElement";
+import styled from "@emotion/styled";
 
-const Document = () => {
-  const router = useRouter();
+const SimpleDocument = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [documents, setDocuments] = useState<
     {
+      id: number;
       source: File | null;
       name: string;
     }[]
   >([
     {
+      id: 1,
       source: null,
       name: "망한 원티드 이력서.pdf",
     },
     {
+      id: 2,
       source: null,
       name: "LG 공채용 이력서 v1.pdf",
     },
@@ -29,11 +32,9 @@ const Document = () => {
 
   const [overLimit, setOverLimit] = useState(false);
 
-  const [isSelected, setIsSelected] = useState<boolean[]>([]);
+  const [selectedDocument, setSelectedDocument] = useState<number | null>(null);
 
-  useEffect(() => {
-    setIsSelected(documents.map((document) => false));
-  }, [documents]);
+  const [file, setFile] = useState<File | null>(null);
 
   return (
     <Box
@@ -43,45 +44,41 @@ const Document = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "10px",
+        gap: "40px",
       }}
     >
-      {documents.map((document, index) => (
-        <DocumentElement
-          key={index}
-          pdfDocument={document}
-          isSelected={isSelected[index]}
-          onSelected={() => {
-            // 전체를 false로 만들고, 해당 index만 true로 만든다.
-            setIsSelected(isSelected.map(() => false));
-            setIsSelected((prev) => {
-              const newSelected = [...prev];
-              newSelected[index] = true;
-              return newSelected;
-            });
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
+        {documents.map((document, index) => (
+          <SimpleDocumentElement
+            key={index}
+            pdfDocument={document}
+            onDelete={(id: number) => {
+              setSelectedDocument(id);
+              handleOpen();
+            }}
+          />
+        ))}
+      </Box>
 
-            router.push("/interview/upload?document=" + index, undefined);
-          }}
-        />
-      ))}
-      {PDF_FILE_COUNT_LIMIT - documents.length > 0 && (
-        <DocumentElement setOverLimit={setOverLimit} />
-      )}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
+          maxWidth: "1040px",
           gap: "10px",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "4px",
-          }}
-        >
+        <Box>
           {overLimit && (
             <Box
               sx={{
@@ -108,50 +105,56 @@ const Document = () => {
               <Typography>파일 용량 50MB 이내로 올려 주세요.</Typography>
             </Box>
           )}
-          <Typography
-            sx={{
-              fontSize: "14px",
-              fontWeight: 400,
-              lineHeight: "21px",
-              color: COLORS.GRAY100,
-            }}
-          >
-            * 파일은 최대 <span className="text-[#00CE72]">50MB</span> 까지
-            업로드 하실 수 있어요.
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "14px",
-              fontWeight: 400,
-              lineHeight: "21px",
-              color: COLORS.GRAY100,
-            }}
-          >
-            * 이력서 및 경력기술서는 자유양식이며,{" "}
-            <span className="text-[#00CE72]">한개의 파일로 통합</span>하여
-            올려주세요.
-          </Typography>
         </Box>
-        {documents.length === PDF_FILE_COUNT_LIMIT && (
-          <Button
-            sx={{
-              display: "flex",
-              padding: "18px 24px",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "10px",
-              flexShrink: 0,
-              backgroundColor: COLORS.TIKI_GREEN + " !important",
-              color: COLORS.WHITE,
-              fontSize: "16px",
-              fontWeight: 600,
-              lineHeight: "16px",
-            }}
-            onClick={handleOpen}
-          >
-            원하는 이력서가 없어요
-          </Button>
-        )}
+        <Button
+          sx={{
+            display: "flex",
+            padding: "18px 24px",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+            flexShrink: 0,
+            backgroundColor:
+              documents.length >= PDF_FILE_COUNT_LIMIT
+                ? COLORS.GRAY400 + " !important"
+                : COLORS.TIKI_GREEN + " !important",
+            color: COLORS.WHITE,
+            fontSize: "16px",
+            fontWeight: 600,
+            lineHeight: "16px",
+          }}
+          onClick={() => {
+            inputRef.current?.click();
+          }}
+          disabled={documents.length >= PDF_FILE_COUNT_LIMIT}
+        >
+          업로드
+        </Button>
+        <FileInput
+          ref={inputRef}
+          type="file"
+          accept="application/pdf"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              // file size check 50MB
+              if (file.size > 50 * 1024 * 1024) {
+                setOverLimit?.(true);
+                return;
+              }
+
+              setFile(file);
+              setDocuments([
+                ...documents,
+                {
+                  id: documents.length + 1,
+                  source: file,
+                  name: file.name,
+                },
+              ]);
+            }
+          }}
+        />
       </Box>
       <Modal
         open={open}
@@ -167,7 +170,7 @@ const Document = () => {
               fontWeight: 700,
             }}
           >
-            이력서는 최대 3개까지 저장 가능해요
+            {"{파일 이름}"}
           </Typography>
           <Typography
             sx={{
@@ -179,9 +182,7 @@ const Document = () => {
               lineHeight: "24px",
             }}
           >
-            가장 오래된 이력서를 삭제하고
-            <br />
-            새로운 이력서를 업로드 하시겠어요?
+            이력서 파일을 정말 삭제할까요?
           </Typography>
           <Box
             sx={{
@@ -221,7 +222,11 @@ const Document = () => {
                 color: COLORS.WHITE,
               }}
               onClick={() => {
-                router.push("/interview/document");
+                setDocuments(
+                  documents.filter(
+                    (document) => document.id !== selectedDocument
+                  )
+                );
                 handleClose();
               }}
             >
@@ -234,4 +239,8 @@ const Document = () => {
   );
 };
 
-export default Document;
+export default SimpleDocument;
+
+const FileInput = styled.input`
+  display: none;
+`;

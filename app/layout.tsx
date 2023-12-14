@@ -3,8 +3,9 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
-import { Footer, SideBar } from "@/components/Layout";
+import { SideBar } from "@/components/Layout";
 import Script from "next/script";
+import { useEffect } from "react";
 
 export default function RootLayout({
   children,
@@ -22,8 +23,14 @@ export default function RootLayout({
   });
 
   const handleKakaoInit = () => {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY);
+    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
   };
+
+  useEffect(() => {
+    if (document.body.getAttribute("style") === "") {
+      document.body.removeAttribute("style");
+    }
+  }, []);
 
   return (
     <html lang="en">
@@ -147,7 +154,7 @@ export default function RootLayout({
           onLoad={handleKakaoInit}
         />
       </head>
-      <body className={""}>
+      <body>
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
             <div className="min-h-screen flex">{children}</div>

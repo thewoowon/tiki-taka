@@ -3,7 +3,7 @@ import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import Document from "@/components/Element/Document";
+import { Document } from "@/components/Element/Document";
 import { Loading } from "@/components/View/Loading";
 import { useEffect, useState } from "react";
 

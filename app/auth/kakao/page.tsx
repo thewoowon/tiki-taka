@@ -1,7 +1,6 @@
 "use client";
 import KakaoButton from "@/components/Element/Button/Kakao/KakaoButton";
 import GlobalLoading from "@/components/Element/GlobalLoading";
-import Spinner from "@/components/Element/Spinner";
 import Typography from "@/components/Element/Typography";
 import useKakaoLogin from "@/hooks/useKakaoLogin";
 import { COLORS } from "@/style/color";
@@ -11,9 +10,6 @@ import Link from "next/link";
 // 애초에 로그인이 되어 있다면 마이페이지로 이동
 
 const KakaoLoginPage = () => {
-  // 카카오 로그인
-  const { isLoading, onLoadingToggle } = useKakaoLogin();
-
   return (
     <Container>
       <Box>

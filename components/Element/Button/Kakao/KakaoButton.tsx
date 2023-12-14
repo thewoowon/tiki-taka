@@ -13,7 +13,7 @@ const KakaoButton = () => {
   const kakaoParam: kakaoParamType | URLSearchParams | Record<string, string> =
     {
       client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
-      redirect_uri: `${locationOrigin}/auth/kakao`,
+      redirect_uri: `${locationOrigin}/auth/kakao/callback`,
       response_type: "code",
     };
   const kakaoCodeURL = `https://kauth.kakao.com/oauth/authorize?${new URLSearchParams(

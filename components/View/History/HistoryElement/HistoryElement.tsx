@@ -75,8 +75,8 @@ const HistoryElement = ({
             alignItems: "center",
             gap: "10px",
             borderRadius: "5px",
-            backgroundColor: COLORS.GRAY100 + "!important",
-            color: COLORS.TEXT,
+            border: `1px solid ${COLORS.GRAY100}`,
+            color: COLORS.GRAY100,
           }}
           onClick={onDelete}
         >

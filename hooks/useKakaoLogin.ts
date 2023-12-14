@@ -36,33 +36,52 @@ const useKakaoLogin = () => {
 
   const handleLogin = useCallback(
     async (code: string | string[] | null) => {
-      const options = {
-        method: "POST",
-        url: `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${
-          process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
-        }&redirect_uri=${
-          window && window.location.origin + "/auth/kakao/callback"
-        }&code=${code}`,
-        data: code,
-      };
+      const result = await axios({
+        method: "GET",
+        url: `https://tikitakachatdata.com/user/kakaoLogin?code=${code}`,
+      })
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          console.error(err);
+          setIsLoading(false);
+        });
 
-      const response = await axios(options).catch((err) => {
-        console.error(err);
-        setIsLoading(false);
-      });
+      console.log(result);
 
-      if (response?.status !== 200) {
+      if (result?.status !== 200) {
         setIsLoading(false);
         return;
       }
 
-      window.Kakao.Auth.setAccessToken(response?.data?.access_token);
+      // const options = {
+      //   method: "POST",
+      //   url: `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${
+      //     process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
+      //   }&redirect_uri=${
+      //     window && window.location.origin + "/auth/kakao/callback"
+      //   }&code=${code}`,
+      //   data: code,
+      // };
 
-      localStorage.setItem("accessToken", response?.data?.access_token);
+      // const response = await axios(options).catch((err) => {
+      //   console.error(err);
+      //   setIsLoading(false);
+      // });
+
+      // if (response?.status !== 200) {
+      //   setIsLoading(false);
+      //   return;
+      // }
+
+      // window.Kakao.Auth.setAccessToken(response?.data?.access_token);
+
+      // localStorage.setItem("accessToken", response?.data?.access_token);
 
       setIsLoggedIn(true);
 
-      handleGetProfile();
+      //handleGetProfile();
     },
     [handleGetProfile, setIsLoggedIn]
   );

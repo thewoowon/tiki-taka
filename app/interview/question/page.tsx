@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import Question from "@/components/View/Question";
 import { useRouter } from "next/navigation";
+import { questionsList } from "../chat/page";
 
 const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
@@ -14,13 +15,7 @@ const QuestionPage = () => {
 
   const [data, setData] = useState({
     name: "카카오페이",
-    questions: [
-      {
-        id: 1,
-        content:
-          "질문 1. 카카오페이를 선택한 동기와 흥미로운 경험에 대해 어떤 것이 있나요?",
-      },
-    ],
+    questions: questionsList,
   });
 
   return (

@@ -17,7 +17,7 @@ const QuestionElement = ({ question }: { question: QuestionElementType }) => {
         color: COLORS.GRAY100,
       }}
     >
-      {question.content}
+      질문 {question.id}. {question.content}
     </Box>
   );
 };

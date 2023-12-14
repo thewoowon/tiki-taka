@@ -104,6 +104,7 @@ const ChatView = ({
                       alignItems: "center",
                       justifyContent: "flex-start",
                       gap: "10px",
+                      color: COLORS.WHITE,
                     }}
                   >
                     <Interviewer />
@@ -349,11 +350,15 @@ const Container = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   margin-top: 104px;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  --ms-overflow-style: none;
 `;
 
 const Answer = styled.div`
   padding: 20px 0;
-  border-radius: 10px;
   font-size: 16px;
   overflow: scroll;
   &::-webkit-scrollbar {

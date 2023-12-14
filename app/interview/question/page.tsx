@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import Question from "@/components/View/Question";
 import { useRouter } from "next/navigation";
-import { questionsList } from "../chat/page";
+import { questionsList } from "@/constants/list";
 
 const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.

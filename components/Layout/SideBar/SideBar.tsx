@@ -6,7 +6,6 @@ import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
 import { COLORS } from "@/style/color";
 import { TikitakaText } from "@/components/svg";
 import Typography from "@/components/Element/Typography";
-import { useMe } from "@/hooks/useMe";
 import { useRecoilState } from "recoil";
 import { loginState } from "@/states";
 
@@ -24,6 +23,8 @@ const SideBar = () => {
   });
 
   const [isLoggedIn] = useRecoilState(loginState);
+
+  console.log("isLoggedIn", isLoggedIn);
 
   useEffect(() => {
     if (isLoggedIn) {

@@ -1,12 +1,13 @@
+"use client";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import { Box, Button, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { useMe } from "@/hooks/useMe";
 import { useRecoilState } from "recoil";
-import { loginState } from "@/states";
+import { loginState, userState } from "@/states";
+import { useMe } from "@/hooks/useMe";
 
 const Profile = () => {
   const router = useRouter();
@@ -14,8 +15,8 @@ const Profile = () => {
   const [myImage, setMyImage] = useState<File | null>(null);
   const [myProfileUrl, setMyProfileUrl] = useState("/assets/black-logo.png");
   const [, setIsLoggedIn] = useRecoilState(loginState);
-
-  const { isLoading, email, nickname, profile_image_url } = useMe();
+  const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
+  const { isLoading, nickname } = useMe();
 
   const encodeFileToBase64 = (fileBlob: File) => {
     const reader = new FileReader();
@@ -29,15 +30,19 @@ const Profile = () => {
   };
 
   const handleLogout = async () => {
-    await window.Kakao.Auth.logout();
+    // await window.Kakao.Auth.logout();
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
+    setUserRecoilState({
+      userId: null,
+      nickname: "",
+      email: "",
+      profileImage: "",
+    });
     router.push("/");
   };
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
-  }
+  if (isLoading) return <div>로딩중...</div>;
 
   return (
     <Container>
@@ -88,7 +93,7 @@ const Profile = () => {
             textAlign: "center",
           }}
         >
-          {nickname}
+          {userRecoilState.nickname}
         </Typography>
         <Typography
           sx={{
@@ -99,7 +104,7 @@ const Profile = () => {
             textAlign: "center",
           }}
         >
-          {email}
+          {userRecoilState.email}
         </Typography>
       </Box>
       <Button

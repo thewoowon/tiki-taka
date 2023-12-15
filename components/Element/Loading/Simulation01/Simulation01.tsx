@@ -4,7 +4,7 @@ import "@dotlottie/react-player/dist/index.css";
 
 const Simulation01 = () => {
   return (
-    <div>
+    <div className="rounded-md overflow-hidden">
       <DotLottiePlayer
         src="https://lottie.host/284a3989-c93e-4332-9a80-846d83b12793/qvk87KKVRY.json"
         background="transparent"

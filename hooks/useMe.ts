@@ -1,43 +1,44 @@
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export const useMe = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState("");
-  const [profile_image_url, setProfile_image_url] = useState("");
+  const [profileImage, setprofileImage] = useState("");
   const [nickname, setNickname] = useState("");
 
   useEffect(() => {
     async function getProfile() {
-      const response = await window.Kakao.API.request({
-        url: "/v2/user/me",
+      const response = await axios({
+        method: "GET",
+        url: "https://tikitakachatdata.com/user/kakaoLogin",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }).catch((err) => {
+        if (err.response.status === 401) {
+          router.push("/auth/kakao");
+        }
       });
 
       if (!response) {
+        toast.error("로그인이 필요합니다.");
         router.push("/auth/kakao");
       }
 
-      response?.kakao_account?.email &&
-        setEmail(response?.kakao_account?.email);
-      response?.properties?.profile_image_url &&
-        setProfile_image_url(response?.properties?.profile_image_url);
-      response?.properties?.nickname &&
-        setNickname(response?.properties?.nickname);
+      response?.data.email && setEmail(response?.data.email);
+      response?.data.profileImage &&
+        setprofileImage(response?.data.profileImage);
+      response?.data.nickname && setNickname(response?.data.nickname);
 
       setIsLoading(false);
-    }
-
-    if (!window.Kakao) {
-      return;
-    }
-
-    if (!window.Kakao.Auth.getAccessToken()) {
-      router.push("/auth/kakao");
     }
 
     getProfile();
   }, [router]);
 
-  return { isLoading, email, profile_image_url, nickname };
+  return { isLoading, email, profileImage, nickname };
 };

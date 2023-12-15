@@ -2,7 +2,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { loginState } from "@/states";
+import { loginState, userState } from "@/states";
 
 type kakaoParamType = {
   client_id?: string;
@@ -15,6 +15,7 @@ const useKakaoLogin = () => {
   const router = useRouter();
   const params = useSearchParams();
   const [, setIsLoggedIn] = useRecoilState(loginState);
+  const [, setUserState] = useRecoilState(userState);
 
   const handleLoadingToggle = (flag: boolean) => {
     setIsLoading(flag);
@@ -52,9 +53,40 @@ const useKakaoLogin = () => {
 
       if (result?.status !== 200) {
         setIsLoading(false);
+        router.push("/auth/kakao");
         return;
       }
 
+      if (result.data.code === "700") {
+        // 회원가입 완료 -> 다시 로그인 필요
+        setIsLoading(false);
+        router.push("/auth/kakao");
+        return;
+      }
+
+      if (result.data.code === "200") {
+        // 로그인 완료
+        setIsLoading(false);
+        localStorage.setItem("accessToken", result.headers.accesstoken);
+        setUserState({
+          email: result.data.data.email,
+          profileImage: result.data.data.profileImage,
+          nickname: result.data.data.name,
+          userId: result.data.data.userId,
+        });
+        setIsLoggedIn(true);
+        router.push("/");
+        return;
+      }
+
+      if (result.data.code === "500") {
+        // 서버 에러
+        setIsLoading(false);
+        router.push("/auth/kakao");
+        return;
+      }
+
+      setIsLoading(false);
       // const options = {
       //   method: "POST",
       //   url: `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${
@@ -79,11 +111,9 @@ const useKakaoLogin = () => {
 
       // localStorage.setItem("accessToken", response?.data?.access_token);
 
-      setIsLoggedIn(true);
-
       //handleGetProfile();
     },
-    [handleGetProfile, setIsLoggedIn]
+    [router]
   );
 
   useEffect(() => {

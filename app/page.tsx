@@ -12,7 +12,6 @@ import BlackLogo from "@/public/svg/black-logo.svg";
 import RightArrow from "@/public/svg/right-arrow.svg";
 import Sunglasses from "@/public/svg/sunglasses.svg";
 import { useRouter } from "next/navigation";
-import { useMe } from "@/hooks/useMe";
 
 export default function Home() {
   const router = useRouter();

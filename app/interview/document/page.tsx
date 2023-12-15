@@ -6,11 +6,14 @@ import { useRouter } from "next/navigation";
 import { Document } from "@/components/Element/Document";
 import { Loading } from "@/components/View/Loading";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userState } from "@/states";
 
 const DocumentPage = () => {
   const router = useRouter();
 
   const [tempLoading, setTempLoading] = useState(true);
+  const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,9 +25,7 @@ const DocumentPage = () => {
     return (
       <Loading
         title={"이력서 불러오는중"}
-        description={
-          "{@이름(카카오연동)}님의 경험과 채용 공고를 바탕으로 면접 질문을 만들고 있어요."
-        }
+        description={`${userRecoilState.nickname}(카카오 연동)님의 경험과 채용 공고를 바탕으로 면접 질문을 만들고 있어요.`}
       />
     );
   }

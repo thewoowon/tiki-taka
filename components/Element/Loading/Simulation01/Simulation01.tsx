@@ -10,7 +10,7 @@ const Simulation01 = () => {
         background="transparent"
         speed={1}
         style={{
-          width: "300px",
+          width: "400px",
         }}
         autoplay
         loop

@@ -99,7 +99,10 @@ const HistoryElement = ({
                 history.status === 1
                   ? COLORS.GRAY100 + "!important"
                   : COLORS.TIKI_DARK_GREEN + "!important",
-              color: COLORS.WHITE,
+              color:
+                history.status === 1
+                  ? COLORS.DARK_BG + "!important"
+                  : COLORS.WHITE + "!important",
             }}
             onClick={history.status === 1 ? onResult : onContinue}
           >

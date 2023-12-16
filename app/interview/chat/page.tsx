@@ -41,10 +41,18 @@ const InterviewChatPage = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = (
+    event: React.SyntheticEvent<Element, Event>,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
+    if (reason === "backdropClick") return;
+    if (reason === "escapeKeyDown") return;
+    setOpen(false);
+  };
   const [userRecoilState] = useRecoilState(userState);
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [indicator, setIndicator] = useState(0);
+  const [lastQaId, setLastQaId] = useState(0);
   const [history, setHistory] = useState<HistoryElementType>({
     interviewId: 0,
     userId: 0,
@@ -107,6 +115,7 @@ const InterviewChatPage = () => {
         data: {
           userId: userRecoilState.userId,
           interviewId: Number(params.get("interviewId")),
+          lastBtnCk: 1,
           answerData,
         },
       }).then((res) => res.data);
@@ -114,7 +123,7 @@ const InterviewChatPage = () => {
     onSuccess: (data) => {
       if (data.code === "200") {
         toast.success("답변 저장에 성공했어요.");
-        router.push("/interview/history");
+        router.push("/history");
       } else {
         toast.error(data.message);
       }
@@ -138,6 +147,7 @@ const InterviewChatPage = () => {
         newQuestions.push(newQuestion);
       }
       setQuestions(newQuestions);
+      setLastQaId(data.data.lastQaId);
     }
   }, [data]);
 
@@ -191,6 +201,8 @@ const InterviewChatPage = () => {
         setIndicator={setIndicator}
         title={history.title}
         setSyncChatStack={setChatStack}
+        isContinue={params.get("continue") === "true"}
+        lastQaId={lastQaId}
       />
       <Box
         sx={{
@@ -253,6 +265,7 @@ const InterviewChatPage = () => {
           </Button>
         </Box>
       </Box>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -290,6 +303,25 @@ const InterviewChatPage = () => {
               pt: "20px",
             }}
           >
+            <Button
+              sx={{
+                display: "flex",
+                width: "145px",
+                padding: "18px 20px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                border: `1px solid ${COLORS.TIKI_GREEN}`,
+                color: COLORS.TIKI_GREEN,
+              }}
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              계속 진행
+            </Button>
+
             <Button
               sx={{
                 display: "flex",

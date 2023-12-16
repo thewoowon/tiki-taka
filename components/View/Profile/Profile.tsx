@@ -10,7 +10,6 @@ import { loginState, userState } from "@/states";
 import { useMe } from "@/hooks/useMe";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Loading } from "../Loading";
 import { SimulationQLoading } from "@/components/Element/Loading";
 import { useMutation } from "@tanstack/react-query";
 
@@ -21,7 +20,7 @@ const Profile = () => {
   const [myProfileUrl, setMyProfileUrl] = useState("/assets/black-logo.png");
   const [, setIsLoggedIn] = useRecoilState(loginState);
   const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
-  const { isLoading, nickname } = useMe();
+  const { isLoading } = useMe();
 
   const encodeFileToBase64 = (fileBlob: File) => {
     const reader = new FileReader();

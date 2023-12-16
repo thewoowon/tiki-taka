@@ -359,7 +359,8 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
                 if (currentHistory && currentHistory.interviewId)
                   router.push(
                     "/interview/question?interviewId=" +
-                      currentHistory.interviewId
+                      currentHistory.interviewId +
+                      "&continue=true"
                   );
                 else {
                   toast.error(

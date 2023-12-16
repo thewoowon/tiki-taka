@@ -31,6 +31,8 @@ const ChatView = ({
   setIndicator,
   title,
   setSyncChatStack,
+  isContinue,
+  lastQaId,
 }: {
   interviewId: number;
   questions: QuestionType[];
@@ -38,14 +40,24 @@ const ChatView = ({
   setIndicator: React.Dispatch<React.SetStateAction<number>>;
   title: string;
   setSyncChatStack: React.Dispatch<React.SetStateAction<QuestionType[]>>;
+  isContinue: boolean;
+  lastQaId: number;
 }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = (
+    event: React.SyntheticEvent<Element, Event>,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
+    if (reason === "backdropClick") return;
+    if (reason === "escapeKeyDown") return;
+    setOpen(false);
+  };
   const [inputDisabled, setInputDisabled] = useState(false);
   const [userRecoilState] = useRecoilState(userState);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [lastBtnCk, setLastBtnCk] = useState(0);
 
   const { register, getValues, watch, setValue, handleSubmit } =
     useForm<FormType>({
@@ -67,6 +79,7 @@ const ChatView = ({
         data: {
           userId: userRecoilState.userId,
           interviewId,
+          lastBtnCk: 1,
           answerData,
         },
       }).then((res) => res.data);
@@ -134,6 +147,7 @@ const ChatView = ({
   };
 
   useEffect(() => {
+    // 만약에 질문을 이어서 진행한다면 questions 중에서 qaId가 lastQaId인 질문부터 시작해야 한다.
     setChatStack([...chatStack, questions[indicator]]);
     setSyncChatStack([...chatStack, questions[indicator]]);
 
@@ -142,6 +156,64 @@ const ChatView = ({
     }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indicator, questions]);
+
+  useEffect(() => {
+    if (isContinue) {
+      const continueChatStack: QuestionType[] = [];
+      for (let i = 0; i < questions.length; i++) {
+        // 일치하는 것을 찾으면
+        const { answer, regDate, modifyDate, qaId } = questions[i];
+
+        // -> 여기서는 무조건 만들어 주면 됨...
+        const newQuestion1: QuestionType = {
+          role: "user",
+          interviewId: 0,
+          qaId,
+          question: "",
+          answer,
+          regDate,
+          modifyDate,
+        };
+        const newQuestion2: QuestionType = {
+          role: "ai",
+          interviewId: 0,
+          qaId: 0,
+          question: "",
+          answer:
+            "사용자 답변을 더 나은 표현으로 바꿔주는 답변 코칭 내용이 들어갑니다.",
+          regDate,
+          modifyDate,
+        };
+
+        continueChatStack.push(questions[i]);
+        continueChatStack.push(newQuestion1);
+        continueChatStack.push(newQuestion2);
+
+        if (qaId === lastQaId) {
+          continueChatStack.push(questions[i + 1]);
+          break;
+        }
+      }
+
+      setChatStack(continueChatStack);
+      setSyncChatStack(continueChatStack);
+    }
+  }, [isContinue, lastQaId, questions, setSyncChatStack]);
+
+  useEffect(() => {
+    if (isContinue) {
+      const lastIndex = questions.findIndex(
+        (question) => question.qaId === lastQaId
+      );
+      if (lastIndex !== -1) {
+        setIndicator(lastIndex + 1);
+      }
+    }
+  }, [isContinue, lastQaId, questions, setIndicator]);
+
+  useEffect(() => {
+    console.log(chatStack, "chatStack");
+  }, [chatStack]);
 
   if (saveAnswerMutation.isPending) {
     return (
@@ -158,7 +230,6 @@ const ChatView = ({
         {chatStack.length > 0
           ? chatStack.map((m, index) => {
               if (!m) return;
-
               if (index === chatStack.length - 1) {
                 return m.role === "user" ? (
                   <div
@@ -238,6 +309,7 @@ const ChatView = ({
                           }}
                           onClick={() => {
                             if (questions.length == indicator + 1) {
+                              setLastBtnCk(1);
                               handleOpen();
                             } else {
                               setIndicator(indicator + 1);
@@ -322,6 +394,7 @@ const ChatView = ({
                         }}
                         onClick={() => {
                           if (questions.length == indicator + 1) {
+                            setLastBtnCk(1);
                             handleOpen();
                           } else {
                             setIndicator(indicator + 1);
@@ -463,6 +536,8 @@ const ChatView = ({
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        // 밖에 클릭해도 닫히지 않게
+        disableEscapeKeyDown={true}
       >
         <Box sx={modalStyle}>
           <Typography

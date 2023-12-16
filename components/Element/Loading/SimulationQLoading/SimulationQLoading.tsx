@@ -10,8 +10,8 @@ const SimulationQLoading = () => {
         background="transparent"
         speed={1}
         style={{
-          width: "300px",
-          height: "300px",
+          width: "400px",
+          height: "400px",
         }}
         autoplay
         loop

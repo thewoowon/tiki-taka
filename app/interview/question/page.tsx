@@ -233,6 +233,16 @@ const QuestionPage = () => {
                 lineHeight: "16px",
               }}
               onClick={() => {
+                const isContinue = params.get("continue") === "true";
+
+                if (isContinue) {
+                  router.push(
+                    "/interview/chat?interviewId=" +
+                      params.get("interviewId") +
+                      "&continue=true"
+                  );
+                  return;
+                }
                 router.push(
                   "/interview/chat?interviewId=" + params.get("interviewId")
                 );

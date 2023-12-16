@@ -328,10 +328,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               }}
               onClick={() => {
                 if (currentHistory && currentHistory.interviewId)
-                  router.push(
-                    "/interview/question?interviewId=" +
-                      currentHistory.interviewId
-                  );
+                  initInterviewMutation.mutate(currentHistory?.interviewId);
                 else {
                   toast.error(
                     "내부에서 에러가 발생했어요. 다시 시도해 주세요."
@@ -356,7 +353,10 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               }}
               onClick={() => {
                 if (currentHistory && currentHistory.interviewId)
-                  initInterviewMutation.mutate(currentHistory?.interviewId);
+                  router.push(
+                    "/interview/question?interviewId=" +
+                      currentHistory.interviewId
+                  );
                 else {
                   toast.error(
                     "내부에서 에러가 발생했어요. 다시 시도해 주세요."

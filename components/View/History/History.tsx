@@ -307,7 +307,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               lineHeight: "24px",
             }}
           >
-            질문은 동일하지만, 이전에 답변한 내용은 초기화 돼요.
+            {"[처음부터] 버튼을 클릭하면 질문은 동일, 입력한 답변은 초기화돼요"}
           </Typography>
           <Box
             sx={{

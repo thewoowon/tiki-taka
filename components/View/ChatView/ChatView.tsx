@@ -158,7 +158,7 @@ const ChatView = ({
   }, [indicator, questions]);
 
   useEffect(() => {
-    if (isContinue) {
+    if (isContinue && lastQaId) {
       const continueChatStack: QuestionType[] = [];
       for (let i = 0; i < questions.length; i++) {
         // 일치하는 것을 찾으면
@@ -190,7 +190,7 @@ const ChatView = ({
         continueChatStack.push(newQuestion2);
 
         if (qaId === lastQaId) {
-          continueChatStack.push(questions[i + 1]);
+          //continueChatStack.push(questions[i + 1]);
           break;
         }
       }

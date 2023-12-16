@@ -57,21 +57,7 @@ const ChatView = ({
   const [chatStack, setChatStack] = useState<QuestionType[]>([]);
   // /interview/insertAnswer
   const saveAnswerMutation = useMutation({
-    mutationFn: (chatStack: QuestionType[]) => {
-      const answerData: {
-        qaId: number;
-        answer: string;
-      }[] = [];
-      for (let index = 0; index < chatStack.length; index++) {
-        const { qaId, answer, role } = chatStack[index];
-        if (role === "user") {
-          answerData.push({
-            qaId,
-            answer,
-          });
-        }
-      }
-
+    mutationFn: (answerData: { qaId: number; answer: string }[]) => {
       return axios({
         method: "POST",
         url: "https://tikitakachatdata.com/interview/insertAnswer",
@@ -139,10 +125,8 @@ const ChatView = ({
     if (questions.length == indicator + 1) {
       setInputDisabled(true);
       handleOpen();
-      return;
     }
     setIndicator(indicator + 1);
-
     setTimeout(() => {
       scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
@@ -518,7 +502,21 @@ const ChatView = ({
                 color: COLORS.WHITE,
               }}
               onClick={async () => {
-                await saveAnswerMutation.mutate(chatStack);
+                const answerData: {
+                  qaId: number;
+                  answer: string;
+                }[] = [];
+                for (let index = 0; index < chatStack.length; index++) {
+                  if (!chatStack[index]) continue;
+                  const { qaId, answer, role } = chatStack[index];
+                  if (role === "user") {
+                    answerData.push({
+                      qaId,
+                      answer,
+                    });
+                  }
+                }
+                await saveAnswerMutation.mutate(answerData);
                 handleClose();
               }}
             >

@@ -25,12 +25,12 @@ const KakaoLoginPage = () => {
         <div className="pt-[30px] pb-[20px]">
           <KakaoButton />
         </div>
-        <div className="flex w-full justify-between">
+        {/* <div className="flex w-full justify-between">
           <LinkText href={"#"}>처음이신가요?</LinkText>
-          {/* <LinkText href={"#"} textDecoration="underline" fontWeight={500}>
+          <LinkText href={"#"} textDecoration="underline" fontWeight={500}>
             회원가입
-          </LinkText> */}
-        </div>
+          </LinkText>
+        </div> */}
       </Box>
     </Container>
   );
@@ -49,7 +49,7 @@ const Container = styled.main`
 
 const Box = styled.div`
   display: flex;
-  height: 280px;
+  height: 240px;
   padding: 40px;
   flex-direction: column;
   align-items: center;

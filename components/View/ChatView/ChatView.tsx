@@ -54,6 +54,16 @@ const ChatView = ({
   const onSubmit = async () => {
     const { chat } = getValues();
 
+    if (chat.length < 20) {
+      toast.error("20자 이상 입력해주세요.");
+      return;
+    }
+
+    if (chat.length > 150) {
+      toast.error("150자 이하로 입력해주세요.");
+      return;
+    }
+
     const newQuestion1: QuestionType = {
       role: "user",
       interviewId: 0,

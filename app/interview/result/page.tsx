@@ -10,6 +10,7 @@ import { userState } from "@/states";
 import { useRecoilState } from "recoil";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { ResultLoading } from "@/components/View/ResultLoading";
 
 type FeedbackType = {
   id: number;
@@ -129,6 +130,15 @@ const InterviewResultPage = () => {
 
     setDownloadLink(url);
   }, [params, userRecoilState.userId]);
+
+  if (regenerateMutation.isPending) {
+    return (
+      <ResultLoading
+        title={"결과 재생성 중"}
+        description={`${userRecoilState.nickname}(카카오연동)님의 답변과 채용 공고를 바탕으로 면접 결과를 재생성하고 있어요.`}
+      />
+    );
+  }
 
   return (
     <Container>

@@ -115,7 +115,7 @@ const InterviewChatPage = () => {
         data: {
           userId: userRecoilState.userId,
           interviewId: Number(params.get("interviewId")),
-          lastBtnCk: 1,
+          lastBtnCk: 0,
           answerData,
         },
       }).then((res) => res.data);

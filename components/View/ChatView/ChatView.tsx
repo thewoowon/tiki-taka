@@ -79,7 +79,7 @@ const ChatView = ({
         data: {
           userId: userRecoilState.userId,
           interviewId,
-          lastBtnCk: 1,
+          lastBtnCk,
           answerData,
         },
       }).then((res) => res.data);

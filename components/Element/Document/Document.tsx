@@ -44,28 +44,26 @@ const Document = () => {
     },
   });
 
-  const fileUploadMutation = useMutation({
-    mutationFn: (file: File) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      if (!userRecoilState.userId)
-        throw new Error("userRecoilState.userId is null");
-      formData.append("userId", userRecoilState.userId.toString());
+  const fileDeleteMutation = useMutation({
+    mutationFn: (resumeId: number) => {
       return axios({
-        method: "POST",
-        url: "https://tikitakachatdata.com/resume/uploadResume",
+        method: "DELETE",
+        url: "https://tikitakachatdata.com/resume/deleteResume",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        data: formData,
+        data: {
+          resumeId,
+          userId: userRecoilState.userId,
+        },
       }).then((res) => res.data);
     },
     onSuccess: (data) => {
-      toast.success("파일 업로드에 성공했어요.");
+      toast.success("파일 삭제에 성공했어요.");
       refetch();
     },
     onError: (error) => {
-      toast.error("파일 업로드에 실패했어요. 다시 시도해 주세요.");
+      toast.error("파일 삭제에 실패했어요. 다시 시도해 주세요.");
     },
   });
 
@@ -286,7 +284,7 @@ const Document = () => {
               lineHeight: "24px",
             }}
           >
-            가장 오래된 이력서를 삭제하고
+            이력서를 삭제하고
             <br />
             새로운 이력서를 업로드 하시겠어요?
           </Typography>
@@ -328,7 +326,19 @@ const Document = () => {
                 color: COLORS.WHITE,
               }}
               onClick={() => {
-                deleteOldResumeMutation.mutate();
+                // 스펙변경
+                // deleteOldResumeMutation.mutate();
+
+                const selectedIndex = isSelected.indexOf(true);
+
+                if (selectedIndex === -1) {
+                  toast.error("이력서를 선택해주세요.");
+                  return;
+                }
+
+                fileDeleteMutation.mutate(
+                  documents[selectedIndex].resumeId ?? 0
+                );
                 handleClose();
               }}
             >

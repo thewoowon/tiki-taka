@@ -26,9 +26,9 @@ const KakaoLoginPage = () => {
         </div>
         <div className="flex w-full justify-between">
           <LinkText href={"#"}>처음이신가요?</LinkText>
-          <LinkText href={"#"} textDecoration="underline" fontWeight={500}>
+          {/* <LinkText href={"#"} textDecoration="underline" fontWeight={500}>
             회원가입
-          </LinkText>
+          </LinkText> */}
         </div>
       </Box>
     </Container>

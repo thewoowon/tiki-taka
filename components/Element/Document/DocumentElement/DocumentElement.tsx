@@ -52,12 +52,12 @@ const DocumentElement = ({
       }).then((res) => res.data);
     },
     onSuccess: (data) => {
-      if (data.code === "200") toast.success("파일 업로드에 성공했어요.");
+      if (data.code === "200") toast.success("이력서 업로드에 성공했어요.");
       else toast.error(data.message);
       refetch?.();
     },
     onError: (error) => {
-      toast.error("파일 업로드에 실패했어요. 다시 시도해 주세요.");
+      toast.error("이력서 업로드에 실패했어요. 다시 시도해 주세요.");
     },
   });
 

@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { PDF_FILE_COUNT_LIMIT } from "@/constants/limit";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import SimpleDocumentElement from "./SimpleDocumentElement";
@@ -62,11 +68,12 @@ const SimpleDocument = () => {
       }).then((res) => res.data);
     },
     onSuccess: (data) => {
-      toast.success("파일 업로드에 성공했어요.");
-      refetch();
+      if (data.code === "200") toast.success("이력서 업로드에 성공했어요.");
+      else toast.error(data.message);
+      refetch?.();
     },
     onError: (error) => {
-      toast.error("파일 업로드에 실패했어요. 다시 시도해 주세요.");
+      toast.error("이력서 업로드에 실패했어요. 다시 시도해 주세요.");
     },
   });
 
@@ -85,11 +92,11 @@ const SimpleDocument = () => {
       }).then((res) => res.data);
     },
     onSuccess: (data) => {
-      toast.success("파일 삭제에 성공했어요.");
+      toast.success("이력서 삭제에 성공했어요.");
       refetch();
     },
     onError: (error) => {
-      toast.error("파일 삭제에 실패했어요. 다시 시도해 주세요.");
+      toast.error("이력서 삭제에 실패했어요. 다시 시도해 주세요.");
     },
   });
 
@@ -220,7 +227,16 @@ const SimpleDocument = () => {
           }}
           disabled={documents.length >= PDF_FILE_COUNT_LIMIT}
         >
-          업로드
+          {fileUploadMutation.isPending ? (
+            <CircularProgress
+              size={18}
+              sx={{
+                color: COLORS.WHITE,
+              }}
+            />
+          ) : (
+            "업로드"
+          )}
         </Button>
         <FileInput
           ref={inputRef}

@@ -1,8 +1,8 @@
 "use client";
 import KakaoButton from "@/components/Element/Button/Kakao/KakaoButton";
-import Typography from "@/components/Element/Typography";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
+import { Typography } from "@mui/material";
 import Link from "next/link";
 
 // 애초에 로그인이 되어 있다면 마이페이지로 이동
@@ -16,6 +16,7 @@ const KakaoLoginPage = () => {
           color={COLORS.WHITE}
           textAlign="center"
           fontWeight={700}
+          lineHeight={"36px"}
         >
           AI 면접 진행을 위해
           <br />

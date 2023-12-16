@@ -8,7 +8,7 @@ import HistoryElement from "./HistoryElement/HistoryElement";
 import ExclamationMark2 from "@/public/svg/exclamation-mark-2.svg";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { userState } from "@/states";
+import { loginState, userState } from "@/states";
 import { useRecoilState } from "recoil";
 import { Loading } from "../Loading";
 import toast from "react-hot-toast";
@@ -24,7 +24,8 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     setOpen2(false);
   };
   const [histories, setHistories] = useState<HistoryElementType[]>([]);
-  const [userRecoilState] = useRecoilState(userState);
+  const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
+  const [, setIsLoggedIn] = useRecoilState(loginState);
 
   const [currentHistory, setCurrentHistory] =
     useState<HistoryElementType | null>(null);
@@ -91,7 +92,9 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     onSuccess: (data) => {
       if (data.code === "200") {
         toast.success("면접 답변 초기화에 성공했어요.");
-        refetch();
+        router.push(
+          "/interview/question?interviewId=" + currentHistory?.interviewId
+        );
       } else {
         toast.error("면접 답변 초기화를 하지 못했어요. 다시 시도해 주세요.");
       }
@@ -106,10 +109,11 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
       if (data.code === "로그인이 필요합니다") {
         toast.error("로그인이 필요합니다.");
         router.push("/auth/kakao");
+        setIsLoggedIn(false);
       }
       if (data.code === "200") setHistories(data.data);
     }
-  }, [data, router]);
+  }, [data, router, setIsLoggedIn]);
 
   if (isLoading)
     return (

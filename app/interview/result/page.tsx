@@ -305,6 +305,7 @@ const InterviewResultPage = () => {
                   fontWeight: " 500",
                   lineHeight: " normal",
                   color: COLORS.WHITE,
+                  minWidth: "56px",
                 }}
               >
                 질문 {index + 1}
@@ -323,6 +324,7 @@ const InterviewResultPage = () => {
             </Box>
             <Tags>
               {feed.keyword?.map((keyword, index) => {
+                // 키워드는 4개까지만 보여줌
                 return <Tag key={index}>{keyword}</Tag>;
               })}
             </Tags>
@@ -516,7 +518,7 @@ const InterviewResultPage = () => {
                 color: COLORS.GRAY100,
               }}
               onClick={() => {
-                router.push("/history");
+                regenerateMutation.mutate(Number(params.get("interviewId")));
               }}
             >
               결과 재생성
@@ -590,4 +592,8 @@ const Tag = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 21px;
+`;
+
+const ResponseBox = styled(Box)`
+  display: flex;
 `;

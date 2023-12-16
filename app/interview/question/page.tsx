@@ -155,8 +155,6 @@ const QuestionPage = () => {
               textAlign: "center",
             }}
           >
-            아래 질문 중에 연습하고 싶은 질문을 골라주세요.
-            <br />
             연습이 더 필요하면, [마이페이지 {">"} 히스토리] 에서 질문을 확인 후
             다시 진행해도 돼요.
           </Typography>

@@ -7,11 +7,13 @@ const HistoryElement = ({
   type,
   onDelete,
   onContinue,
+  onResult,
 }: {
   history: HistoryElementType;
   type: "deleteOnly" | "all";
   onDelete: () => void;
   onContinue: () => void;
+  onResult: () => void;
 }) => {
   return (
     <Container>
@@ -44,7 +46,7 @@ const HistoryElement = ({
             color: COLORS.TIKI_GREEN,
           }}
         >
-          {history.status}
+          {history.useCnt} / {history.totalCnt}
         </Typography>
         <Typography
           sx={{
@@ -56,7 +58,7 @@ const HistoryElement = ({
             marginTop: "10px",
           }}
         >
-          마지막 진행일 : {history.lastUsed}
+          마지막 진행일 : {new Date(history.regDate).toISOString().slice(0, 10)}
         </Typography>
       </Box>
       <Box
@@ -91,12 +93,15 @@ const HistoryElement = ({
               alignItems: "center",
               gap: "10px",
               borderRadius: "5px",
-              backgroundColor: COLORS.TIKI_DARK_GREEN + "!important",
+              backgroundColor:
+                history.status === 1
+                  ? COLORS.GRAY100 + "!important"
+                  : COLORS.TIKI_DARK_GREEN + "!important",
               color: COLORS.WHITE,
             }}
-            onClick={onContinue}
+            onClick={history.status === 1 ? onResult : onContinue}
           >
-            계속하기
+            {history.status === 1 ? "결과보기" : "계속하기"}
           </Button>
         )}
       </Box>

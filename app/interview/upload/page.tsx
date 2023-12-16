@@ -1,15 +1,26 @@
 "use client";
 import ImageUpload from "@/components/Element/ImageUpload";
+import { userState } from "@/states";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import styled from "@emotion/styled";
-import { Typography, Button, Box, Modal } from "@mui/material";
-import { useRouter } from "next/navigation";
+import {
+  Typography,
+  Button,
+  Box,
+  Modal,
+  CircularProgress,
+} from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useRecoilState } from "recoil";
 
 const UploadPage = () => {
-  const params = useParams();
+  const params = useSearchParams();
   const router = useRouter();
   const [textOrImage, setTextOrImage] = useState<"text" | "image" | null>(null);
   const [content, setContent] = useState<string>("");
@@ -22,10 +33,74 @@ const UploadPage = () => {
   const handleClose2 = () => setOpen2(false);
 
   const [file, setFile] = useState<File | null>(null);
+  const [userRecoilState] = useRecoilState(userState);
 
   const handleImageUpload = (file: File) => {
     setFile(file);
   };
+
+  // Queries
+  const { data } = useQuery({
+    queryKey: ["resumes"],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url:
+          "https://tikitakachatdata.com/resume/getResumeList?userId=" +
+          userRecoilState.userId,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      }).then((res) => res.data);
+    },
+  });
+
+  const insertInterviewMutation = useMutation({
+    mutationFn: () => {
+      if (!userRecoilState.userId)
+        throw new Error("면접을 진행할 유저 정보가 없습니다.");
+      const formData = new FormData();
+      if (textOrImage === "image" && file) {
+        formData.append("file", file as File);
+        formData.append(
+          "interviewData",
+          JSON.stringify({
+            userId: userRecoilState.userId,
+            resumeId: params.get("resumeId"),
+          })
+        );
+      }
+      if (textOrImage === "text") {
+        formData.append(
+          "interviewData",
+          JSON.stringify({
+            userId: userRecoilState.userId,
+            resumeId: params.get("resumeId"),
+            recruitContent: content,
+          })
+        );
+      }
+
+      return axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/interview/insertInterview",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: formData,
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      if (data.code === "200") {
+        router.push("/interview/question?interviewId=" + data.data.interviewId);
+      } else {
+        toast.error(data.message);
+      }
+    },
+  });
 
   return (
     <Container>
@@ -86,37 +161,37 @@ const UploadPage = () => {
                 <path
                   d="M8.5 10.5H16.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M8.5 13.5H16.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M8.5 16.5H16.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M8.5 7.5H10.5"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M15.5 2.5C13.9379 2.5 6.5 2.5 6.5 2.5C5.39543 2.5 4.5 3.39543 4.5 4.5V19.5C4.5 20.6046 5.39543 21.5 6.5 21.5H18.5C19.6046 21.5 20.5 20.6046 20.5 19.5V4.5C20.5 3.39543 19.6046 2.5 18.5 2.5H15"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               텍스트로 붙여넣기
@@ -150,23 +225,23 @@ const UploadPage = () => {
                 <path
                   d="M21.5 3.6V20.4C21.5 20.7314 21.2314 21 20.9 21H4.1C3.76863 21 3.5 20.7314 3.5 20.4V3.6C3.5 3.26863 3.76863 3 4.1 3H20.9C21.2314 3 21.5 3.26863 21.5 3.6Z"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M3.5 16L10.5 13L21.5 18"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M16.5 10C15.3954 10 14.5 9.10457 14.5 8C14.5 6.89543 15.3954 6 16.5 6C17.6046 6 18.5 6.89543 18.5 8C18.5 9.10457 17.6046 10 16.5 10Z"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               이미지로 붙여넣기
@@ -278,10 +353,28 @@ const UploadPage = () => {
               onClick={() => {
                 // 입력한 텍스트 validation
                 // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
-                router.push("/interview/history");
+                if (content.length === 0) {
+                  toast.error("텍스트를 입력해주세요.");
+                  return;
+                }
+                if (data.data.length >= 5) {
+                  router.push("/interview/history");
+                  return;
+                }
+
+                insertInterviewMutation.mutate();
               }}
             >
-              다음
+              {insertInterviewMutation.isPending ? (
+                <CircularProgress
+                  size={18}
+                  sx={{
+                    color: COLORS.WHITE,
+                  }}
+                />
+              ) : (
+                "다음"
+              )}
             </Button>
           </Box>
         </Box>
@@ -371,10 +464,28 @@ const UploadPage = () => {
               onClick={() => {
                 // 입력한 이미지 validation
                 // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
-                router.push("/interview/history");
+                if (!file) {
+                  toast.error("이미지를 업로드 해주세요.");
+                  return;
+                }
+                if (data.data.length >= 5) {
+                  router.push("/interview/history");
+                  return;
+                }
+
+                insertInterviewMutation.mutate();
               }}
             >
-              다음
+              {insertInterviewMutation.isPending ? (
+                <CircularProgress
+                  size={18}
+                  sx={{
+                    color: COLORS.WHITE,
+                  }}
+                />
+              ) : (
+                "다음"
+              )}
             </Button>
           </Box>
         </Box>

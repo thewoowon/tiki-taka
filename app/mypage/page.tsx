@@ -9,7 +9,7 @@ const MyPage = () => {
   // 여기서 로그인 여부를 확인하고 안되어 있으면 -> 로그인 페이지로 이동
   return (
     <Container>
-      <Box className="flex flex-col justify-center items-center gap-[8px] pt-[10px] w-full">
+      <Box className="flex flex-col justify-center items-center gap-[40px] pt-[10px] w-full">
         <Typography
           sx={{
             fontSize: "24px",

@@ -20,10 +20,12 @@ type FormType = {
 };
 
 const ChatView = ({
+  interviewId,
   questions,
   indicator,
   setIndicator,
 }: {
+  interviewId: number;
   questions: QuestionType[];
   indicator: number;
   setIndicator: React.Dispatch<React.SetStateAction<number>>;
@@ -51,22 +53,29 @@ const ChatView = ({
 
   const onSubmit = () => {
     const { chat } = getValues();
-    setValue("chat", "");
+    console.log(chat, "chat");
 
-    setChatStack([
-      ...chatStack,
-      {
-        id: 10,
-        role: "user",
-        content: chat,
-      },
-      {
-        id: 10,
-        role: "ai",
-        content:
-          "사용자 답변을 더 나은 표현으로 바꿔주는 답변 코칭 내용이 들어갑니다.",
-      },
-    ]);
+    const newQuestion1: QuestionType = {
+      role: "user",
+      interviewId: 0,
+      qaId: 0,
+      question: "",
+      answer: chat,
+      regDate: new Date().toISOString().slice(0, 10),
+      modifyDate: new Date().toISOString().slice(0, 10),
+    };
+    const newQuestion2: QuestionType = {
+      role: "ai",
+      interviewId: 0,
+      qaId: 0,
+      question: "",
+      answer:
+        "사용자 답변을 더 나은 표현으로 바꿔주는 답변 코칭 내용이 들어갑니다.",
+      regDate: new Date().toISOString().slice(0, 10),
+      modifyDate: new Date().toISOString().slice(0, 10),
+    };
+    setValue("chat", "");
+    setChatStack([...chatStack, newQuestion1, newQuestion2]);
     setIndicator(indicator + 1);
   };
 
@@ -75,13 +84,18 @@ const ChatView = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indicator, questions]);
 
+  useEffect(() => {
+    console.log(chatStack, "chatStack");
+  }, [chatStack]);
+
   return (
     <Container>
       <Answer>
         {chatStack.length > 0
-          ? chatStack.map((m) =>
-              m.role === "user" ? (
-                <div key={m.id} className="w-full flex justify-end">
+          ? chatStack.map((m, index) => {
+              if (!m) return;
+              return m.role === "user" ? (
+                <div key={index} className="w-full flex justify-end">
                   <UserChatBox>
                     <Typography
                       sx={{
@@ -92,12 +106,12 @@ const ChatView = ({
                         color: COLORS.WHITE,
                       }}
                     >
-                      {m.content}
+                      {m.answer}
                     </Typography>
                   </UserChatBox>
                 </div>
               ) : m.role === "interviewer" ? (
-                <div key={m.id} className="w-full flex flex-col gap-[10px]">
+                <div key={index} className="w-full flex flex-col gap-[10px]">
                   <Box
                     sx={{
                       display: "flex",
@@ -120,7 +134,7 @@ const ChatView = ({
                         color: COLORS.WHITE,
                       }}
                     >
-                      {m.content}
+                      {m.question}
                     </Typography>
                     <Box
                       sx={{
@@ -144,6 +158,9 @@ const ChatView = ({
                           fontWeight: "500",
                           lineHeight: "24px",
                           color: `${COLORS.GRAY100}`,
+                          ":disabled": {
+                            backgroundColor: COLORS.GRAY400,
+                          },
                         }}
                         onClick={() => {
                           if (questions.length == indicator + 1) {
@@ -152,6 +169,7 @@ const ChatView = ({
                             setIndicator(indicator + 1);
                           }
                         }}
+                        disabled={chatStack.length !== index + 1}
                       >
                         질문 넘기기
                       </Button>
@@ -159,7 +177,7 @@ const ChatView = ({
                   </AiChatBox>
                 </div>
               ) : (
-                <div key={m.id} className="w-full flex flex-col gap-[10px]">
+                <div key={index} className="w-full flex flex-col gap-[10px]">
                   <Box
                     sx={{
                       display: "flex",
@@ -230,13 +248,13 @@ const ChatView = ({
                         color: COLORS.WHITE,
                       }}
                     >
-                      {m.content}
+                      {m.answer}
                     </Typography>
                   </AiChatBox>
                 </div>
-              )
-            )
-          : null}
+              );
+            })
+          : "null"}
       </Answer>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <input

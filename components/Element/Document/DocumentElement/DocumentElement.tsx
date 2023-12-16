@@ -3,31 +3,61 @@ import styled from "@emotion/styled";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { userState } from "@/states";
+import { useRecoilState } from "recoil";
 
 const DocumentElement = ({
   pdfDocument,
   isSelected,
   onSelected,
   setOverLimit,
+  refetch,
 }: {
-  pdfDocument?: {
-    source: File | null;
-    name: string;
-  };
+  pdfDocument?: DocumentPDFType;
   isSelected?: boolean;
   onSelected?: () => void;
   setOverLimit?: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch?: VoidFunction;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [userRecoilState] = useRecoilState(userState);
+
+  const fileUploadMutation = useMutation({
+    mutationFn: (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      if (!userRecoilState.userId)
+        throw new Error("userRecoilState.userId is null");
+      formData.append("userId", userRecoilState.userId.toString());
+      return axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/resume/uploadResume",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: formData,
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      toast.success("파일 업로드에 성공했어요.");
+      refetch?.();
+    },
+    onError: (error) => {
+      toast.error("파일 업로드에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
 
   useEffect(() => {
     if (pdfDocument) {
-      const { source } = pdfDocument;
-      setFile(source);
+      const { resumeId } = pdfDocument;
+      setFile(resumeId);
     }
   }, [pdfDocument]);
 
@@ -55,7 +85,7 @@ const DocumentElement = ({
           lineHeight: "24px",
         }}
       >
-        {pdfDocument?.name || file?.name || "이력서 및 경력 기술서 (형태: pdf)"}
+        {pdfDocument?.fileName || "이력서 및 경력 기술서 (형태: pdf)"}
       </Typography>
       {pdfDocument ? (
         <Box
@@ -166,8 +196,7 @@ const DocumentElement = ({
                   setOverLimit?.(true);
                   return;
                 }
-
-                setFile(file);
+                fileUploadMutation.mutate(file);
               }
             }}
           />

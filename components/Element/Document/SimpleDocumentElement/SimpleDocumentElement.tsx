@@ -1,25 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { COLORS } from "@/style/color";
 
 const SimpleDocumentElement = ({
   pdfDocument,
   onDelete,
 }: {
-  pdfDocument: {
-    id: number;
-    source: File | null;
-    name: string;
-  };
-  onDelete: (id: number) => void;
+  pdfDocument: DocumentPDFType;
+  onDelete: () => void;
 }) => {
-  const [file, setFile] = useState<File | null>(null);
-
   useEffect(() => {
     if (pdfDocument) {
-      const { source } = pdfDocument;
-      setFile(source);
+      const { resumeId } = pdfDocument;
     }
   }, [pdfDocument]);
 
@@ -45,7 +38,7 @@ const SimpleDocumentElement = ({
           lineHeight: "24px",
         }}
       >
-        {pdfDocument.name || file?.name || "이력서 및 경력 기술서 (형태: pdf)"}
+        {pdfDocument.fileName || "이력서 및 경력 기술서 (형태: pdf)"}
       </Typography>
       <Button
         sx={{
@@ -58,9 +51,7 @@ const SimpleDocumentElement = ({
           border: "1px solid " + COLORS.GRAY100,
           color: COLORS.GRAY100,
         }}
-        onClick={() => {
-          onDelete(pdfDocument.id);
-        }}
+        onClick={onDelete}
       >
         삭제하기
       </Button>

@@ -3,6 +3,12 @@ import styled from "@emotion/styled";
 import History from "@/components/View/History";
 import { Box, Typography } from "@mui/material";
 import { COLORS } from "@/style/color";
+import { useMutation } from "@tanstack/react-query";
+import { userState } from "@/states";
+import axios from "axios";
+import router from "next/router";
+import { useRecoilState } from "recoil";
+import toast from "react-hot-toast";
 
 const HistoryPage = () => {
   // history fetching
@@ -11,6 +17,43 @@ const HistoryPage = () => {
 
   // 사전에 차단해야한다.
   // 계속 확인 -> 삭제 후 -> refetching이 발생하고 -> 바로 push
+  const [userRecoilState] = useRecoilState(userState);
+
+  const insertInterviewMutation = useMutation({
+    mutationFn: () => {
+      if (!userRecoilState.userId)
+        throw new Error("면접을 진행할 유저 정보가 없습니다.");
+      const formData = new FormData();
+      // if (textOrImage === "image" && file) {
+      //   formData.append("file", file as File);
+      // }
+      // if (textOrImage === "text") {
+      //   formData.append(
+      //     "interviewData",
+      //     JSON.stringify({
+      //       userId: userRecoilState.userId,
+      //       resumeId: data.data[0].resumeId,
+      //       recruitContent: content,
+      //     })
+      //   );
+      // }
+      return axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/interview/insertInterview",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: formData,
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      if (data.code === "200") {
+        router.push("/interview/question?interviewId=" + data.data.interviewId);
+      } else {
+        toast.error("면접 생성에 실패했어요. 다시 시도해 주세요.");
+      }
+    },
+  });
 
   return (
     <Container>

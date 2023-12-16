@@ -1,40 +1,105 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PDF_FILE_COUNT_LIMIT } from "@/constants/limit";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import SimpleDocumentElement from "./SimpleDocumentElement";
 import styled from "@emotion/styled";
+import { useRecoilState } from "recoil";
+import { userState } from "@/states";
+import axios from "axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { Loading } from "@/components/View/Loading";
+import ExclamationMark2 from "@/public/svg/exclamation-mark-2.svg";
+import { SimulationQLoading } from "../Loading";
 
 const SimpleDocument = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [documents, setDocuments] = useState<
-    {
-      id: number;
-      source: File | null;
-      name: string;
-    }[]
-  >([
-    {
-      id: 1,
-      source: null,
-      name: "망한 원티드 이력서.pdf",
-    },
-    {
-      id: 2,
-      source: null,
-      name: "LG 공채용 이력서 v1.pdf",
-    },
-  ]);
+  const [userRecoilState] = useRecoilState(userState);
+  const [documents, setDocuments] = useState<DocumentPDFType[]>([]);
 
   const [overLimit, setOverLimit] = useState(false);
 
   const [selectedDocument, setSelectedDocument] = useState<number | null>(null);
 
-  const [file, setFile] = useState<File | null>(null);
+  // Queries
+  const { isLoading, data, refetch } = useQuery({
+    queryKey: ["resumes"],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url:
+          "https://tikitakachatdata.com/resume/getResumeList?userId=" +
+          userRecoilState.userId,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      }).then((res) => res.data);
+    },
+  });
+
+  const fileUploadMutation = useMutation({
+    mutationFn: (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      if (!userRecoilState.userId)
+        throw new Error("userRecoilState.userId is null");
+      formData.append("userId", userRecoilState.userId.toString());
+      return axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/resume/uploadResume",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: formData,
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      toast.success("파일 업로드에 성공했어요.");
+      refetch();
+    },
+    onError: (error) => {
+      toast.error("파일 업로드에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
+
+  const fileDeleteMutation = useMutation({
+    mutationFn: (resumeId: number) => {
+      return axios({
+        method: "DELETE",
+        url: "https://tikitakachatdata.com/resume/deleteResume",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          resumeId,
+          userId: userRecoilState.userId,
+        },
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      toast.success("파일 삭제에 성공했어요.");
+      refetch();
+    },
+    onError: (error) => {
+      toast.error("파일 삭제에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setDocuments(data.data ?? []);
+    }
+  }, [data]);
+
+  if (isLoading) return <SimulationQLoading />;
 
   return (
     <Box
@@ -57,16 +122,43 @@ const SimpleDocument = () => {
           gap: "10px",
         }}
       >
-        {documents.map((document, index) => (
-          <SimpleDocumentElement
-            key={index}
-            pdfDocument={document}
-            onDelete={(id: number) => {
-              setSelectedDocument(id);
-              handleOpen();
+        {documents.length > 0 ? (
+          documents.map((document, index) => (
+            <SimpleDocumentElement
+              key={index}
+              pdfDocument={document}
+              onDelete={() => {
+                setSelectedDocument(document.resumeId);
+                handleOpen();
+              }}
+            />
+          ))
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "40px",
             }}
-          />
-        ))}
+          >
+            <ExclamationMark2 />
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: 400,
+                color: COLORS.GRAY100,
+                lineHeight: "24px",
+                textAlign: "center",
+              }}
+            >
+              아직 등록된 이력서가 없어요.
+              <br />
+              면접을 위해 이력서를 등록해 주세요.
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       <Box
@@ -142,16 +234,7 @@ const SimpleDocument = () => {
                 setOverLimit?.(true);
                 return;
               }
-
-              setFile(file);
-              setDocuments([
-                ...documents,
-                {
-                  id: documents.length + 1,
-                  source: file,
-                  name: file.name,
-                },
-              ]);
+              fileUploadMutation.mutate(file);
             }
           }}
         />
@@ -170,7 +253,8 @@ const SimpleDocument = () => {
               fontWeight: 700,
             }}
           >
-            {"{파일 이름}"}
+            {selectedDocument &&
+              documents.find((d) => d.resumeId === selectedDocument)?.fileName}
           </Typography>
           <Typography
             sx={{
@@ -222,11 +306,7 @@ const SimpleDocument = () => {
                 color: COLORS.WHITE,
               }}
               onClick={() => {
-                setDocuments(
-                  documents.filter(
-                    (document) => document.id !== selectedDocument
-                  )
-                );
+                fileDeleteMutation.mutate(selectedDocument ?? 0);
                 handleClose();
               }}
             >

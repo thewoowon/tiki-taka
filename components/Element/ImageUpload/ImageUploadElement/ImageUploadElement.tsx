@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
 import { COLORS } from "@/style/color";
+import Image from "next/image";
 
 const ImageUploadElement = ({
   imageDocument,
@@ -16,7 +17,20 @@ const ImageUploadElement = ({
   setOverLimit?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [myUploadUrl, setMyUploadUrl] = useState<string | null>(null);
+
+  const encodeFileToBase64 = (fileBlob: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise<void>((resolve) => {
+      reader.onload = () => {
+        setMyUploadUrl(reader.result?.toString() || "");
+        resolve();
+      };
+    });
+  };
 
   useEffect(() => {
     if (imageDocument) {
@@ -44,6 +58,13 @@ const ImageUploadElement = ({
         borderRadius: "5px",
         border: `1px solid ${COLORS.TIKI_GREEN}`,
         backgroundColor: COLORS.DARK_BG + " !important",
+        position: "relative",
+      }}
+      onMouseEnter={() => {
+        divRef.current?.style.setProperty("opacity", "1");
+      }}
+      onMouseLeave={() => {
+        divRef.current?.style.setProperty("opacity", "0");
       }}
     >
       <Typography
@@ -110,7 +131,7 @@ const ImageUploadElement = ({
           ref={inputRef}
           type="file"
           accept="image/png, image/jpeg, image/jpg"
-          onChange={(e) => {
+          onChange={async (e) => {
             const file = e.target.files?.[0];
             if (file) {
               // file size check 50MB
@@ -120,9 +141,38 @@ const ImageUploadElement = ({
               }
 
               setFile(file);
+
+              await encodeFileToBase64(file);
             }
           }}
         />
+      </Box>
+      <Box
+        ref={divRef}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "120px",
+          height: "120px",
+          borderRadius: "5px",
+          border: `1px solid ${COLORS.TIKI_GREEN}`,
+          backgroundColor: COLORS.DARK_BG + " !important",
+          position: "absolute",
+          right: 0,
+          bottom: "calc(100% + 20px)",
+          opacity: 0,
+          overflow: "hidden",
+        }}
+      >
+        {myUploadUrl && (
+          <Image
+            src={myUploadUrl}
+            width={120}
+            height={120}
+            alt="my upload url"
+          />
+        )}
       </Box>
     </Box>
   );

@@ -3,7 +3,6 @@ import { Simulation01 } from "@/components/Element/Loading";
 import Typography from "@/components/Element/Typography";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const InterviewPage = () => {

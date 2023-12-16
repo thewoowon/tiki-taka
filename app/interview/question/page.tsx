@@ -1,22 +1,117 @@
 "use client";
 import { COLORS } from "@/style/color";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Question from "@/components/View/Question";
-import { useRouter } from "next/navigation";
-import { questionsList } from "@/constants/list";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "@/states";
+import toast from "react-hot-toast";
 
 const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
+  const params = useSearchParams();
 
   // 어떤 회사인지에 대한 정보를 받는다.
   const router = useRouter();
 
-  const [data, setData] = useState({
-    name: "카카오페이",
-    questions: questionsList,
+  const [userRecoilState] = useRecoilState(userState);
+  const [questions, setQuestions] = useState<QuestionElementType[]>([]);
+  const [histories, setHistories] = useState<HistoryElementType[]>([]);
+
+  const handleCopyClipBoard = async () => {
+    try {
+      const text = questions.map((question) => question.question).join("\n");
+
+      await navigator.clipboard.writeText(text);
+      toast.success("클립보드에 질문을 복사했어요.", {
+        icon: "📋",
+        position: "top-right",
+      });
+    } catch (e) {
+      toast.error("복사에 실패했어요. 다시 시도해 주세요.");
+    }
+  };
+
+  const { isLoading: interviewsIsLoading, data: interviewsData } = useQuery({
+    queryKey: ["interviews"],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url:
+          "https://tikitakachatdata.com/interview/getInterviewList?userId=" +
+          userRecoilState.userId,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      }).then((res) => res.data);
+    },
   });
+
+  const { isLoading, data, refetch } = useQuery({
+    queryKey: ["questions"],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url: `https://tikitakachatdata.com/interview/getQaList?userId=${
+          userRecoilState.userId
+        }&interviewId=${params.get("interviewId")}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err, err.response));
+    },
+  });
+
+  const fileUploadMutation = useMutation({
+    mutationFn: () => {
+      if (!userRecoilState.userId)
+        throw new Error("userRecoilState.userId is null");
+      return axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/interview/generateQa",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+          interviewId: params.get("interviewId"),
+        },
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      toast.success("질문 재생성에 성공했어요.");
+      refetch();
+    },
+    onError: (error) => {
+      toast.error("질문 재생성에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setQuestions(data.data.qaData);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (interviewsData) {
+      setHistories(interviewsData.data);
+    }
+  }, [interviewsData]);
+
+  if (interviewsIsLoading || isLoading) return <div>loading...</div>;
 
   return (
     <Container>
@@ -41,7 +136,13 @@ const QuestionPage = () => {
               textAlign: "center",
             }}
           >
-            {data.name} 면접에
+            {
+              histories.find(
+                (history) =>
+                  history.interviewId === Number(params.get("interviewId"))
+              )?.title
+            }{" "}
+            면접에
             <br />딱 맞는 질문을 가져왔어요
           </Typography>
           <Typography
@@ -59,7 +160,7 @@ const QuestionPage = () => {
             다시 진행해도 돼요.
           </Typography>
         </Box>
-        <Question questions={data.questions} />
+        <Question questions={questions} />
         <Box
           sx={{
             width: "100%",
@@ -79,7 +180,9 @@ const QuestionPage = () => {
               border: `1px solid ${COLORS.TIKI_GREEN}`,
               color: COLORS.TIKI_GREEN,
             }}
-            onClick={() => {}}
+            onClick={async () => {
+              await handleCopyClipBoard();
+            }}
           >
             전체 질문 복사
           </Button>
@@ -103,9 +206,20 @@ const QuestionPage = () => {
                 fontWeight: 600,
                 lineHeight: "16px",
               }}
-              onClick={() => {}}
+              onClick={() => {
+                fileUploadMutation.mutate();
+              }}
             >
-              질문 다시 만들기
+              {isLoading || fileUploadMutation.isPending ? (
+                <CircularProgress
+                  size={18}
+                  sx={{
+                    color: COLORS.WHITE,
+                  }}
+                />
+              ) : (
+                "질문 다시 만들기"
+              )}
             </Button>
             <Button
               sx={{
@@ -120,9 +234,9 @@ const QuestionPage = () => {
                 lineHeight: "16px",
               }}
               onClick={() => {
-                // 입력한 텍스트 validation
-                // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
-                router.push("/interview/chat");
+                router.push(
+                  "/interview/chat?interviewId=" + params.get("interviewId")
+                );
               }}
             >
               면접 보기

@@ -5,54 +5,87 @@ import { Box, Typography, Button, Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import HistoryElement from "./HistoryElement/HistoryElement";
-import ExclamationMark from "@/public/svg/exclamation-mark.svg";
+import ExclamationMark2 from "@/public/svg/exclamation-mark-2.svg";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { userState } from "@/states";
+import { useRecoilState } from "recoil";
+import { Loading } from "../Loading";
+import toast from "react-hot-toast";
 
 const History = ({ type }: { type: "deleteOnly" | "all" }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [histories, setHistories] = useState<HistoryElementType[]>([
-    {
-      id: 1,
-      title: "카카오페이_서비스기획자",
-      status: "진행중",
-      lastUsed: "2023-06-01",
-    },
-    {
-      id: 2,
-      title: "네이버페이_서비스기획자",
-      status: "중단",
-      lastUsed: "2022-10-10",
-    },
-    {
-      id: 3,
-      title: "카카오페이_서비스기획자",
-      status: "진행중",
-      lastUsed: "2023-06-01",
-    },
-    {
-      id: 4,
-      title: "오늘밤 주인공은 나야나",
-      status: "마감",
-      lastUsed: "2023-06-01",
-    },
-    {
-      id: 5,
-      title: "돈 내고 보는 이력서",
-      status: "진행중",
-      lastUsed: "2023-06-01",
-    },
-  ]);
+  const [histories, setHistories] = useState<HistoryElementType[]>([]);
+  const [userRecoilState] = useRecoilState(userState);
 
   const [currentHistory, setCurrentHistory] =
     useState<HistoryElementType | null>(null);
 
+  const { isLoading, data, refetch } = useQuery({
+    queryKey: ["interviews"],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url:
+          "https://tikitakachatdata.com/interview/getInterviewList?userId=" +
+          userRecoilState.userId,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      }).then((res) => res.data);
+    },
+  });
+
+  const deleteInterviewMutation = useMutation({
+    mutationFn: (interviewId: number) => {
+      return axios({
+        method: "DELETE",
+        url: "https://tikitakachatdata.com/interview/deleteInterview",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+          interviewId,
+        },
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      if (data.code === "200") {
+        toast.success("면접 이력 삭제에 성공했어요.");
+        refetch();
+      } else {
+        toast.error("면접 이력 삭제하지 못했어요. 다시 시도해 주세요.");
+      }
+    },
+    onError: () => {
+      toast.error("면접 이력 삭제에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
+
   useEffect(() => {
-    if (histories.length < HISTORY_COUNT_LIMIT) {
-      router.push("/interview/chat");
+    if (data) {
+      if (data.code === "로그인이 필요합니다") {
+        toast.error("로그인이 필요합니다.");
+        router.push("/auth/kakao");
+      }
+      if (data.code === "200") setHistories(data.data);
     }
-  }, [histories, router]);
+  }, [data, router]);
+
+  if (isLoading)
+    return (
+      <Loading
+        title="면접 이력을 가져오고 있어요."
+        description="잠시만 기다려주세요."
+      />
+    );
 
   return (
     <Box
@@ -65,7 +98,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
         gap: "10px",
       }}
     >
-      {histories.map((history, index) => {
+      {histories?.map((history, index) => {
         return (
           <HistoryElement
             key={index}
@@ -76,12 +109,17 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               handleOpen();
             }}
             onContinue={() => {
-              handleOpen();
+              router.push(
+                "/interview/question?interviewId=" + history.interviewId
+              );
+            }}
+            onResult={() => {
+              router.push("/interview/result");
             }}
           />
         );
       })}
-      {histories.length == 0 && (
+      {histories?.length == 0 && (
         <Box
           sx={{
             display: "flex",
@@ -91,7 +129,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
             gap: "30px",
           }}
         >
-          <ExclamationMark />
+          <ExclamationMark2 />
           <Typography
             sx={{
               fontSize: "16px",
@@ -109,18 +147,23 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
           <Button
             sx={{
               display: "flex",
-              width: "100%",
-              padding: "18px 20px",
+              width: "320px",
+              padding: "18px 10px",
               justifyContent: "center",
               alignItems: "center",
               gap: "10px",
               flexShrink: 0,
               backgroundColor: COLORS.TIKI_GREEN + " !important",
               color: COLORS.WHITE,
+              fontSize: "16px",
+              fontWeight: 600,
+              lineHeight: "16px",
             }}
-            onClick={() => {}}
+            onClick={() => {
+              router.push("/interview");
+            }}
           >
-            확인
+            AI 면접 보기
           </Button>
         </Box>
       )}
@@ -175,12 +218,8 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
                 color: COLORS.WHITE,
               }}
               onClick={() => {
-                // 삭제 mutation
-                setHistories(
-                  histories.filter(
-                    (history) => history.id !== currentHistory?.id
-                  )
-                );
+                if (currentHistory && currentHistory.interviewId)
+                  deleteInterviewMutation.mutate(currentHistory?.interviewId);
                 handleClose();
               }}
             >

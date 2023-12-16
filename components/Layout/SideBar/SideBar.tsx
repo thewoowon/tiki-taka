@@ -8,6 +8,7 @@ import { TikitakaText } from "@/components/svg";
 import Typography from "@/components/Element/Typography";
 import { useRecoilState } from "recoil";
 import { loginState } from "@/states";
+import Link from "next/link";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -23,8 +24,6 @@ const SideBar = () => {
   });
 
   const [isLoggedIn] = useRecoilState(loginState);
-
-  console.log("isLoggedIn", isLoggedIn);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -71,7 +70,7 @@ const SideBar = () => {
           </Ul>
         </Flex>
         <Flex direction="column" gap={30} align="flex-start">
-          <Flex>
+          <Flex gap={6}>
             <svg
               width="16"
               height="17"
@@ -92,24 +91,45 @@ const SideBar = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <Typography fontSize={14} color={COLORS.WHITE}>
+            <Link
+              href={"/support"}
+              style={{
+                fontSize: 11,
+                color: COLORS.GRAY200,
+              }}
+              className="cursor-pointer hover:underline"
+            >
               고객센터
-            </Typography>
+            </Link>
           </Flex>
           <Flex gap={16} direction="column" align="flex-start">
             <Typography fontSize={14} color={COLORS.GRAY200}>
               (주)취뽀클로바
             </Typography>
             <Flex gap={8}>
-              <Typography fontSize={11} color={COLORS.GRAY200}>
+              <Link
+                href={"/terms"}
+                style={{
+                  fontSize: 11,
+                  color: COLORS.GRAY200,
+                }}
+                className="cursor-pointer hover:underline"
+              >
                 이용약관
-              </Typography>
+              </Link>
               <Typography fontSize={11} color={COLORS.GRAY200}>
                 |
               </Typography>
-              <Typography fontSize={11} color={COLORS.GRAY200}>
+              <Link
+                href={"/privacy"}
+                style={{
+                  fontSize: 11,
+                  color: COLORS.GRAY200,
+                }}
+                className="cursor-pointer hover:underline"
+              >
                 개인정보처리방침
-              </Typography>
+              </Link>
             </Flex>
           </Flex>
         </Flex>

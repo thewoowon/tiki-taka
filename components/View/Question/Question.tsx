@@ -11,10 +11,24 @@ const Question = ({ questions }: { questions: QuestionElementType[] }) => {
         alignItems: "center",
         justifyContent: "center",
         gap: "10px",
+        overflowY: "scroll",
+        overflowX: "hidden",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+        height: "650px",
       }}
     >
       {questions.map((question, index) => {
-        return <QuestionElement key={index} question={question} />;
+        return (
+          <QuestionElement
+            key={index}
+            question={question}
+            sequence={index + 1}
+          />
+        );
       })}
     </Box>
   );

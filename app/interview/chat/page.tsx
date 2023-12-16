@@ -4,11 +4,15 @@ import Box from "@mui/material/Box";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { COLORS } from "@/style/color";
 import { Typography } from "@mui/material";
 import ChatView from "@/components/View/ChatView";
-import { questionsList } from "@/constants/list";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "@/states";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -26,9 +30,54 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 const InterviewChatPage = () => {
-  const [questions, setQuestions] = useState<QuestionType[]>(questionsList);
+  // 공고 자료를 보내고 응답을 받는다.
+  const params = useSearchParams();
 
+  // 어떤 회사인지에 대한 정보를 받는다.
+  const router = useRouter();
+
+  const [userRecoilState] = useRecoilState(userState);
+  const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [indicator, setIndicator] = useState(0);
+
+  const { isLoading, data } = useQuery({
+    queryKey: ["questions"],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url: `https://tikitakachatdata.com/interview/getQaList?userId=${
+          userRecoilState.userId
+        }&interviewId=${params.get("interviewId")}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err, err.response));
+    },
+  });
+
+  useEffect(() => {
+    if (data && data.code === "200") {
+      const newQuestions = [];
+      for (let index = 0; index < data.data.qaData.length; index++) {
+        const element = data.data.qaData[index];
+
+        const newQuestion = {
+          ...element,
+          role: "interviewer",
+        };
+        newQuestions.push(newQuestion);
+      }
+      setQuestions(newQuestions);
+    }
+  }, [data]);
+
+  if (isLoading) return <div>loading...</div>;
+
   return (
     <Box
       sx={{
@@ -44,6 +93,7 @@ const InterviewChatPage = () => {
       }}
     >
       <ChatView
+        interviewId={Number(params.get("interviewId") ?? 0)}
         questions={questions}
         indicator={indicator}
         setIndicator={setIndicator}

@@ -8,6 +8,10 @@ import { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginState, userState } from "@/states";
 import { useMe } from "@/hooks/useMe";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Loading } from "../Loading";
+import { SimulationQLoading } from "@/components/Element/Loading";
 
 const Profile = () => {
   const router = useRouter();
@@ -31,18 +35,31 @@ const Profile = () => {
 
   const handleLogout = async () => {
     // await window.Kakao.Auth.logout();
-    localStorage.removeItem("accessToken");
-    setIsLoggedIn(false);
-    setUserRecoilState({
-      userId: null,
-      nickname: "",
-      email: "",
-      profileImage: "",
+    const result = await axios({
+      method: "POST",
+      url: "https://tikitakachatdata.com/user/kakaoLogin/user/logout",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }).catch((err) => {
+      console.log(err, err.response);
     });
-    router.push("/");
+
+    if (result?.data.code === "200") {
+      localStorage.removeItem("accessToken");
+      setIsLoggedIn(false);
+      setUserRecoilState({
+        userId: null,
+        nickname: "",
+        email: "",
+        profileImage: "",
+      });
+      router.push("/");
+      toast.success("다음에 또 만나요!");
+    }
   };
 
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) return <SimulationQLoading />;
 
   return (
     <Container>

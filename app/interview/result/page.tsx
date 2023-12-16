@@ -7,6 +7,11 @@ import { COLORS } from "@/style/color";
 import Interviewer from "@/public/svg/interviewer.svg";
 import TikitakaBlackLogo from "@/public/svg/tikitaka-black-logo.svg";
 import { Box, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { userState } from "@/states";
+import { useRecoilState } from "recoil";
+import { useSearchParams } from "next/navigation";
 
 type FeedbackType = {
   id: number;
@@ -17,43 +22,50 @@ type FeedbackType = {
 };
 
 const InterviewResultPage = () => {
-  const [tempLoading, setTempLoading] = useState(true);
+  const params = useSearchParams();
+  const [userRecoilState] = useRecoilState(userState);
 
-  const [feedback, setFeedback] = useState<FeedbackType[]>([
-    {
-      id: 1,
-      question:
-        "카카오페이를 선택한 동기와 흥미로운 경험에 대해 어떤 것이 있나요? ",
-      keywords: ["hello1", "hello2"],
-      myAnswer: "오늘밤은 어둠이 무서워요",
-      aiAnswer: "",
+  const [result, setResult] = useState<ResultType>({
+    interviewId: 0,
+    userId: 0,
+    title: "",
+    status: 0,
+    regDate: "",
+    feedback: "string",
+    qaData: [],
+  });
+
+  const { isLoading, data } = useQuery({
+    queryKey: ["result"],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url: `https://tikitakachatdata.com/interview/getInterview?userId=${
+          userRecoilState.userId
+        }&interviewId=${params.get("interviewId")}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err, err.response));
     },
-    {
-      id: 2,
-      question:
-        "카카오페이를 선택한 동기와 흥미로운 경험에 대해 어떤 것이 있나요?",
-      keywords: ["hello1", "hello2"],
-      myAnswer: "어떻게 하면 좋을까요?",
-      aiAnswer: "",
-    },
-  ]);
-  const [innerSounds, setInnerSounds] = useState(
-    "수직적인 분위기가 싫었을 것 같다고? 그럼 이친구도 우리 회사의 조직문화에 적응하기 힘들 수도 있겠네. 하지만, 조기 퇴사를 하곘다고 너무 쉽게 말하는건 아닌가? 우리 회사에 대한 열정과 의지가 부족한 건 아닐까? 좀 더 고민해보고 신중하게 대답하는게 좋을 것 같은데."
-  );
+  });
 
   useEffect(() => {
-    setTimeout(() => {
-      setTempLoading(false);
-    }, 2000);
-  }, [tempLoading]);
+    if (data?.code === "200") {
+      setResult(data.data);
+    }
+  }, [data]);
 
-  if (tempLoading) {
+  if (isLoading) {
     return (
       <ResultLoading
         title={"결과 만드는 중"}
-        description={
-          "{@이름(카카오연동)}님의 답변과 채용 공고를 바탕으로 면접 결과를 만들고 있어요."
-        }
+        description={`${userRecoilState.nickname}(카카오연동)님의 답변과 채용 공고를 바탕으로 면접 결과를 만들고 있어요.`}
       />
     );
   }
@@ -97,10 +109,10 @@ const InterviewResultPage = () => {
             color: COLORS.GRAY100,
           }}
         >
-          {innerSounds}
+          {result.feedback}
         </Box>
       </Box>
-      {feedback.map((feed, index) => {
+      {result.qaData.map((feed, index) => {
         return (
           <Box
             key={index}
@@ -191,7 +203,7 @@ const InterviewResultPage = () => {
                   color: COLORS.WHITE,
                 }}
               >
-                질문 {feed.id}
+                질문 {index + 1}
               </Box>
               <Typography
                 sx={{
@@ -206,9 +218,7 @@ const InterviewResultPage = () => {
               </Typography>
             </Box>
             <Tags>
-              {feed.keywords.map((keyword, index) => {
-                return <Tag key={index}>{keyword}</Tag>;
-              })}
+              <Tag>{feed.feedback1}</Tag>;
             </Tags>
             <Box
               sx={{
@@ -221,7 +231,7 @@ const InterviewResultPage = () => {
                 height: "auto",
               }}
             >
-              {feed.myAnswer ?? "내 답변 내용"}
+              {feed.answer ?? "내 답변 내용"}
             </Box>
             <Box
               sx={{
@@ -299,7 +309,7 @@ const InterviewResultPage = () => {
                     답변 코칭
                   </Typography>
                 </Box>
-                {feed.aiAnswer ?? "내 답변 내용"}
+                {feed.feedback2 ?? "내 답변 내용"}
               </Box>
             </Box>
           </Box>

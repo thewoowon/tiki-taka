@@ -48,9 +48,6 @@ const useKakaoLogin = () => {
           console.error(err);
           setIsLoading(false);
         });
-
-      console.log(result);
-
       if (result?.status !== 200) {
         setIsLoading(false);
         router.push("/auth/kakao");

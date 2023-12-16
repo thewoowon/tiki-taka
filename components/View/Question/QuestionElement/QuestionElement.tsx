@@ -1,7 +1,13 @@
 import { COLORS } from "@/style/color";
 import { Box } from "@mui/material";
 
-const QuestionElement = ({ question }: { question: QuestionElementType }) => {
+const QuestionElement = ({
+  question,
+  sequence,
+}: {
+  question: QuestionElementType;
+  sequence: number;
+}) => {
   return (
     <Box
       sx={{
@@ -17,7 +23,7 @@ const QuestionElement = ({ question }: { question: QuestionElementType }) => {
         color: COLORS.GRAY100,
       }}
     >
-      질문 {question.id}. {question.content}
+      질문 {sequence}. {question.question}
     </Box>
   );
 };

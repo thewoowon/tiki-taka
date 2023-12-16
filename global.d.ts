@@ -64,21 +64,57 @@ declare global {
   };
 
   type HistoryElementType = {
-    id: number;
+    interviewId: number;
+    userId: number;
     title: string;
-    status: string;
-    lastUsed: string;
+    totalCnt: number;
+    useCnt: number;
+    status: number;
+    regDate: string;
   };
 
   type QuestionElementType = {
-    id: number;
-    content: string;
+    interviewId: number;
+    qaId: number;
+    question: string;
+    answer: string;
+    regDate: string;
+    modifyDate: string;
   };
 
   type QuestionType = {
-    id: number;
-    role: string;
-    content: string;
+    role: "user" | "interviewer" | "ai";
+    interviewId: number;
+    qaId: number;
+    question: string;
+    answer: string;
+    regDate: string;
+    modifyDate: string;
+  };
+
+  type DocumentPDFType = {
+    resumeId: number;
+    fileName: string;
+    regDate: string;
+  };
+
+  type ResultType = {
+    interviewId: number;
+    userId: number;
+    title: string;
+    status: number;
+    regDate: string;
+    feedback: string;
+    qaData: {
+      interviewId: number;
+      qaId: number;
+      question: string;
+      answer: string;
+      regDate: string;
+      modifyDate: string;
+      feedback1: string;
+      feedback2: string;
+    }[];
   };
 
   interface Window {

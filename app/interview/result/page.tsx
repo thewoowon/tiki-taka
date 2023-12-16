@@ -1,11 +1,9 @@
 "use client";
-
 import { ResultLoading } from "@/components/View/ResultLoading";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { COLORS } from "@/style/color";
 import Interviewer from "@/public/svg/interviewer.svg";
-import TikitakaBlackLogo from "@/public/svg/tikitaka-black-logo.svg";
 import { Box, Button, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -13,7 +11,6 @@ import { userState } from "@/states";
 import { useRecoilState } from "recoil";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import Link from "next/link";
 
 type FeedbackType = {
   id: number;
@@ -428,7 +425,7 @@ const InterviewResultPage = () => {
                 lineHeight: "18px",
               }}
             >
-              {"카카오페이 서비스 기획자"} 면접 결과
+              {result.title} 면접 결과
             </Typography>
             <svg
               width="22"

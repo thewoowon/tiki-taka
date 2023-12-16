@@ -8,8 +8,6 @@ const Question = ({ questions }: { questions: QuestionElementType[] }) => {
         width: "100%",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
         gap: "10px",
         overflowY: "scroll",
         overflowX: "hidden",
@@ -19,6 +17,7 @@ const Question = ({ questions }: { questions: QuestionElementType[] }) => {
           display: "none",
         },
         height: "650px",
+        position: "relative",
       }}
     >
       {questions.map((question, index) => {

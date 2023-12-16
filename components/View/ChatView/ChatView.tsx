@@ -29,11 +29,13 @@ const ChatView = ({
   questions,
   indicator,
   setIndicator,
+  title,
 }: {
   interviewId: number;
   questions: QuestionType[];
   indicator: number;
   setIndicator: React.Dispatch<React.SetStateAction<number>>;
+  title: string;
 }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -41,6 +43,7 @@ const ChatView = ({
   const handleClose = () => setOpen(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [userRecoilState] = useRecoilState(userState);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const { register, getValues, watch, setValue, handleSubmit } =
     useForm<FormType>({
@@ -95,6 +98,10 @@ const ChatView = ({
       return;
     }
     setIndicator(indicator + 1);
+
+    setTimeout(() => {
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   // /interview/insertAnswer
@@ -150,6 +157,100 @@ const ChatView = ({
         {chatStack.length > 0
           ? chatStack.map((m, index) => {
               if (!m) return;
+
+              if (index === chatStack.length - 1) {
+                return m.role === "user" ? (
+                  <div
+                    key={index}
+                    className="w-full flex justify-end"
+                    ref={scrollRef}
+                  >
+                    <UserChatBox>
+                      <Typography
+                        sx={{
+                          fontSize: "16px",
+                          fontStyle: "normal",
+                          fontWeight: "400",
+                          lineHeight: "24px",
+                          color: COLORS.WHITE,
+                        }}
+                      >
+                        {m.answer}
+                      </Typography>
+                    </UserChatBox>
+                  </div>
+                ) : m.role === "interviewer" ? (
+                  <div
+                    key={index}
+                    className="w-full flex flex-col gap-[10px]"
+                    ref={scrollRef}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "10px",
+                        color: COLORS.WHITE,
+                      }}
+                    >
+                      <Interviewer />
+                      {`${title} 면접관`}
+                    </Box>
+                    <AiChatBox>
+                      <Typography
+                        sx={{
+                          fontSize: "16px",
+                          fontStyle: "normal",
+                          fontWeight: "400",
+                          lineHeight: "24px",
+                          color: COLORS.WHITE,
+                        }}
+                      >
+                        {m.question}
+                      </Typography>
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            display: "flex",
+                            padding: "8px 10px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "10px",
+                            borderRadius: "5px",
+                            border: `1px solid ${COLORS.GRAY200}`,
+                            fontSize: "13px",
+                            fontStyle: "normal",
+                            fontWeight: "500",
+                            lineHeight: "24px",
+                            color: `${COLORS.GRAY100}`,
+                            ":disabled": {
+                              backgroundColor: COLORS.GRAY400,
+                            },
+                          }}
+                          onClick={() => {
+                            if (questions.length == indicator + 1) {
+                              handleOpen();
+                            } else {
+                              setIndicator(indicator + 1);
+                            }
+                          }}
+                          disabled={chatStack.length !== index + 1}
+                        >
+                          질문 넘기기
+                        </Button>
+                      </Box>
+                    </AiChatBox>
+                  </div>
+                ) : null;
+              }
               return m.role === "user" ? (
                 <div key={index} className="w-full flex justify-end">
                   <UserChatBox>
@@ -178,7 +279,7 @@ const ChatView = ({
                     }}
                   >
                     <Interviewer />
-                    {"카카오페이 면접관"}
+                    {`${title} 면접관`}
                   </Box>
                   <AiChatBox>
                     <Typography
@@ -527,4 +628,7 @@ const AiChatBox = styled.div`
   font-weight: 500;
   line-height: 24px; /* 150% */
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;

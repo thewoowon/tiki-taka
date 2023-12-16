@@ -13,6 +13,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -39,6 +40,35 @@ const InterviewChatPage = () => {
   const [userRecoilState] = useRecoilState(userState);
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [indicator, setIndicator] = useState(0);
+  const [history, setHistory] = useState<HistoryElementType>({
+    interviewId: 0,
+    userId: 0,
+    title: "",
+    totalCnt: 0,
+    useCnt: 0,
+    status: 0,
+    regDate: "",
+  });
+
+  const { isLoading: interviewDataLoading, data: interviewData } = useQuery({
+    queryKey: ["interview", userRecoilState.userId, params.get("interviewId")],
+    queryFn: () => {
+      return axios({
+        method: "GET",
+        url:
+          "https://tikitakachatdata.com/interview/getInterview?userId=" +
+          userRecoilState.userId +
+          "&interviewId=" +
+          params.get("interviewId"),
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      }).then((res) => res.data);
+    },
+  });
 
   const { isLoading, data } = useQuery({
     queryKey: ["questions", userRecoilState.userId, params.get("interviewId")],
@@ -76,6 +106,18 @@ const InterviewChatPage = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (interviewData) {
+      if (interviewData.code === "로그인이 필요합니다") {
+        toast.error("로그인이 필요합니다.");
+        router.push("/auth/kakao");
+      }
+      if (interviewData.code === "200") {
+        setHistory(interviewData.data);
+      }
+    }
+  }, [interviewData, params, router]);
+
   if (isLoading) return <div>loading...</div>;
 
   return (
@@ -97,6 +139,7 @@ const InterviewChatPage = () => {
         questions={questions}
         indicator={indicator}
         setIndicator={setIndicator}
+        title={history.title}
       />
       <Box
         sx={{
@@ -131,11 +174,11 @@ const InterviewChatPage = () => {
               lineHeight: "18px",
             }}
           >
-            {"카카오페이 서비스 기획자"} 모의 면접 중...
+            {history.title} 모의 면접 중...
           </Typography>
           <BorderLinearProgress
             variant="determinate"
-            value={Math.floor(((indicator) / questions.length) * 100)}
+            value={Math.floor((indicator / questions.length) * 100)}
           />
           <Button
             sx={{
@@ -152,6 +195,7 @@ const InterviewChatPage = () => {
               right: "27px",
             }}
             onClick={() => {
+              //handleOpen()
               router.push("/history");
             }}
           >

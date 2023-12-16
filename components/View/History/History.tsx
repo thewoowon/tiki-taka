@@ -77,7 +77,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
   const initInterviewMutation = useMutation({
     mutationFn: (interviewId: number) => {
       return axios({
-        method: "DELETE",
+        method: "POST",
         url: "https://tikitakachatdata.com/interview/initQa",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

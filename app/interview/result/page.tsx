@@ -41,7 +41,7 @@ const InterviewResultPage = () => {
   });
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["result"],
+    queryKey: ["result", userRecoilState.userId, params.get("interviewId")],
     queryFn: () => {
       return axios({
         method: "GET",
@@ -281,7 +281,7 @@ const InterviewResultPage = () => {
               </Typography>
             </Box>
             <Tags>
-              <Tag>{feed.feedback1}</Tag>;
+              <Tag>{feed.feedback1 ?? "키워드"}</Tag>
             </Tags>
             <Box
               sx={{

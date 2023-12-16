@@ -30,7 +30,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     useState<HistoryElementType | null>(null);
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["interviews"],
+    queryKey: ["interviews", userRecoilState.userId],
     queryFn: () => {
       return axios({
         method: "GET",
@@ -145,7 +145,9 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               handleOpen2();
             }}
             onResult={() => {
-              router.push("/interview/result");
+              router.push(
+                "/interview/result?interviewId=" + history.interviewId
+              );
             }}
           />
         );

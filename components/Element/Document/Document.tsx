@@ -5,7 +5,6 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
-import { SimulationQLoading } from "../Loading";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
@@ -27,7 +26,7 @@ const Document = () => {
 
   // Queries
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["resumes"],
+    queryKey: ["resumes", userRecoilState.userId],
     queryFn: () => {
       return axios({
         method: "GET",
@@ -329,17 +328,18 @@ const Document = () => {
                 // 스펙변경
                 // deleteOldResumeMutation.mutate();
 
-                const selectedIndex = isSelected.indexOf(true);
+                // const selectedIndex = isSelected.indexOf(true);
 
-                if (selectedIndex === -1) {
-                  toast.error("이력서를 선택해주세요.");
-                  return;
-                }
+                // if (selectedIndex === -1) {
+                //   toast.error("이력서를 선택해주세요.");
+                //   return;
+                // }
 
-                fileDeleteMutation.mutate(
-                  documents[selectedIndex].resumeId ?? 0
-                );
-                handleClose();
+                // fileDeleteMutation.mutate(
+                //   documents[selectedIndex].resumeId ?? 0
+                // );
+                // handleClose();
+                router.push("/mypage");
               }}
             >
               네

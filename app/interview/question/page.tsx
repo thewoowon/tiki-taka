@@ -15,6 +15,8 @@ const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
   const params = useSearchParams();
 
+  console.log(params.get("interviewId"));
+
   // 어떤 회사인지에 대한 정보를 받는다.
   const router = useRouter();
 
@@ -36,8 +38,9 @@ const QuestionPage = () => {
     }
   };
 
+  // no cache
   const { isLoading: interviewsIsLoading, data: interviewsData } = useQuery({
-    queryKey: ["interviews"],
+    queryKey: ["interviews", userRecoilState.userId],
     queryFn: () => {
       return axios({
         method: "GET",
@@ -55,7 +58,7 @@ const QuestionPage = () => {
   });
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["questions"],
+    queryKey: ["questions", params.get("interviewId")],
     queryFn: () => {
       return axios({
         method: "GET",
@@ -100,6 +103,7 @@ const QuestionPage = () => {
   });
 
   useEffect(() => {
+    console.log(data);
     if (data) {
       setQuestions(data.data.qaData);
     }

@@ -41,7 +41,7 @@ const UploadPage = () => {
 
   // Queries
   const { data } = useQuery({
-    queryKey: ["resumes"],
+    queryKey: ["resumes", userRecoilState.userId],
     queryFn: () => {
       return axios({
         method: "GET",

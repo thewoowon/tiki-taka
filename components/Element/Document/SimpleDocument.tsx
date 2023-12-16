@@ -34,7 +34,7 @@ const SimpleDocument = () => {
 
   // Queries
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["resumes"],
+    queryKey: ["resumes", userRecoilState.userId],
     queryFn: () => {
       return axios({
         method: "GET",

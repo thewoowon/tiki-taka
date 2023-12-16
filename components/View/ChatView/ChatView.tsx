@@ -72,7 +72,7 @@ const ChatView = ({
 
     if (questions.length == indicator + 1) {
       setInputDisabled(true);
-      handleOpen();
+      router.push("/interview/result?interviewId=" + interviewId);
       return;
     }
     setIndicator(indicator + 1);

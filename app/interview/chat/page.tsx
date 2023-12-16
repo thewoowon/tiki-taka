@@ -41,7 +41,7 @@ const InterviewChatPage = () => {
   const [indicator, setIndicator] = useState(0);
 
   const { isLoading, data } = useQuery({
-    queryKey: ["questions"],
+    queryKey: ["questions", userRecoilState.userId, params.get("interviewId")],
     queryFn: () => {
       return axios({
         method: "GET",
@@ -135,7 +135,7 @@ const InterviewChatPage = () => {
           </Typography>
           <BorderLinearProgress
             variant="determinate"
-            value={Math.floor(((indicator + 1) / questions.length) * 100)}
+            value={Math.floor(((indicator) / questions.length) * 100)}
           />
           <Button
             sx={{

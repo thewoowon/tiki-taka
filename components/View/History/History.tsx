@@ -64,7 +64,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     },
     onSuccess: (data) => {
       if (data.code === "200") {
-        toast.success("면접 이력 삭제에 성공했어요.");
+        toast.success("삭제가 완료됐어요. 면접을 다시 시작해주세요.");
         refetch();
       } else {
         toast.error("면접 이력 삭제하지 못했어요. 다시 시도해 주세요.");
@@ -257,7 +257,6 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               onClick={() => {
                 if (currentHistory && currentHistory.interviewId) {
                   deleteInterviewMutation.mutate(currentHistory?.interviewId);
-                  toast.success("삭제가 완료됐어요. 면접을 다시 시작해주세요.");
                 } else {
                   toast.error(
                     "내부에서 에러가 발생했어요. 다시 시도해 주세요."

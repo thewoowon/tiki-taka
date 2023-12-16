@@ -211,10 +211,6 @@ const ChatView = ({
     }
   }, [isContinue, lastQaId, questions, setIndicator]);
 
-  useEffect(() => {
-    console.log(chatStack, "chatStack");
-  }, [chatStack]);
-
   if (saveAnswerMutation.isPending) {
     return (
       <ResultLoading

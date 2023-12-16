@@ -23,7 +23,7 @@ const QuestionElement = ({
         color: COLORS.GRAY100,
       }}
     >
-      질문 {sequence}. {question.question}
+      질문 {question.question}
     </Box>
   );
 };

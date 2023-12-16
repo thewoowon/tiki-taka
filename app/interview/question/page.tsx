@@ -10,6 +10,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import toast from "react-hot-toast";
+import { ResultLoading } from "@/components/View/ResultLoading";
 
 const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
@@ -75,7 +76,7 @@ const QuestionPage = () => {
     },
   });
 
-  const fileUploadMutation = useMutation({
+  const generateMutation = useMutation({
     mutationFn: () => {
       if (!userRecoilState.userId)
         throw new Error("userRecoilState.userId is null");
@@ -113,6 +114,15 @@ const QuestionPage = () => {
   }, [interviewsData]);
 
   if (interviewsIsLoading || isLoading) return <div>loading...</div>;
+
+  if (generateMutation.isPending) {
+    return (
+      <ResultLoading
+        title={"질문 재생성 중"}
+        description={`${userRecoilState.nickname}님의 이력서와 채용 공고를 바탕으로 면접 질문을 재생성하고 있어요.`}
+      />
+    );
+  }
 
   return (
     <Container>
@@ -206,10 +216,10 @@ const QuestionPage = () => {
                 lineHeight: "16px",
               }}
               onClick={() => {
-                fileUploadMutation.mutate();
+                generateMutation.mutate();
               }}
             >
-              {isLoading || fileUploadMutation.isPending ? (
+              {isLoading || generateMutation.isPending ? (
                 <CircularProgress
                   size={18}
                   sx={{

@@ -255,8 +255,14 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
                 color: COLORS.WHITE,
               }}
               onClick={() => {
-                if (currentHistory && currentHistory.interviewId)
+                if (currentHistory && currentHistory.interviewId) {
                   deleteInterviewMutation.mutate(currentHistory?.interviewId);
+                  toast.success("삭제가 완료됐어요. 면접을 다시 시작해주세요.");
+                } else {
+                  toast.error(
+                    "내부에서 에러가 발생했어요. 다시 시도해 주세요."
+                  );
+                }
                 handleClose();
               }}
             >

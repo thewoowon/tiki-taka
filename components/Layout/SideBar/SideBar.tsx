@@ -154,6 +154,10 @@ const Container = styled.nav`
   left: 0;
   top: 0;
   z-index: 100;
+
+  @media (max-width: 1640px) {
+    visibility: hidden;
+  }
 `;
 
 const Wrapper = styled.div`

@@ -1,19 +1,35 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
-import TikitakaText from "@/public/svg/tikitaka-text.svg";
+import { TikitakaText } from "@/components/svg";
+import { COLORS } from "@/style/color";
+import { useRecoilState } from "recoil";
+import { loginState } from "@/states";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
   { pathname: "/history", label: "히스토리" },
-  { pathname: "/auth/kakao", label: "로그인" },
 ];
 
 const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [pathObj, setPathObj] = useState<{ pathname: string; label: string }>({
+    pathname: "/auth/kakao",
+    label: "로그인",
+  });
+
+  const [isLoggedIn] = useRecoilState(loginState);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setPathObj({ pathname: "/mypage", label: "마이페이지" });
+    } else {
+      setPathObj({ pathname: "/auth/kakao", label: "로그인" });
+    }
+  }, [isLoggedIn]);
   return (
     <Container>
       <Wrapper>
@@ -23,7 +39,7 @@ const Header = () => {
             router.push("/");
           }}
         >
-          <TikitakaText />
+          <TikitakaText color={COLORS.WHITE} />
           <TikitakaLogo />
         </Logo>
         <div>
@@ -32,11 +48,17 @@ const Header = () => {
               <li
                 key={item.pathname}
                 onClick={() => router.push(item.pathname)}
-                className={pathname === item.pathname ? "active" : ""}
+                className={pathname.startsWith(item.pathname) ? "active" : ""}
               >
                 {item.label}
               </li>
             ))}
+            <li
+              onClick={() => router.push(pathObj.pathname)}
+              className={pathname.startsWith(pathObj.pathname) ? "active" : ""}
+            >
+              {pathObj.label}
+            </li>
           </Ul>
         </div>
       </Wrapper>
@@ -52,13 +74,17 @@ const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  height: 80px;
-  background-color: #fff;
-  border-bottom: 1px solid #f3f3f3;
+  height: 60px;
+  background-color: ${COLORS.DARK_BG};
   position: fixed;
   top: 0;
   z-index: 999;
   width: 100%;
+  visibility: hidden;
+
+  @media (max-width: 1640px) {
+    visibility: visible;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -83,6 +109,7 @@ const Ul = styled.ul`
   li {
     margin: 0 1rem;
     cursor: pointer;
+    color: ${COLORS.WHITE};
   }
 `;
 

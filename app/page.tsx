@@ -118,14 +118,7 @@ export default function Home() {
             티키타카 하러가기
           </Button>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "90px",
-          }}
-        >
+        <SubWrapper>
           <Box
             sx={{
               minWidth: "350px",
@@ -169,7 +162,7 @@ export default function Home() {
               </Typography>
               <Typography
                 fontSize={16}
-                color={COLORS.WHITE}
+                color={COLORS.GRAY100}
                 textAlign="center"
                 fontWeight={400}
                 lineHeight={"24px"}
@@ -223,7 +216,7 @@ export default function Home() {
               </Typography>
               <Typography
                 fontSize={16}
-                color={COLORS.WHITE}
+                color={COLORS.GRAY100}
                 textAlign="center"
                 fontWeight={400}
                 lineHeight={"24px"}
@@ -277,7 +270,7 @@ export default function Home() {
               </Typography>
               <Typography
                 fontSize={16}
-                color={COLORS.WHITE}
+                color={COLORS.GRAY100}
                 textAlign="center"
                 fontWeight={400}
                 lineHeight={"24px"}
@@ -288,7 +281,7 @@ export default function Home() {
               </Typography>
             </Box>
           </Box>
-        </Box>
+        </SubWrapper>
       </Wrapper>
     </Main>
   );
@@ -323,6 +316,11 @@ const Main = styled.main`
     gap: 100px;
   }
 
+  @media (max-width: 1024px) {
+    height: 100%;
+    display: block;
+  }
+
   @media (max-width: 768px) {
     gap: 40px;
   }
@@ -337,7 +335,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 120px;
+  gap: 100px;
 
   @media (max-width: 1440px) {
     scale: 0.8;
@@ -367,5 +365,16 @@ const Button = styled.button`
 
   &:hover {
     background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);
+  }
+`;
+
+const SubWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
   }
 `;

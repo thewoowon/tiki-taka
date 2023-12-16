@@ -3,7 +3,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
-import { SideBar } from "@/components/Layout";
+import { Header, SideBar } from "@/components/Layout";
 import Script from "next/script";
 import { useEffect } from "react";
 
@@ -158,6 +158,7 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
             <div className="min-h-screen flex">{children}</div>
+            <Header />
             <SideBar />
           </RecoilRoot>
           <Toaster />

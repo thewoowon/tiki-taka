@@ -136,6 +136,10 @@ const ChatView = ({
   useEffect(() => {
     setChatStack([...chatStack, questions[indicator]]);
     setSyncChatStack([...chatStack, questions[indicator]]);
+
+    setTimeout(() => {
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indicator, questions]);
 

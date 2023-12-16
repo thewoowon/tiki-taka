@@ -46,7 +46,9 @@ const HistoryElement = ({
             color: COLORS.TIKI_GREEN,
           }}
         >
-          {history.useCnt} / {history.totalCnt}
+          {history.status === 1
+            ? "완료"
+            : `${history.useCnt} / ${history.totalCnt}`}
         </Typography>
         <Typography
           sx={{

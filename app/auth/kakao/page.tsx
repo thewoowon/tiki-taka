@@ -1,8 +1,6 @@
 "use client";
 import KakaoButton from "@/components/Element/Button/Kakao/KakaoButton";
-import GlobalLoading from "@/components/Element/GlobalLoading";
 import Typography from "@/components/Element/Typography";
-import useKakaoLogin from "@/hooks/useKakaoLogin";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import Link from "next/link";

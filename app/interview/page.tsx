@@ -1,12 +1,24 @@
 "use client";
 import { Simulation01 } from "@/components/Element/Loading";
 import Typography from "@/components/Element/Typography";
+import { useMe } from "@/hooks/useMe";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const InterviewPage = () => {
   const router = useRouter();
+
+  const handleStartInterview = () => {
+    if (!localStorage.getItem("accessToken")) {
+      toast.error("로그인이 필요합니다.");
+      router.push("/auth/kakao");
+      return;
+    }
+    router.push("/interview/document");
+  };
+
   return (
     <Container>
       <Box>
@@ -29,13 +41,7 @@ const InterviewPage = () => {
             면접은 중간에 그만 둘 수 있어요. 부담 없이 시작해 보세요.
           </Typography>
         </div>
-        <Button
-          onClick={() => {
-            router.push("/interview/document");
-          }}
-        >
-          면접 시작하기
-        </Button>
+        <Button onClick={handleStartInterview}>면접 시작하기</Button>
       </Box>
     </Container>
   );

@@ -64,6 +64,5 @@ const Container = styled.main`
   height: 100vh;
   width: 100%;
   gap: 100px;
-  overflow: scroll;
   padding: 66px auto;
 `;

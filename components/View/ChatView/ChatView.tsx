@@ -34,6 +34,7 @@ const ChatView = ({
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [inputDisabled, setInputDisabled] = useState(false);
 
   const { register, getValues, watch, setValue, handleSubmit } =
     useForm<FormType>({
@@ -68,6 +69,12 @@ const ChatView = ({
     };
     setValue("chat", "");
     setChatStack([...chatStack, newQuestion1, newQuestion2]);
+
+    if (questions.length == indicator + 1) {
+      setInputDisabled(true);
+      handleOpen();
+      return;
+    }
     setIndicator(indicator + 1);
   };
 
@@ -271,8 +278,9 @@ const ChatView = ({
             required
             autoComplete="off"
             {...register("chat")}
+            disabled={inputDisabled}
           />
-          <button type="submit" disabled={false}>
+          <button type="submit" disabled={inputDisabled}>
             {false ? (
               <CircularProgress
                 size={20}

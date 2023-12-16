@@ -8,13 +8,15 @@ import { useEffect, useState } from "react";
 import { COLORS } from "@/style/color";
 import { Button, Modal, Typography } from "@mui/material";
 import ChatView from "@/components/View/ChatView";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { modalStyle } from "@/style/modal";
+import { ResultLoading } from "@/components/View/ResultLoading";
+import { Loading } from "@/components/View/Loading";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -52,6 +54,7 @@ const InterviewChatPage = () => {
     status: 0,
     regDate: "",
   });
+  const [chatStack, setChatStack] = useState<QuestionType[]>([]);
 
   const { data: interviewData } = useQuery({
     queryKey: ["interview", userRecoilState.userId, params.get("interviewId")],
@@ -93,6 +96,35 @@ const InterviewChatPage = () => {
     },
   });
 
+  const saveAnswerMutation = useMutation({
+    mutationFn: (answerData: { qaId: number; answer: string }[]) => {
+      return axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/interview/insertAnswer",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+          interviewId: Number(params.get("interviewId")),
+          answerData,
+        },
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      if (data.code === "200") {
+        toast.success("답변 저장에 성공했어요.");
+        router.push("/interview/history");
+      } else {
+        toast.error(data.message);
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("답변 저장에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
+
   useEffect(() => {
     if (data && data.code === "200") {
       const newQuestions = [];
@@ -121,7 +153,22 @@ const InterviewChatPage = () => {
     }
   }, [interviewData, params, router]);
 
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading)
+    return (
+      <Loading
+        title="질문을 가져오고 있어요!"
+        description="잠시만 기다려주세요."
+      />
+    );
+
+  if (saveAnswerMutation.isPending) {
+    return (
+      <ResultLoading
+        title={"중간 결과 만드는 중"}
+        description={`${userRecoilState.nickname}님의 답변과 채용 공고를 바탕으로 중간F 면접 결과를 만들고 있어요.`}
+      />
+    );
+  }
 
   return (
     <Box
@@ -143,6 +190,7 @@ const InterviewChatPage = () => {
         indicator={indicator}
         setIndicator={setIndicator}
         title={history.title}
+        setSyncChatStack={setChatStack}
       />
       <Box
         sx={{
@@ -199,7 +247,6 @@ const InterviewChatPage = () => {
             }}
             onClick={() => {
               handleOpen();
-              //router.push("/history");
             }}
           >
             그만하기
@@ -252,27 +299,25 @@ const InterviewChatPage = () => {
                 alignItems: "center",
                 gap: "10px",
                 flexShrink: 0,
-                border: `1px solid ${COLORS.TIKI_GREEN}`,
-                color: COLORS.TIKI_GREEN,
-              }}
-              onClick={handleClose}
-            >
-              계속 진행
-            </Button>
-            <Button
-              sx={{
-                display: "flex",
-                width: "145px",
-                padding: "18px 20px",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "10px",
-                flexShrink: 0,
                 backgroundColor: COLORS.TIKI_GREEN + " !important",
                 color: COLORS.WHITE,
               }}
-              onClick={() => {
-                router.push("/history");
+              onClick={async () => {
+                const answerData: {
+                  qaId: number;
+                  answer: string;
+                }[] = [];
+                for (let index = 0; index < chatStack.length; index++) {
+                  if (!chatStack[index]) continue;
+                  const { qaId, answer, role } = chatStack[index];
+                  if (role === "user") {
+                    answerData.push({
+                      qaId,
+                      answer,
+                    });
+                  }
+                }
+                await saveAnswerMutation.mutate(answerData);
               }}
             >
               종료

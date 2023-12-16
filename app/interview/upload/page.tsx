@@ -40,14 +40,14 @@ const UploadPage = () => {
     setFile(file);
   };
 
-  // Queries
+  // no cache
   const { data } = useQuery({
-    queryKey: ["resumes", userRecoilState.userId],
+    queryKey: ["interviews", userRecoilState.userId],
     queryFn: () => {
       return axios({
         method: "GET",
         url:
-          "https://tikitakachatdata.com/resume/getResumeList?userId=" +
+          "https://tikitakachatdata.com/interview/getInterviewList?userId=" +
           userRecoilState.userId,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -469,6 +469,7 @@ const UploadPage = () => {
                   toast.error("이미지를 업로드 해주세요.");
                   return;
                 }
+
                 if (data.data.length >= 5) {
                   router.push("/interview/history");
                   return;

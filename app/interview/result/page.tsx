@@ -135,7 +135,7 @@ const InterviewResultPage = () => {
     return (
       <ResultLoading
         title={"결과 재생성 중"}
-        description={`${userRecoilState.nickname}(카카오연동)님의 답변과 채용 공고를 바탕으로 면접 결과를 재생성하고 있어요.`}
+        description={`${userRecoilState.nickname}님의 답변과 채용 공고를 바탕으로 면접 결과를 재생성하고 있어요.`}
       />
     );
   }

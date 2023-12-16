@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { COLORS } from "@/style/color";
 import Interviewer from "@/public/svg/interviewer.svg";
-import TikitakaBlackLogo from "@/public/svg/tikitaka-black-logo.svg";
 import { useRouter } from "next/navigation";
 import { modalStyle } from "@/style/modal";
 import { useMutation } from "@tanstack/react-query";
@@ -20,7 +19,6 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Loading } from "../Loading";
 
 type FormType = {
   chat: string;
@@ -32,12 +30,14 @@ const ChatView = ({
   indicator,
   setIndicator,
   title,
+  setSyncChatStack,
 }: {
   interviewId: number;
   questions: QuestionType[];
   indicator: number;
   setIndicator: React.Dispatch<React.SetStateAction<number>>;
   title: string;
+  setSyncChatStack: React.Dispatch<React.SetStateAction<QuestionType[]>>;
 }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -121,6 +121,7 @@ const ChatView = ({
     const newChatStack = [...chatStack, newQuestion1, newQuestion2];
     setValue("chat", "");
     setChatStack(newChatStack);
+    setSyncChatStack(newChatStack);
 
     if (questions.length == indicator + 1) {
       setInputDisabled(true);
@@ -134,6 +135,7 @@ const ChatView = ({
 
   useEffect(() => {
     setChatStack([...chatStack, questions[indicator]]);
+    setSyncChatStack([...chatStack, questions[indicator]]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indicator, questions]);
 
@@ -141,7 +143,7 @@ const ChatView = ({
     return (
       <ResultLoading
         title={"결과 만드는 중"}
-        description={`${userRecoilState.nickname}(카카오연동)님의 답변과 채용 공고를 바탕으로 면접 결과를 만들고 있어요.`}
+        description={`${userRecoilState.nickname}님의 답변과 채용 공고를 바탕으로 면접 결과를 만들고 있어요.`}
       />
     );
   }
@@ -517,26 +519,9 @@ const ChatView = ({
                   }
                 }
                 await saveAnswerMutation.mutate(answerData);
-                handleClose();
               }}
             >
               종료
-            </Button>
-            <Button
-              sx={{
-                display: "flex",
-                width: "145px",
-                padding: "18px 20px",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "10px",
-                flexShrink: 0,
-                border: `1px solid ${COLORS.TIKI_GREEN}`,
-                color: COLORS.TIKI_GREEN,
-              }}
-              onClick={handleClose}
-            >
-              계속 진행
             </Button>
           </Box>
         </Box>

@@ -14,6 +14,11 @@ import Interviewer from "@/public/svg/interviewer.svg";
 import TikitakaBlackLogo from "@/public/svg/tikitaka-black-logo.svg";
 import { useRouter } from "next/navigation";
 import { modalStyle } from "@/style/modal";
+import { useMutation } from "@tanstack/react-query";
+import { useRecoilState } from "recoil";
+import { userState } from "@/states";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type FormType = {
   chat: string;
@@ -35,6 +40,7 @@ const ChatView = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [inputDisabled, setInputDisabled] = useState(false);
+  const [userRecoilState] = useRecoilState(userState);
 
   const { register, getValues, watch, setValue, handleSubmit } =
     useForm<FormType>({
@@ -45,13 +51,13 @@ const ChatView = ({
 
   const [chatStack, setChatStack] = useState<QuestionType[]>([]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const { chat } = getValues();
 
     const newQuestion1: QuestionType = {
       role: "user",
       interviewId: 0,
-      qaId: 0,
+      qaId: questions[indicator].qaId,
       question: "",
       answer: chat,
       regDate: new Date().toISOString().slice(0, 10),
@@ -67,21 +73,66 @@ const ChatView = ({
       regDate: new Date().toISOString().slice(0, 10),
       modifyDate: new Date().toISOString().slice(0, 10),
     };
+
+    const newChatStack = [...chatStack, newQuestion1, newQuestion2];
     setValue("chat", "");
-    setChatStack([...chatStack, newQuestion1, newQuestion2]);
+    setChatStack(newChatStack);
 
     if (questions.length == indicator + 1) {
       setInputDisabled(true);
+      await saveAnswerMutation.mutate(newChatStack);
       router.push("/interview/result?interviewId=" + interviewId);
       return;
     }
     setIndicator(indicator + 1);
   };
 
+  // /interview/insertAnswer
+  const saveAnswerMutation = useMutation({
+    mutationFn: (chatStack: QuestionType[]) => {
+      const answerData = chatStack.map((m) => {
+        const { qaId, answer, role } = m;
+        if (role === "user") {
+          return {
+            qaId,
+            answer,
+          };
+        }
+      });
+
+      return axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/interview/insertAnswer",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+          interviewId: interviewId,
+          answerData,
+        },
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      if (data.code === "200") {
+        toast.success("답변 저장에 성공했어요.");
+      } else {
+        toast.error(data.message);
+      }
+    },
+    onError: (error) => {
+      toast.error("답변 저장에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
+
   useEffect(() => {
     setChatStack([...chatStack, questions[indicator]]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [indicator, questions]);
+
+  if (saveAnswerMutation.isPending) {
+    return <div>결과 만드는 중</div>;
+  }
 
   return (
     <Container>

@@ -15,8 +15,6 @@ const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
   const params = useSearchParams();
 
-  console.log(params.get("interviewId"));
-
   // 어떤 회사인지에 대한 정보를 받는다.
   const router = useRouter();
 
@@ -103,7 +101,6 @@ const QuestionPage = () => {
   });
 
   useEffect(() => {
-    console.log(data);
     if (data) {
       setQuestions(data.data.qaData);
     }

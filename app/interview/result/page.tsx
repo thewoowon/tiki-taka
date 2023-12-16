@@ -78,6 +78,15 @@ const InterviewResultPage = () => {
         },
       }).then((res) => res.data);
     },
+    onSuccess: (data) => {
+      const element = document.createElement("a");
+      const file = new Blob([data], { type: "text/plain" });
+      element.href = URL.createObjectURL(file);
+      element.download = "interview.txt";
+      document.body.appendChild(element); // Required for this to work in FireFox
+      element.click();
+      toast.success("다운로드에 성공했어요.");
+    },
     onError: () => {
       toast.error("다운로드에 실패했어요. 다시 시도해 주세요.");
     },
@@ -222,8 +231,8 @@ const InterviewResultPage = () => {
                     fill="white"
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M90.8 0H87.2V4.65441L83.9088 1.36325L81.3632 3.90883L84.6544 7.2H80V10.8H84.6544L81.3632 14.0911L83.9088 16.6368L87.2 13.3456V18H90.8V13.3456L94.0912 16.6368L96.6368 14.0912L93.3456 10.8H98V7.2H93.3456L96.6368 3.90883L94.0912 1.36324L90.8 4.65441V0Z"
                     fill="#00CE72"
                   />
@@ -354,8 +363,8 @@ const InterviewResultPage = () => {
                       fill="white"
                     />
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M72.3995 0H69.5995V3.6201L67.0397 1.0603L65.0598 3.0402L67.6196 5.6H63.9995V8.4H67.6196L65.0598 10.9598L67.0397 12.9397L69.5995 10.3799V14H72.3995V10.3799L74.9593 12.9397L76.9392 10.9598L74.3794 8.4H77.9995V5.6H74.3794L76.9392 3.0402L74.9593 1.0603L72.3995 3.6201V0Z"
                       fill="#00CE72"
                     />
@@ -490,8 +499,22 @@ const InterviewResultPage = () => {
                 backgroundColor: COLORS.TIKI_GREEN + " !important",
                 color: COLORS.WHITE,
               }}
-              onClick={() => {
+              onClick={async () => {
                 downloadMutation.mutate(Number(params.get("interviewId")));
+                //window.open(downloadLink);
+                // await axios({
+                //   method: "GET",
+                //   url:
+                //     "https://tikitakachatdata.com/interview/downloadInterview?userId=" +
+                //     userRecoilState.userId +
+                //     "&interviewId=" +
+                //     params.get("interviewId"),
+                //   headers: {
+                //     Authorization: `Bearer ${localStorage.getItem(
+                //       "accessToken"
+                //     )}`,
+                //   },
+                // }).then((res) => res.data);
               }}
             >
               내보내기

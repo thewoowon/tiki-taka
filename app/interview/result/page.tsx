@@ -13,6 +13,7 @@ import { userState } from "@/states";
 import { useRecoilState } from "recoil";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 type FeedbackType = {
   id: number;
@@ -26,6 +27,8 @@ const InterviewResultPage = () => {
   const params = useSearchParams();
   const [userRecoilState] = useRecoilState(userState);
   const router = useRouter();
+
+  const [downloadLink, setDownloadLink] = useState<string>("");
 
   const [result, setResult] = useState<ResultType>({
     interviewId: 0,
@@ -110,6 +113,16 @@ const InterviewResultPage = () => {
       setResult(data.data);
     }
   }, [data]);
+
+  useEffect(() => {
+    const url =
+      "https://tikitakachatdata.com/interview/downloadInterview?userId=" +
+      userRecoilState.userId +
+      "&interviewId=" +
+      params.get("interviewId");
+
+    setDownloadLink(url);
+  }, [params, userRecoilState.userId]);
 
   if (isLoading) {
     return (
@@ -432,7 +445,7 @@ const InterviewResultPage = () => {
                 cy="11"
                 r="10"
                 stroke="#B9B9B9"
-                stroke-width="1.3"
+                strokeWidth="1.3"
               />
             </svg>
           </Box>
@@ -473,8 +486,9 @@ const InterviewResultPage = () => {
                 alignItems: "center",
                 gap: "10px",
                 borderRadius: "5px",
-                border: `1px solid ${COLORS.GRAY100}`,
-                color: COLORS.GRAY100,
+                flexShrink: 0,
+                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                color: COLORS.WHITE,
               }}
               onClick={() => {
                 downloadMutation.mutate(Number(params.get("interviewId")));

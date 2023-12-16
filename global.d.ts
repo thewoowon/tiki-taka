@@ -100,20 +100,21 @@ declare global {
 
   type ResultType = {
     interviewId: number;
+    interviewerFeel: string;
     userId: number;
     title: string;
     status: number;
     regDate: string;
     feedback: string;
     qaData: {
+      answer: string;
+      bestAnswer: string;
       interviewId: number;
+      keyword: string[];
+      modifyDate: string;
       qaId: number;
       question: string;
-      answer: string;
       regDate: string;
-      modifyDate: string;
-      feedback1: string;
-      feedback2: string;
     }[];
   };
 

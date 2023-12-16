@@ -28,6 +28,7 @@ const InterviewResultPage = () => {
 
   const [result, setResult] = useState<ResultType>({
     interviewId: 0,
+    interviewerFeel: "",
     userId: 0,
     title: "",
     status: 0,
@@ -212,7 +213,7 @@ const InterviewResultPage = () => {
             color: COLORS.GRAY100,
           }}
         >
-          {result.feedback}
+          {result.interviewerFeel}
         </Box>
       </Box>
       {result.qaData.map((feed, index) => {
@@ -321,7 +322,9 @@ const InterviewResultPage = () => {
               </Typography>
             </Box>
             <Tags>
-              <Tag>{feed.feedback1 ?? "키워드"}</Tag>
+              {feed.keyword?.map((keyword, index) => {
+                return <Tag key={index}>{keyword}</Tag>;
+              })}
             </Tags>
             <Box
               sx={{
@@ -412,7 +415,7 @@ const InterviewResultPage = () => {
                     답변 코칭
                   </Typography>
                 </Box>
-                {feed.feedback2 ?? "내 답변 내용"}
+                {feed.bestAnswer ?? "답변 코칭 내용"}
               </Box>
             </Box>
           </Box>

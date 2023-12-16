@@ -1,7 +1,7 @@
 "use client";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -12,6 +12,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Loading } from "../Loading";
 import { SimulationQLoading } from "@/components/Element/Loading";
+import { useMutation } from "@tanstack/react-query";
 
 const Profile = () => {
   const router = useRouter();
@@ -33,31 +34,37 @@ const Profile = () => {
     });
   };
 
-  const handleLogout = async () => {
-    // await window.Kakao.Auth.logout();
-    const result = await axios({
-      method: "POST",
-      url: "https://tikitakachatdata.com/user/kakaoLogin/user/logout",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }).catch((err) => {
-      console.log(err, err.response);
-    });
-
-    if (result?.data.code === "200") {
-      localStorage.removeItem("accessToken");
-      setIsLoggedIn(false);
-      setUserRecoilState({
-        userId: null,
-        nickname: "",
-        email: "",
-        profileImage: "",
-      });
-      router.push("/");
-      toast.success("다음에 또 만나요!");
-    }
-  };
+  const logoutMutation = useMutation({
+    mutationFn: () =>
+      axios({
+        method: "POST",
+        url: "https://tikitakachatdata.com/user/logout",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+        },
+      })
+        .then((res) => res.data)
+        .catch((err) => {
+          console.log(err, err.response);
+        }),
+    onSuccess: (data) => {
+      if (data.code === "200") {
+        localStorage.removeItem("accessToken");
+        setIsLoggedIn(false);
+        setUserRecoilState({
+          userId: null,
+          nickname: "",
+          email: "",
+          profileImage: "",
+        });
+        router.push("/");
+        toast.success("다음에 또 만나요!");
+      }
+    },
+  });
 
   if (isLoading) return <SimulationQLoading />;
 
@@ -135,9 +142,20 @@ const Profile = () => {
           border: "1px solid " + COLORS.GRAY100,
           color: COLORS.GRAY100,
         }}
-        onClick={handleLogout}
+        onClick={() => {
+          logoutMutation.mutate();
+        }}
       >
-        로그아웃
+        {logoutMutation.isPending ? (
+          <CircularProgress
+            size={18}
+            sx={{
+              color: COLORS.WHITE,
+            }}
+          />
+        ) : (
+          "로그아웃"
+        )}
       </Button>
     </Container>
   );

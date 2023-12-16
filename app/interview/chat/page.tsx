@@ -6,7 +6,7 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import { useEffect, useState } from "react";
 import { COLORS } from "@/style/color";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import ChatView from "@/components/View/ChatView";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -137,6 +137,26 @@ const InterviewChatPage = () => {
             variant="determinate"
             value={Math.floor(((indicator + 1) / questions.length) * 100)}
           />
+          <Button
+            sx={{
+              display: "flex",
+              padding: "8px 10px",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
+              borderRadius: "5px",
+              border: `1px solid ${COLORS.GRAY100}`,
+              color: COLORS.GRAY100,
+              position: "absolute",
+              top: "34px",
+              right: "27px",
+            }}
+            onClick={() => {
+              router.push("/history");
+            }}
+          >
+            그만하기
+          </Button>
         </Box>
       </Box>
     </Box>

@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import { useMutation } from "@tanstack/react-query";
@@ -46,7 +52,8 @@ const DocumentElement = ({
       }).then((res) => res.data);
     },
     onSuccess: (data) => {
-      toast.success("파일 업로드에 성공했어요.");
+      if (data.code === "200") toast.success("파일 업로드에 성공했어요.");
+      else toast.error(data.message);
       refetch?.();
     },
     onError: (error) => {
@@ -137,6 +144,13 @@ const DocumentElement = ({
             </svg>
           )}
         </Box>
+      ) : fileUploadMutation.isPending ? (
+        <CircularProgress
+          size={18}
+          sx={{
+            color: COLORS.WHITE,
+          }}
+        />
       ) : (
         <Box
           onClick={() => {

@@ -6,12 +6,13 @@ import styled from "@emotion/styled";
 import { COLORS } from "@/style/color";
 import Interviewer from "@/public/svg/interviewer.svg";
 import TikitakaBlackLogo from "@/public/svg/tikitaka-black-logo.svg";
-import { Box, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { Box, Button, Typography } from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { userState } from "@/states";
 import { useRecoilState } from "recoil";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 type FeedbackType = {
   id: number;
@@ -24,6 +25,7 @@ type FeedbackType = {
 const InterviewResultPage = () => {
   const params = useSearchParams();
   const [userRecoilState] = useRecoilState(userState);
+  const router = useRouter();
 
   const [result, setResult] = useState<ResultType>({
     interviewId: 0,
@@ -35,7 +37,7 @@ const InterviewResultPage = () => {
     qaData: [],
   });
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, refetch } = useQuery({
     queryKey: ["result"],
     queryFn: () => {
       return axios({
@@ -52,6 +54,54 @@ const InterviewResultPage = () => {
       })
         .then((res) => res.data)
         .catch((err) => console.log(err, err.response));
+    },
+  });
+
+  const downloadMutation = useMutation({
+    mutationFn: (interviewId: number) => {
+      return axios({
+        method: "GET",
+        url:
+          "https://tikitakachatdata.com/interview/downloadInterview?userId=" +
+          userRecoilState.userId +
+          "&interviewId=" +
+          interviewId,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+          interviewId,
+        },
+      }).then((res) => res.data);
+    },
+    onError: () => {
+      toast.error("다운로드에 실패했어요. 다시 시도해 주세요.");
+    },
+  });
+
+  const regenerateMutation = useMutation({
+    mutationFn: (interviewId: number) => {
+      return axios({
+        method: "GET",
+        url: "https://tikitakachatdata.com/interview/generateFeedback",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        data: {
+          userId: userRecoilState.userId,
+          interviewId,
+        },
+      }).then((res) => res.data);
+    },
+    onSuccess: (data) => {
+      if (data.code === "200") {
+        toast.success("피드백 재생성에 성공했어요.");
+        refetch();
+      } else toast.error(data.message);
+    },
+    onError: () => {
+      toast.error("재생성에 실패했어요. 다시 시도해 주세요.");
     },
   });
 
@@ -315,6 +365,126 @@ const InterviewResultPage = () => {
           </Box>
         );
       })}
+      <Box
+        sx={{
+          width: "100%",
+          height: "104px",
+          background: COLORS.DARK_BG,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          position: "fixed",
+          top: 0,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            maxWidth: "1040px",
+            width: "100%",
+            gap: "16px",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <Typography
+              sx={{
+                color: COLORS.WHITE,
+                fontSize: "18px",
+                fontStyle: "normal",
+                fontWeight: "600",
+                lineHeight: "18px",
+              }}
+            >
+              {"카카오페이 서비스 기획자"} 면접 결과
+            </Typography>
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12.0337 15.9891V8.69626H13.2561V9.56988H13.332C13.522 9.19004 13.9121 8.6272 14.8514 8.6272C16.0772 8.6272 17.0371 9.58714 17.0371 11.3551C17.0371 13.0989 16.1014 14.0934 14.8548 14.0934C13.9398 14.0934 13.5289 13.5512 13.332 13.1645H13.2802V15.9891H12.0337ZM13.2561 11.3482C13.2561 12.3807 13.705 13.0747 14.5095 13.0747C15.3348 13.0747 15.7733 12.3461 15.7733 11.3482C15.7733 10.3572 15.3452 9.6493 14.5095 9.6493C13.6981 9.6493 13.2561 10.3157 13.2561 11.3482Z"
+                fill="#B9B9B9"
+              />
+              <path
+                d="M9.63135 14.0001V8.6962H10.8779V14.0001H9.63135ZM9.53467 7.26664C9.53467 6.89026 9.85925 6.58984 10.2564 6.58984C10.65 6.58984 10.978 6.89026 10.978 7.26664C10.978 7.63957 10.65 7.93998 10.2564 7.93998C9.85925 7.93998 9.53467 7.63957 9.53467 7.26664Z"
+                fill="#B9B9B9"
+              />
+              <path
+                d="M8.71494 8.69626V9.6562H7.67558V12.4048C7.67558 12.9159 7.92765 13.0195 8.24533 13.0264C8.39036 13.0298 8.63207 13.0126 8.79091 13.0022V14.0208C8.64243 14.045 8.40417 14.0726 8.08649 14.0726C7.15072 14.0726 6.42558 13.6099 6.43249 12.612V9.6562H5.67627V8.69626H6.43249V7.42554H7.67558V8.69626H8.71494Z"
+                fill="#B9B9B9"
+              />
+              <circle
+                cx="11"
+                cy="11"
+                r="10"
+                stroke="#B9B9B9"
+                stroke-width="1.3"
+              />
+            </svg>
+          </Box>
+
+          <Box
+            sx={{
+              position: "absolute",
+              top: "34px",
+              right: "27px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+            }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                padding: "8px 10px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                borderRadius: "5px",
+                border: `1px solid ${COLORS.GRAY100}`,
+                color: COLORS.GRAY100,
+              }}
+              onClick={() => {
+                router.push("/history");
+              }}
+            >
+              결과 재생성
+            </Button>
+            <Button
+              sx={{
+                display: "flex",
+                padding: "8px 10px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                borderRadius: "5px",
+                border: `1px solid ${COLORS.GRAY100}`,
+                color: COLORS.GRAY100,
+              }}
+              onClick={() => {
+                downloadMutation.mutate(Number(params.get("interviewId")));
+              }}
+            >
+              내보내기
+            </Button>
+          </Box>
+        </Box>
+      </Box>
     </Container>
   );
 };

@@ -222,6 +222,8 @@ const Document = () => {
             fontSize: "16px",
             fontWeight: 600,
             lineHeight: "16px",
+            visibility:
+              documents.length === PDF_FILE_COUNT_LIMIT ? "visible" : "hidden",
           }}
           onClick={handleOpen}
         >
@@ -240,6 +242,7 @@ const Document = () => {
             fontSize: "16px",
             fontWeight: 600,
             lineHeight: "16px",
+            visibility: documents.length > 0 ? "visible" : "hidden",
           }}
           onClick={() => {
             const selectedIndex = isSelected.indexOf(true);
@@ -254,7 +257,7 @@ const Document = () => {
             );
           }}
         >
-          이력서 선택하기
+          이력서 선택
         </Button>
       </Box>
       <Modal

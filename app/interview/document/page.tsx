@@ -35,7 +35,7 @@ const DocumentPage = () => {
           }}
         >
           양식은 상관 없어요. 준비된 이력서를{" "}
-          <span className="text-[#00CE72]">PDF 10장 이하</span>로 올려 주세요.
+          <span className="text-[#00CE72]">PDF 5장 이하</span>로 올려 주세요.
         </Typography>
       </Box>
       <Document />

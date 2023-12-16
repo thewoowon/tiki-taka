@@ -6,7 +6,7 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import { useEffect, useState } from "react";
 import { COLORS } from "@/style/color";
-import { Button, Typography } from "@mui/material";
+import { Button, Modal, Typography } from "@mui/material";
 import ChatView from "@/components/View/ChatView";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
+import { modalStyle } from "@/style/modal";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -36,7 +37,9 @@ const InterviewChatPage = () => {
 
   // 어떤 회사인지에 대한 정보를 받는다.
   const router = useRouter();
-
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [userRecoilState] = useRecoilState(userState);
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [indicator, setIndicator] = useState(0);
@@ -50,7 +53,7 @@ const InterviewChatPage = () => {
     regDate: "",
   });
 
-  const { isLoading: interviewDataLoading, data: interviewData } = useQuery({
+  const { data: interviewData } = useQuery({
     queryKey: ["interview", userRecoilState.userId, params.get("interviewId")],
     queryFn: () => {
       return axios({
@@ -195,14 +198,88 @@ const InterviewChatPage = () => {
               right: "27px",
             }}
             onClick={() => {
-              //handleOpen()
-              router.push("/history");
+              handleOpen();
+              //router.push("/history");
             }}
           >
             그만하기
           </Button>
         </Box>
       </Box>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography
+            sx={{
+              fontSize: "23px",
+              color: COLORS.WHITE,
+              fontWeight: 700,
+            }}
+          >
+            면접을 종료할까요?
+          </Typography>
+          <Typography
+            sx={{
+              color: COLORS.GRAY100,
+              textAlign: "center",
+              fontSize: "16px",
+              fontStyle: "normal",
+              fontWeight: "400",
+              lineHeight: "24px",
+            }}
+          >
+            면접 내용은 히스토리에 자동으로 확인 가능해요
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+              pt: "20px",
+            }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                width: "145px",
+                padding: "18px 20px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                border: `1px solid ${COLORS.TIKI_GREEN}`,
+                color: COLORS.TIKI_GREEN,
+              }}
+              onClick={handleClose}
+            >
+              계속 진행
+            </Button>
+            <Button
+              sx={{
+                display: "flex",
+                width: "145px",
+                padding: "18px 20px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                color: COLORS.WHITE,
+              }}
+              onClick={() => {
+                router.push("/history");
+              }}
+            >
+              종료
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 };

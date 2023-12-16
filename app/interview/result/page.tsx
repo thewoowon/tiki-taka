@@ -1,5 +1,4 @@
 "use client";
-import { ResultLoading } from "@/components/View/ResultLoading";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { COLORS } from "@/style/color";
@@ -130,16 +129,51 @@ const InterviewResultPage = () => {
     setDownloadLink(url);
   }, [params, userRecoilState.userId]);
 
-  if (isLoading) {
-    return (
-      <ResultLoading
-        title={"결과 만드는 중"}
-        description={`${userRecoilState.nickname}(카카오연동)님의 답변과 채용 공고를 바탕으로 면접 결과를 만들고 있어요.`}
-      />
-    );
-  }
   return (
     <Container>
+      <Box
+        sx={{
+          paddingTop: "144px",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: "16px",
+        }}
+      >
+        <Typography
+          sx={{
+            fontFamily: "Pretendard Variable",
+            fontSize: "24px",
+            fontStyle: "normal",
+            fontWeight: "700",
+            lineHeight: "36px",
+            color: COLORS.WHITE,
+          }}
+        >
+          <span
+            style={{
+              color: COLORS.TIKI_GREEN,
+            }}
+          >
+            {userRecoilState.nickname}
+          </span>
+          님, 수고하셨어요. 합격까지 한걸음 가까워졌네요!
+        </Typography>
+        <Typography
+          sx={{
+            fontFamily: "Pretendard Variable",
+            fontSize: "16px",
+            fontStyle: "normal",
+            fontWeight: "400",
+            lineHeight: "24px",
+            color: COLORS.GRAY100,
+          }}
+        >
+          티키타카가 면접 결과를 저장했어요. 나의 면접 히스토리에서 언제든지
+          확인 가능해요.
+        </Typography>
+      </Box>
       <Box
         sx={{
           width: "100%",
@@ -528,7 +562,6 @@ export default InterviewResultPage;
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: 100vh;
   max-width: 1040px;

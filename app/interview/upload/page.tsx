@@ -1,5 +1,6 @@
 "use client";
 import ImageUpload from "@/components/Element/ImageUpload";
+import { Loading } from "@/components/View/Loading";
 import { userState } from "@/states";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
@@ -101,6 +102,15 @@ const UploadPage = () => {
       }
     },
   });
+
+  if (insertInterviewMutation.isPending) {
+    return (
+      <Loading
+        title="질문을 생성하고 있어요!"
+        description="잠시만 기다려주세요."
+      />
+    );
+  }
 
   return (
     <Container>
@@ -365,16 +375,7 @@ const UploadPage = () => {
                 insertInterviewMutation.mutate();
               }}
             >
-              {insertInterviewMutation.isPending ? (
-                <CircularProgress
-                  size={18}
-                  sx={{
-                    color: COLORS.WHITE,
-                  }}
-                />
-              ) : (
-                "다음"
-              )}
+              다음
             </Button>
           </Box>
         </Box>
@@ -476,16 +477,7 @@ const UploadPage = () => {
                 insertInterviewMutation.mutate();
               }}
             >
-              {insertInterviewMutation.isPending ? (
-                <CircularProgress
-                  size={18}
-                  sx={{
-                    color: COLORS.WHITE,
-                  }}
-                />
-              ) : (
-                "다음"
-              )}
+              다음
             </Button>
           </Box>
         </Box>

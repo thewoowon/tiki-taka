@@ -174,8 +174,8 @@ const InterviewChatPage = () => {
   if (saveAnswerMutation.isPending) {
     return (
       <ResultLoading
-        title={"중간 결과 만드는 중"}
-        description={`${userRecoilState.nickname}님의 답변과 채용 공고를 바탕으로 중간F 면접 결과를 만들고 있어요.`}
+        title={"중간 저장 중"}
+        description={`${userRecoilState.nickname}님의 답변을 저장하고 있어요.`}
       />
     );
   }

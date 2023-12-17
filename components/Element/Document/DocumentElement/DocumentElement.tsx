@@ -70,6 +70,9 @@ const DocumentElement = ({
 
   return (
     <Box
+      onClick={() => {
+        inputRef.current?.click();
+      }}
       sx={{
         display: "flex",
         alignItems: "center",
@@ -81,6 +84,7 @@ const DocumentElement = ({
         borderRadius: "5px",
         border: `1px solid ${COLORS.TIKI_GREEN}`,
         backgroundColor: COLORS.DARK_BG + " !important",
+        cursor: "pointer",
       }}
     >
       <Typography
@@ -153,9 +157,6 @@ const DocumentElement = ({
         />
       ) : (
         <Box
-          onClick={() => {
-            inputRef.current?.click();
-          }}
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -164,9 +165,6 @@ const DocumentElement = ({
             borderRadius: "50%",
             cursor: "pointer",
             transition: "all 0.2s ease",
-            "&:hover": {
-              backgroundColor: COLORS.LIGHT_BG,
-            },
           }}
         >
           <svg

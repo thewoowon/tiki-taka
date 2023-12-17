@@ -342,11 +342,11 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 768px) {
-    scale: 0.6;
+    scale: 0.8;
   }
 
   @media (max-width: 425px) {
-    scale: 0.4;
+    scale: 0.6;
   }
 `;
 

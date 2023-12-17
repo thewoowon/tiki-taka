@@ -7,6 +7,7 @@ import { TikitakaText } from "@/components/svg";
 import { COLORS } from "@/style/color";
 import { useRecoilState } from "recoil";
 import { loginState } from "@/states";
+import TemporaryDrawer from "@/components/Element/Drawer";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -61,6 +62,8 @@ const Header = () => {
             </li>
           </Ul>
         </div>
+
+        <TemporaryDrawer />
       </Wrapper>
     </Container>
   );
@@ -110,6 +113,14 @@ const Ul = styled.ul`
     margin: 0 1rem;
     cursor: pointer;
     color: ${COLORS.WHITE};
+  }
+
+  .active {
+    color: ${COLORS.TIKI_GREEN};
+  }
+
+  @media (max-width: 1024px) {
+    display: none;
   }
 `;
 

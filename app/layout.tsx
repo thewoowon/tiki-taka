@@ -5,7 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
 import { Header, SideBar } from "@/components/Layout";
 import Script from "next/script";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import Analytics from "@/components/Analytics";
+import { usePathname } from "next/navigation";
+import * as gtag from "@/lib/gtag";
 
 export default function RootLayout({
   children,
@@ -25,6 +28,21 @@ export default function RootLayout({
   const handleKakaoInit = () => {
     window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
   };
+
+  const pathName = usePathname();
+
+  const handleRouteChange = useCallback((url: URL) => {
+    gtag.pageview(url);
+  }, []);
+
+  useEffect(() => {
+    console.log("pathName", pathName);
+    pathName && handleRouteChange(new URL(pathName, window.location.href));
+
+    return () => {
+      pathName && handleRouteChange(new URL(pathName, window.location.href));
+    };
+  }, [handleRouteChange, pathName]);
 
   useEffect(() => {
     if (document.body.getAttribute("style") === "") {
@@ -160,6 +178,7 @@ export default function RootLayout({
             <div className="min-h-screen flex">{children}</div>
             <Header />
             <SideBar />
+            <Analytics />
           </RecoilRoot>
           <Toaster />
         </QueryClientProvider>

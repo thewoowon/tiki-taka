@@ -240,7 +240,7 @@ const ChatView = ({
                           fontStyle: "normal",
                           fontWeight: "400",
                           lineHeight: "24px",
-                          color: COLORS.WHITE,
+                          color: COLORS.TEXT,
                         }}
                       >
                         {m.answer}
@@ -329,7 +329,7 @@ const ChatView = ({
                         fontStyle: "normal",
                         fontWeight: "400",
                         lineHeight: "24px",
-                        color: COLORS.WHITE,
+                        color: COLORS.TEXT,
                       }}
                     >
                       {m.answer}

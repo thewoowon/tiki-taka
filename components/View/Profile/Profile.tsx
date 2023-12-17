@@ -65,7 +65,17 @@ const Profile = () => {
     },
   });
 
-  if (isLoading) return <SimulationQLoading />;
+  if (isLoading)
+    return (
+      <Container isLoading={isLoading}>
+        <CircularProgress
+          size={18}
+          sx={{
+            color: COLORS.WHITE,
+          }}
+        />
+      </Container>
+    );
 
   return (
     <Container>
@@ -162,14 +172,16 @@ const Profile = () => {
 
 export default Profile;
 
-const Container = styled.main`
+const Container = styled.main<{
+  isLoading?: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
   max-width: 1040px;
   width: 100%;
   padding: 40px;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.isLoading ? "center" : "flex-start")};
   align-items: center;
   border-radius: 5px;
   background: ${COLORS.DARK_BG};

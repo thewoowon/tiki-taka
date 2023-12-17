@@ -106,7 +106,15 @@ const SimpleDocument = () => {
     }
   }, [data]);
 
-  if (isLoading) return <SimulationQLoading />;
+  if (isLoading)
+    return (
+      <CircularProgress
+        size={18}
+        sx={{
+          color: COLORS.WHITE,
+        }}
+      />
+    );
 
   return (
     <Box

@@ -91,45 +91,57 @@ const SideBar = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <Link
-              href={"/support"}
-              style={{
-                fontSize: 11,
-                color: COLORS.GRAY200,
-              }}
-              className="cursor-pointer hover:underline"
-            >
-              고객센터
-            </Link>
+            <Typography fontSize={14} color={COLORS.GRAY200}>
+              <Link
+                href={"https://open.kakao.com/o/sUonPQYf"}
+                className="cursor-pointer hover:underline hover:text-white"
+                target="_blank"
+              >
+                고객센터
+              </Link>
+            </Typography>
           </Flex>
           <Flex gap={16} direction="column" align="flex-start">
             <Typography fontSize={14} color={COLORS.GRAY200}>
-              (주)취뽀클로바
+              팀 취뽀클로바
+            </Typography>
+            <Typography fontSize={12} color={COLORS.GRAY200}>
+              contact us. <br />
+              <Link
+                href={"mailto:chat.tikitaka@gmail.com"}
+                className="cursor-pointer hover:underline hover:text-white"
+              >
+                chat.tikitaka
+                <span style={{ color: COLORS.TIKI_GREEN }}>@</span>
+                gmail.com
+              </Link>
             </Typography>
             <Flex gap={8}>
-              <Link
-                href={"/terms"}
-                style={{
-                  fontSize: 11,
-                  color: COLORS.GRAY200,
-                }}
-                className="cursor-pointer hover:underline"
-              >
-                이용약관
-              </Link>
+              <Typography fontSize={11} color={COLORS.GRAY200}>
+                <Link
+                  href={"/terms/tikitaka_terms_of_use.pdf"}
+                  rel="noopener noreferrer"
+                  className="cursor-pointer hover:underline hover:text-white"
+                  target="_blank"
+                >
+                  이용약관
+                </Link>
+              </Typography>
               <Typography fontSize={11} color={COLORS.GRAY200}>
                 |
               </Typography>
-              <Link
-                href={"/privacy"}
-                style={{
-                  fontSize: 11,
-                  color: COLORS.GRAY200,
-                }}
-                className="cursor-pointer hover:underline"
-              >
-                개인정보처리방침
-              </Link>
+              <Typography fontSize={11} color={COLORS.GRAY200}>
+                <Link
+                  href={
+                    "/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
+                  }
+                  rel="noopener noreferrer"
+                  className="cursor-pointer hover:underline hover:text-white"
+                  target="_blank"
+                >
+                  개인정보처리방침
+                </Link>
+              </Typography>
             </Flex>
           </Flex>
         </Flex>

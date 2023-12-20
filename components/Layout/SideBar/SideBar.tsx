@@ -94,7 +94,7 @@ const SideBar = () => {
             <Typography fontSize={14} color={COLORS.GRAY200}>
               <Link
                 href={"https://open.kakao.com/o/sUonPQYf"}
-                className="cursor-pointer hover:underline hover:text-white"
+                className="cursor-pointer hover:text-white"
                 target="_blank"
               >
                 고객센터
@@ -109,7 +109,7 @@ const SideBar = () => {
               contact us. <br />
               <Link
                 href={"mailto:chat.tikitaka@gmail.com"}
-                className="cursor-pointer hover:underline hover:text-white"
+                className="cursor-pointer hover:text-white"
               >
                 chat.tikitaka
                 <span style={{ color: COLORS.TIKI_GREEN }}>@</span>
@@ -121,7 +121,7 @@ const SideBar = () => {
                 <Link
                   href={"/terms/tikitaka_terms_of_use.pdf"}
                   rel="noopener noreferrer"
-                  className="cursor-pointer hover:underline hover:text-white"
+                  className="cursor-pointer hover:text-white"
                   target="_blank"
                 >
                   이용약관
@@ -136,7 +136,7 @@ const SideBar = () => {
                     "/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
                   }
                   rel="noopener noreferrer"
-                  className="cursor-pointer hover:underline hover:text-white"
+                  className="cursor-pointer hover:text-white"
                   target="_blank"
                 >
                   개인정보처리방침

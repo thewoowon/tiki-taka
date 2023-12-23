@@ -129,7 +129,6 @@ const InterviewChatPage = () => {
       }
     },
     onError: (error) => {
-      console.log(error);
       toast.error("답변 저장에 실패했어요. 다시 시도해 주세요.");
     },
   });

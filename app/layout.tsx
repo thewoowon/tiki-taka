@@ -36,7 +36,6 @@ export default function RootLayout({
   }, []);
 
   useEffect(() => {
-    console.log("pathName", pathName);
     pathName && handleRouteChange(new URL(pathName, window.location.href));
 
     return () => {

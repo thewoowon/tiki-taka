@@ -9,7 +9,7 @@ import {
 import styled from "@emotion/styled";
 import Send from "@/public/svg/send.svg";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { COLORS } from "@/style/color";
 import Interviewer from "@/public/svg/interviewer.svg";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import axios from "axios";
 import toast from "react-hot-toast";
+import parse from "html-react-parser";
 
 type FormType = {
   chat: string;
@@ -58,8 +59,19 @@ const ChatView = ({
   const [userRecoilState] = useRecoilState(userState);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [lastBtnCk, setLastBtnCk] = useState(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const { register, getValues, watch, setValue, handleSubmit } =
+  const adjustHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "20px";
+      textareaRef.current.style.height = `${Math.min(
+        textareaRef.current.scrollHeight,
+        96
+      )}px`;
+    }
+  };
+
+  const { getValues, watch, setValue, handleSubmit, control } =
     useForm<FormType>({
       defaultValues: {
         chat: "",
@@ -93,13 +105,14 @@ const ChatView = ({
       }
     },
     onError: (error) => {
-      console.log(error);
       toast.error("답변 저장에 실패했어요. 다시 시도해 주세요.");
     },
   });
 
   const onSubmit = async () => {
     const { chat } = getValues();
+
+    console.log(chat, "chatchatchatchat");
 
     if (chat.length < 20) {
       toast.error("20자 이상 입력해주세요.");
@@ -144,6 +157,13 @@ const ChatView = ({
     setTimeout(() => {
       scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // 기본 동작 방지
+      handleSubmit(onSubmit)(); // 폼 제출
+    }
   };
 
   useEffect(() => {
@@ -211,6 +231,10 @@ const ChatView = ({
     }
   }, [isContinue, lastQaId, questions, setIndicator]);
 
+  useEffect(() => {
+    adjustHeight();
+  }, []);
+
   if (saveAnswerMutation.isPending) {
     return (
       <ResultLoading
@@ -234,17 +258,22 @@ const ChatView = ({
                     ref={scrollRef}
                   >
                     <UserChatBox>
-                      <Typography
-                        sx={{
-                          fontSize: "16px",
-                          fontStyle: "normal",
-                          fontWeight: "400",
-                          lineHeight: "24px",
-                          color: COLORS.TEXT,
-                        }}
-                      >
-                        {m.answer}
-                      </Typography>
+                      {m.answer.split("\n").map((line, index) => {
+                        return (
+                          <Typography
+                            key={index}
+                            sx={{
+                              fontSize: "16px",
+                              fontStyle: "normal",
+                              fontWeight: "400",
+                              lineHeight: "24px",
+                              color: COLORS.TEXT,
+                            }}
+                          >
+                            {parse(line)}
+                          </Typography>
+                        );
+                      })}
                     </UserChatBox>
                   </div>
                 ) : m.role === "interviewer" ? (
@@ -323,17 +352,22 @@ const ChatView = ({
               return m.role === "user" ? (
                 <div key={index} className="w-full flex justify-end">
                   <UserChatBox>
-                    <Typography
-                      sx={{
-                        fontSize: "16px",
-                        fontStyle: "normal",
-                        fontWeight: "400",
-                        lineHeight: "24px",
-                        color: COLORS.TEXT,
-                      }}
-                    >
-                      {m.answer}
-                    </Typography>
+                    {m.answer.split("\n").map((line, index) => {
+                      return (
+                        <Typography
+                          key={index}
+                          sx={{
+                            fontSize: "16px",
+                            fontStyle: "normal",
+                            fontWeight: "400",
+                            lineHeight: "24px",
+                            color: COLORS.TEXT,
+                          }}
+                        >
+                          {parse(line)}
+                        </Typography>
+                      );
+                    })}
                   </UserChatBox>
                 </div>
               ) : m.role === "interviewer" ? (
@@ -495,23 +529,42 @@ const ChatView = ({
             display: "flex",
             justifyContent: "flex-end",
             alignItems: "center",
-            color: COLORS.TIKI_GREEN,
+            color:
+              watch("chat").length < 150 ? COLORS.TIKI_GREEN : COLORS.ERROR_RED,
             fontSize: "14px",
             fontStyle: "normal",
             fontWeight: "400",
             lineHeight: "24px",
           }}
         >
+          {watch("chat").length < 150
+            ? null
+            : "* 최대 150자 이하로 입력해주세요 "}
           {`(현재 ${watch("chat").length}자 / 최대 150자)`}
         </Box>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <input
+          <Controller
+            name="chat"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <textarea
+                {...field}
+                ref={textareaRef}
+                onInput={adjustHeight}
+                onKeyDown={handleKeyDown}
+                className="resize-none"
+              />
+            )}
+          />
+
+          {/* <textarea
             placeholder="면접 답변을 입력해주세요"
             required
             autoComplete="off"
             {...register("chat")}
             disabled={inputDisabled}
-          />
+          /> */}
           <button type="submit" disabled={inputDisabled}>
             {false ? (
               <CircularProgress
@@ -652,6 +705,20 @@ const Form = styled.form`
   background: ${COLORS.DARK_BG};
   padding: 16px 20px;
   input {
+    flex: 1;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    &:focus {
+      outline: none;
+    }
+    background-color: transparent;
+    color: ${COLORS.GRAY100};
+    &::placeholder {
+      color: ${COLORS.GRAY100};
+    }
+  }
+
+  textarea {
     flex: 1;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
     font-size: 16px;

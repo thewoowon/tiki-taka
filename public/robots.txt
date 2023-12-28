@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/*
+Disallow: /interview/*
+Disallow: /history/*
+
+# Host
+Host: https://tikitaka.chat
+
+# Sitemaps
+Sitemap: https://tikitaka.chat/sitemap.xml

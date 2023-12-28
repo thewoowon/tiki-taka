@@ -162,6 +162,14 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
         <meta name="theme-color" content="#ffffff" />
+        <meta
+          name="google-site-verification"
+          content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
+        />
+        <meta
+          name="naver-site-verification"
+          content={process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION}
+        />
         <Script
           src={`https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js`}
           integrity={

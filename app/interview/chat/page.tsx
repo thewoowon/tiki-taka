@@ -240,7 +240,11 @@ const InterviewChatPage = () => {
           </Typography>
           <BorderLinearProgress
             variant="determinate"
-            value={Math.floor((indicator / questions.length) * 100)}
+            value={
+              Math.floor((indicator / questions.length) * 100) === 0
+                ? 1
+                : Math.floor((indicator / questions.length) * 100)
+            }
           />
           <Button
             sx={{

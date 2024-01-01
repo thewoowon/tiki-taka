@@ -8,6 +8,14 @@ import Image from "next/image";
 
 const Footer = () => {
   const router = useRouter();
+
+  const downloadFile = (url: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  };
+
   return (
     <FooterContainer className="min-h-[321px]">
       <Wrapper>
@@ -65,28 +73,34 @@ const Footer = () => {
               </Link>
             </Typography>
             <Flex gap={8}>
-              <Typography fontSize={13} color={COLORS.GRAY200}>
-                <Link
-                  href={"/terms/tikitaka_terms_of_use.pdf"}
-                  className="cursor-pointer hover:text-white"
-                  download={true}
-                >
-                  이용약관
-                </Link>
+              <Typography
+                fontSize={13}
+                color={COLORS.GRAY200}
+                className="cursor-pointer hover:text-white"
+                onClick={() => {
+                  downloadFile(
+                    "https://tikitaka.link/terms/tikitaka_terms_of_use.pdf",
+                    "tikitaka_terms_of_use.pdf"
+                  );
+                }}
+              >
+                이용약관
               </Typography>
               <Typography fontSize={11} color={COLORS.GRAY200}>
                 |
               </Typography>
-              <Typography fontSize={11} color={COLORS.GRAY200}>
-                <Link
-                  href={
-                    "/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
-                  }
-                  className="cursor-pointer hover:text-white"
-                  download={true}
-                >
-                  개인정보처리방침
-                </Link>
+              <Typography
+                fontSize={11}
+                color={COLORS.GRAY200}
+                className="cursor-pointer hover:text-white"
+                onClick={() => {
+                  downloadFile(
+                    "https://tikitaka.link/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf",
+                    "tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
+                  );
+                }}
+              >
+                개인정보처리방침
               </Typography>
             </Flex>
           </Flex>

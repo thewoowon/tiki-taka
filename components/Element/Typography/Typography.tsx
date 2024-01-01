@@ -7,12 +7,16 @@ const Typography = ({
   color,
   fontWeight,
   textAlign,
+  className,
+  onClick,
 }: {
   children: React.ReactNode;
   fontSize?: number;
   color?: string;
   fontWeight?: number;
   textAlign?: string;
+  className?: string;
+  onClick?: () => void;
 }) => {
   return (
     <Typo
@@ -20,6 +24,8 @@ const Typography = ({
       color={color}
       fontWeight={fontWeight}
       textAlign={textAlign}
+      className={className}
+      onClick={onClick}
     >
       {children}
     </Typo>

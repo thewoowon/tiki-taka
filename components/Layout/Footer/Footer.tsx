@@ -68,9 +68,8 @@ const Footer = () => {
               <Typography fontSize={13} color={COLORS.GRAY200}>
                 <Link
                   href={"/terms/tikitaka_terms_of_use.pdf"}
-                  rel="noopener noreferrer"
                   className="cursor-pointer hover:text-white"
-                  target="_blank"
+                  download={true}
                 >
                   이용약관
                 </Link>
@@ -83,9 +82,8 @@ const Footer = () => {
                   href={
                     "/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
                   }
-                  rel="noopener noreferrer"
                   className="cursor-pointer hover:text-white"
-                  target="_blank"
+                  download={true}
                 >
                   개인정보처리방침
                 </Link>

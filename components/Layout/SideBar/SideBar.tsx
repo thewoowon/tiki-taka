@@ -103,7 +103,7 @@ const SideBar = () => {
           </Flex>
           <Flex gap={16} direction="column" align="flex-start">
             <Typography fontSize={14} color={COLORS.GRAY200}>
-              팀 취뽀클로바
+              스톤즈랩
             </Typography>
             <Typography fontSize={12} color={COLORS.GRAY200}>
               contact us. <br />

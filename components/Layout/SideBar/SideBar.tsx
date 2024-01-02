@@ -125,7 +125,7 @@ const SideBar = () => {
             </Typography>
             <Flex gap={8}>
               <Typography
-                fontSize={13}
+                fontSize={11}
                 color={COLORS.GRAY200}
                 className="cursor-pointer hover:text-white"
                 onClick={() => {

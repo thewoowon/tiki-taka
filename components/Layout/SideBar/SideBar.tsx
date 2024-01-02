@@ -25,6 +25,13 @@ const SideBar = () => {
 
   const [isLoggedIn] = useRecoilState(loginState);
 
+  const downloadFile = (url: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  };
+
   useEffect(() => {
     if (isLoggedIn) {
       setPathObj({ pathname: "/mypage", label: "마이페이지" });
@@ -117,30 +124,34 @@ const SideBar = () => {
               </Link>
             </Typography>
             <Flex gap={8}>
-              <Typography fontSize={11} color={COLORS.GRAY200}>
-                <Link
-                  href={"/terms/tikitaka_terms_of_use.pdf"}
-                  rel="noopener noreferrer"
-                  className="cursor-pointer hover:text-white"
-                  target="_blank"
-                >
-                  이용약관
-                </Link>
+              <Typography
+                fontSize={13}
+                color={COLORS.GRAY200}
+                className="cursor-pointer hover:text-white"
+                onClick={() => {
+                  downloadFile(
+                    "https://tikitaka.chat/terms/tikitaka_terms_of_use.pdf",
+                    "tikitaka_terms_of_use.pdf"
+                  );
+                }}
+              >
+                이용약관
               </Typography>
               <Typography fontSize={11} color={COLORS.GRAY200}>
                 |
               </Typography>
-              <Typography fontSize={11} color={COLORS.GRAY200}>
-                <Link
-                  href={
-                    "/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
-                  }
-                  rel="noopener noreferrer"
-                  className="cursor-pointer hover:text-white"
-                  target="_blank"
-                >
-                  개인정보처리방침
-                </Link>
+              <Typography
+                fontSize={11}
+                color={COLORS.GRAY200}
+                className="cursor-pointer hover:text-white"
+                onClick={() => {
+                  downloadFile(
+                    "https://tikitaka.chat/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf",
+                    "tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
+                  );
+                }}
+              >
+                개인정보처리방침
               </Typography>
             </Flex>
           </Flex>

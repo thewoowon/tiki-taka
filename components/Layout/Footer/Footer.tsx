@@ -3,12 +3,9 @@ import Typography from "@/components/Element/Typography";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const Footer = () => {
-  const router = useRouter();
-
   const downloadFile = (url: string, fileName: string) => {
     const link = document.createElement("a");
     link.href = url;
@@ -79,7 +76,7 @@ const Footer = () => {
                 className="cursor-pointer hover:text-white"
                 onClick={() => {
                   downloadFile(
-                    "https://tikitaka.link/terms/tikitaka_terms_of_use.pdf",
+                    "https://tikitaka.chat/terms/tikitaka_terms_of_use.pdf",
                     "tikitaka_terms_of_use.pdf"
                   );
                 }}
@@ -95,7 +92,7 @@ const Footer = () => {
                 className="cursor-pointer hover:text-white"
                 onClick={() => {
                   downloadFile(
-                    "https://tikitaka.link/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf",
+                    "https://tikitaka.chat/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf",
                     "tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
                   );
                 }}

@@ -39,7 +39,7 @@ const useKakaoLogin = () => {
     async (code: string | string[] | null) => {
       const result = await axios({
         method: "GET",
-        url: `https://tikitakachatdata.com/user/kakaoDevLogin?code=${code}`,
+        url: `https://tikitakachatdata.com/user/kakaoLogin?code=${code}`,
       })
         .then((res) => {
           return res;

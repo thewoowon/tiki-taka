@@ -17,7 +17,7 @@ const Footer = () => {
   };
 
   return (
-    <FooterContainer className="min-h-[321px]">
+    <FooterContainer className="min-h-[411px]">
       <Wrapper>
         <Flex direction="column" gap={30} align="flex-start">
           <Image
@@ -58,9 +58,29 @@ const Footer = () => {
             </Typography>
           </Flex>
           <Flex gap={16} direction="column" align="flex-start">
-            <Typography fontSize={16} color={COLORS.GRAY200}>
-              스톤즈랩
-            </Typography>
+            <Typography fontSize={16}>스톤즈랩</Typography>
+            <Flex gap={4} direction="column" align="flex-start">
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                사업자 등록번호 : 225-52-00817 | 대표 : 정진협 |{" "}
+                <Link
+                  href={"http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2255200817"}
+                  style={{ color: COLORS.TIKI_GREEN }}
+                  target="_blank"
+                  className="cursor-pointer hover:text-white underline"
+                >
+                  사업자정보확인
+                </Link>
+              </Typography>
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                서울특별시 서초구 사평대로26길 62, 301호(반포동 삼익아트빌라)
+              </Typography>
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                통신판매업 신고번호 : 2023-서울서초-3908
+              </Typography>
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                개인정보보호책임자 : 정진협
+              </Typography>
+            </Flex>
             <Typography fontSize={14} color={COLORS.GRAY200}>
               contact us. <br />
               <Link
@@ -113,7 +133,7 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.footer`
-  min-height: 321px;
+  min-height: 411px;
   padding-top: 40px;
   background-color: ${COLORS.DARK_BG};
   position: relative;

@@ -105,6 +105,31 @@ const SideBar = () => {
             <Typography fontSize={14} color={COLORS.GRAY200}>
               스톤즈랩
             </Typography>
+            <Flex gap={4} direction="column" align="flex-start">
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                사업자 등록번호 : 225-52-00817
+              </Typography>
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                대표 : 정진협 |{" "}
+                <Link
+                  href={"http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2255200817"}
+                  style={{ color: COLORS.TIKI_GREEN }}
+                  target="_blank"
+                  className="cursor-pointer hover:text-white underline"
+                >
+                  사업자정보확인
+                </Link>
+              </Typography>
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                서울특별시 서초구 사평대로26길 62, 301호(반포동 삼익아트빌라)
+              </Typography>
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                통신판매업 신고번호 :<br /> 2023-서울서초-3908
+              </Typography>
+              <Typography fontSize={13} color={COLORS.GRAY200}>
+                개인정보보호책임자 : 정진협
+              </Typography>
+            </Flex>
             <Typography fontSize={12} color={COLORS.GRAY200}>
               contact us. <br />
               <Link

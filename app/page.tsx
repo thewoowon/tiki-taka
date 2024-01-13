@@ -116,6 +116,18 @@ export default function Home() {
             }}
           >
             티키타카 하러가기
+            <svg
+              width="25"
+              height="24"
+              viewBox="0 0 25 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.6724 12.0007L8.72266 7.05093L10.1369 5.63672L16.5008 12.0007L10.1369 18.3646L8.72266 16.9504L13.6724 12.0007Z"
+                fill="white"
+              />
+            </svg>
           </Button>
         </Box>
         <SubWrapper>
@@ -356,12 +368,14 @@ const Button = styled.button`
   padding: 18px 10px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 2px;
   border-radius: 5px;
   background: linear-gradient(270deg, #04e580 0.14%, #00aa5e 97.77%);
   color: ${COLORS.WHITE};
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  font-size: 18px;
+  font-weight: bold;
 
   &:hover {
     background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);

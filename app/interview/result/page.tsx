@@ -43,7 +43,7 @@ const InterviewResultPage = () => {
     queryFn: () => {
       return axios({
         method: "GET",
-        url: `https://tikitakachatdata.com/interview/getInterview?userId=${
+        url: `https://api.tikitaka.chat/interview/getInterview?userId=${
           userRecoilState.userId
         }&interviewId=${params.get("interviewId")}`,
         headers: {
@@ -63,7 +63,7 @@ const InterviewResultPage = () => {
       return axios({
         method: "GET",
         url:
-          "https://tikitakachatdata.com/interview/downloadInterview?userId=" +
+          "https://api.tikitaka.chat/interview/downloadInterview?userId=" +
           userRecoilState.userId +
           "&interviewId=" +
           interviewId,
@@ -94,7 +94,7 @@ const InterviewResultPage = () => {
     mutationFn: (interviewId: number) => {
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/interview/generateFeedback",
+        url: "https://api.tikitaka.chat/interview/generateFeedback",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -123,7 +123,7 @@ const InterviewResultPage = () => {
 
   useEffect(() => {
     const url =
-      "https://tikitakachatdata.com/interview/downloadInterview?userId=" +
+      "https://api.tikitaka.chat/interview/downloadInterview?userId=" +
       userRecoilState.userId +
       "&interviewId=" +
       params.get("interviewId");
@@ -624,7 +624,7 @@ const InterviewResultPage = () => {
                 // await axios({
                 //   method: "GET",
                 //   url:
-                //     "https://tikitakachatdata.com/interview/downloadInterview?userId=" +
+                //     "https://api.tikitaka.chat/interview/downloadInterview?userId=" +
                 //     userRecoilState.userId +
                 //     "&interviewId=" +
                 //     params.get("interviewId"),

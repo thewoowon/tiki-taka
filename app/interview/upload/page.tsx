@@ -47,7 +47,7 @@ const UploadPage = () => {
       return axios({
         method: "GET",
         url:
-          "https://tikitakachatdata.com/interview/getInterviewList?userId=" +
+          "https://api.tikitaka.chat/interview/getInterviewList?userId=" +
           userRecoilState.userId,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -87,7 +87,7 @@ const UploadPage = () => {
 
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/interview/insertInterview",
+        url: "https://api.tikitaka.chat/interview/insertInterview",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

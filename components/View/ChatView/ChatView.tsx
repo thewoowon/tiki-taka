@@ -84,7 +84,7 @@ const ChatView = ({
     mutationFn: (answerData: { qaId: number; answer: string }[]) => {
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/interview/insertAnswer",
+        url: "https://api.tikitaka.chat/interview/insertAnswer",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

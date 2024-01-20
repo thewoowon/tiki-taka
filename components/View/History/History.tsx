@@ -36,7 +36,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
       return axios({
         method: "GET",
         url:
-          "https://tikitakachatdata.com/interview/getInterviewList?userId=" +
+          "https://api.tikitaka.chat/interview/getInterviewList?userId=" +
           userRecoilState.userId,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -52,7 +52,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     mutationFn: (interviewId: number) => {
       return axios({
         method: "DELETE",
-        url: "https://tikitakachatdata.com/interview/deleteInterview",
+        url: "https://api.tikitaka.chat/interview/deleteInterview",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -79,7 +79,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     mutationFn: (interviewId: number) => {
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/interview/initQa",
+        url: "https://api.tikitaka.chat/interview/initQa",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

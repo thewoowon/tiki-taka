@@ -12,6 +12,11 @@ import BlackLogo from "@/public/svg/black-logo.svg";
 import RightArrow from "@/public/svg/right-arrow.svg";
 import Sunglasses from "@/public/svg/sunglasses.svg";
 import { useRouter } from "next/navigation";
+import { Pagination, Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -32,6 +37,11 @@ export default function Home() {
             alignItems: "center",
             flexDirection: "column",
             gap: "40px",
+            "@media screen and (max-width: 540px)": {
+              width: "350px",
+              height: "350px",
+              borderRadius: "350px",
+            },
           }}
         >
           <Typography
@@ -43,6 +53,10 @@ export default function Home() {
               lineHeight: " 54px",
               color: COLORS.WHITE,
               position: "relative",
+              "@media screen and (max-width: 540px)": {
+                fontSize: "24px",
+                lineHeight: "36px",
+              },
             }}
           >
             면접부터 합격까지 <br />
@@ -53,7 +67,7 @@ export default function Home() {
               viewBox="0 0 81 56"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute top-0 left-[25px]"
+              className="absolute top-0 left-[25px] max-[540px]:left-[0px] max-[540px]:top-[-10px] max-[540px]:scale-[0.7]"
             >
               <path
                 d="M65.2064 55.6585C65.8351 54.7485 66.476 53.8503 67.0885 52.9269C69.1382 49.8375 68.4297 50.6472 70.4591 47.5414C68.1539 47.8175 66.1069 48.0699 64.0585 48.306C56.2329 49.2071 48.4208 50.2938 40.579 50.9486C32.4775 51.6255 24.3923 51.2351 16.4707 48.9221C13.7422 48.1249 11.072 47.1272 8.67885 45.4763C7.12129 44.4015 5.56374 43.2094 4.29552 41.7634C0.146101 37.0335 -1.04234 31.4559 0.927582 25.1968C2.64332 19.7424 5.75032 15.3347 9.70775 11.6173C14.421 7.1902 19.936 4.49418 25.8755 2.78393C34.9977 0.156204 44.2511 -0.709313 53.6275 0.609005C59.4264 1.42405 64.9576 3.24564 69.9778 6.61715C71.6962 7.77216 73.3498 9.08751 74.8816 10.5246C80.0965 15.4208 82.015 21.6368 80.494 28.9781C79.8856 31.9101 79.0513 34.8244 77.9967 37.5976C75.6969 43.6473 74.2218 46.3182 70.6173 51.5529C69.4343 53.2691 70.0265 52.382 68.6744 53.9453C67.8267 54.9251 66.7978 55.6882 65.5661 56C65.4471 55.8857 65.3281 55.7714 65.2091 55.6571L65.2064 55.6585ZM38.2291 49.2502C41.5308 48.9384 47.3567 48.4366 53.1746 47.8265C58.9938 47.2163 64.8008 46.4844 70.6173 45.849C71.2365 45.7807 71.6611 45.6337 71.972 45.0072C74.6518 39.63 77.0449 34.1341 78.1887 28.071C79.3907 21.6991 77.8304 16.316 73.3809 12.0448C71.7828 10.5112 70.0197 9.13799 68.1985 7.93844C64.5466 5.53488 60.5392 4.07107 56.3654 3.23228C45.1137 0.971245 34.0729 2.04461 23.2674 6.05004C17.8687 8.05126 13.0581 11.2016 8.99928 15.636C6.21813 18.675 3.93453 22.1059 2.65144 26.2197C1.19664 30.8828 1.75368 35.2148 4.63488 39.103C6.10996 41.0938 7.81759 42.813 9.91732 43.9175C11.9373 44.979 14.0194 45.9618 16.1583 46.6744C22.5184 48.7944 29.0879 49.1849 38.2291 49.2531V49.2502Z"
@@ -66,7 +80,7 @@ export default function Home() {
               viewBox="0 0 36 35"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute top-[-20px] right-[10px]"
+              className="absolute top-[-20px] right-[10px] max-[540px]:right-[0px] max-[540px]:scale-[0.7]"
             >
               <g clipPath="url(#clip0_574_3345)">
                 <path
@@ -86,7 +100,7 @@ export default function Home() {
               viewBox="0 0 135 29"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute bottom-[-10px] right-[-15px]"
+              className="absolute bottom-[-10px] right-[-15px] max-[540px]:bottom-[-15px] max-[540px]:right-[-25px] max-[540px]:scale-[0.7]"
             >
               <g clipPath="url(#clip0_574_3341)">
                 <path
@@ -130,6 +144,7 @@ export default function Home() {
             </svg>
           </Button>
         </Box>
+
         <SubWrapper>
           <Box
             sx={{
@@ -294,7 +309,259 @@ export default function Home() {
             </Box>
           </Box>
         </SubWrapper>
+        <SwiperWrapper>
+          <Swiper
+            slidesPerView={1}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[Autoplay, Pagination]}
+            pagination={{
+              clickable: true,
+              // swiper-pagination-bullet-active
+              renderBullet: function (index, className) {
+                return `<span class="${className}">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6 0H4V2.58578L2.17158 0.75736L0.75736 2.17157L2.58579 4H0V6H2.58578L0.75736 7.8284L2.17158 9.24265L4 7.4142V10H6V7.4142L7.82845 9.24265L9.24265 7.82845L7.4142 6H10V4H7.4142L9.24265 2.17157L7.82845 0.757355L6 2.58578V0Z" fill="#00CE72"/>
+                  </svg>
+                  </span>`;
+              },
+            }}
+            className="mainSwiper"
+            centerInsufficientSlides={true}
+            centeredSlidesBounds={true}
+            centeredSlides={true}
+          >
+            <SwiperSlide>
+              <Box
+                sx={{
+                  minWidth: "350px",
+                  width: "350px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  gap: "30px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "16px",
+                  }}
+                >
+                  <Surprised />
+                  <ExclamationMark />
+                  <Timer />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    gap: "6px",
+                  }}
+                >
+                  <Typography
+                    fontSize={24}
+                    color={COLORS.WHITE}
+                    textAlign="center"
+                    fontWeight={700}
+                    lineHeight={"36px"}
+                  >
+                    면접 준비가 끝나는 시간 단 1분
+                  </Typography>
+                  <Typography
+                    fontSize={16}
+                    color={COLORS.GRAY100}
+                    textAlign="center"
+                    fontWeight={400}
+                    lineHeight={"24px"}
+                  >
+                    이력서와 채용 공고만 넣으면 준비 끝!
+                    <br />
+                    나머지는 티키타카에게 맡기세요
+                  </Typography>
+                </Box>
+              </Box>
+            </SwiperSlide>
+            <SwiperSlide>
+              <Box
+                sx={{
+                  minWidth: "350px",
+                  width: "350px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  gap: "30px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "16px",
+                  }}
+                >
+                  <Target />
+                  <WhiteDocument />
+                  <Question />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    gap: "6px",
+                  }}
+                >
+                  <Typography
+                    fontSize={24}
+                    color={COLORS.WHITE}
+                    textAlign="center"
+                    fontWeight={700}
+                    lineHeight={"36px"}
+                  >
+                    환상의 면접 케미를 위한 맞춤형 질문
+                  </Typography>
+                  <Typography
+                    fontSize={16}
+                    color={COLORS.GRAY100}
+                    textAlign="center"
+                    fontWeight={400}
+                    lineHeight={"24px"}
+                  >
+                    직무 경험, 지원하는 회사, 직무 정보로
+                    <br />
+                    면접 적중 예상 질문을 제공해요
+                  </Typography>
+                </Box>
+              </Box>
+            </SwiperSlide>
+            <SwiperSlide>
+              <Box
+                sx={{
+                  minWidth: "350px",
+                  width: "350px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  gap: "30px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "16px",
+                  }}
+                >
+                  <BlackLogo />
+                  <RightArrow />
+                  <Sunglasses />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    gap: "6px",
+                  }}
+                >
+                  <Typography
+                    fontSize={24}
+                    color={COLORS.WHITE}
+                    textAlign="center"
+                    fontWeight={700}
+                    lineHeight={"36px"}
+                  >
+                    AI가 알려주는 면접관의 속마음
+                  </Typography>
+                  <Typography
+                    fontSize={16}
+                    color={COLORS.GRAY100}
+                    textAlign="center"
+                    fontWeight={400}
+                    lineHeight={"24px"}
+                  >
+                    면접이 끝나면 면접관의 속마음과
+                    <br />
+                    면접관을 사로잡을 답변을 알려줘요
+                  </Typography>
+                </Box>
+              </Box>
+            </SwiperSlide>
+          </Swiper>
+        </SwiperWrapper>
+        <BottomButton
+          onClick={() => {
+            router.push("/interview");
+          }}
+        >
+          티키타카 하러가기
+          <svg
+            width="25"
+            height="24"
+            viewBox="0 0 25 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.6724 12.0007L8.72266 7.05093L10.1369 5.63672L16.5008 12.0007L10.1369 18.3646L8.72266 16.9504L13.6724 12.0007Z"
+              fill="white"
+            />
+          </svg>
+        </BottomButton>
       </Wrapper>
+      <Box
+        display={"flex"}
+        justifyContent={"flex-end"}
+        position={"absolute"}
+        bottom={0}
+        width={"100%"}
+        gap={"60px"}
+        paddingRight={"30px"}
+        sx={{
+          "@media (max-width: 1640px)": {
+            visibility: "hidden",
+          },
+        }}
+      >
+        <Typography fontSize={12} color={COLORS.GRAY200}>
+          사업자 등록번호 : 225-52-00817
+        </Typography>
+        <Typography fontSize={12} color={COLORS.GRAY200}>
+          대표 : 정진협 |{" "}
+          <Link
+            href={"http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2255200817"}
+            style={{ color: COLORS.TIKI_GREEN }}
+            target="_blank"
+            className="cursor-pointer hover:text-white underline"
+          >
+            사업자정보확인
+          </Link>
+        </Typography>
+        <Typography fontSize={12} color={COLORS.GRAY200}>
+          서울특별시 서초구 사평대로26길 62, 301호(반포동 삼익아트빌라)
+        </Typography>
+        <Typography fontSize={12} color={COLORS.GRAY200}>
+          통신판매업 신고번호 : 2023-서울서초-3908
+        </Typography>
+        <Typography fontSize={12} color={COLORS.GRAY200}>
+          개인정보보호책임자 : 정진협
+        </Typography>
+      </Box>
     </Main>
   );
 }
@@ -305,8 +572,8 @@ const Main = styled.main`
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-width: 350px;
   overflow: hidden;
-  gap: 170px;
   background: radial-gradient(
       137.47% 43.57% at 50% 50%,
       rgba(0, 0, 0, 0) 0%,
@@ -322,24 +589,12 @@ const Main = styled.main`
   background-size: cover;
   min-height: 100vh;
   height: 100vh;
-
+  position: relative;
   
   @media (max-width: 1440px) {
     gap: 100px;
   }
 
-  @media (max-width: 1024px) {
-    height: 100%;
-    display: block;
-  }
-
-  @media (max-width: 768px) {
-    gap: 40px;
-  }
-
-  @media (max-width: 425px) {
-    gap: 20px;
-  }
 `;
 
 const Wrapper = styled.div`
@@ -351,14 +606,6 @@ const Wrapper = styled.div`
 
   @media (max-width: 1440px) {
     scale: 0.8;
-  }
-
-  @media (max-width: 768px) {
-    scale: 0.8;
-  }
-
-  @media (max-width: 425px) {
-    scale: 0.6;
   }
 `;
 
@@ -380,6 +627,34 @@ const Button = styled.button`
   &:hover {
     background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);
   }
+
+  @media (max-width: 540px) {
+    display: none;
+  }
+`;
+
+const BottomButton = styled.button`
+  display: flex;
+  width: 330px;
+  padding: 18px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  border-radius: 5px;
+  background: linear-gradient(270deg, #04e580 0.14%, #00aa5e 97.77%);
+  color: ${COLORS.WHITE};
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-size: 18px;
+  font-weight: bold;
+
+  &:hover {
+    background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);
+  }
+
+  @media (min-width: 540px) {
+    display: none;
+  }
 `;
 
 const SubWrapper = styled.div`
@@ -389,6 +664,25 @@ const SubWrapper = styled.div`
   gap: 60px;
 
   @media (max-width: 1024px) {
-    flex-direction: column;
+    display: none;
+  }
+`;
+
+const SwiperWrapper = styled.div`
+  display: none;
+
+  @media (max-width: 1024px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+  }
+
+  .swiper-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
   }
 `;

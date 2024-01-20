@@ -42,6 +42,7 @@
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
     "sass": "^1.69.5",
+    "swiper": "^11.0.5",
     "xstate": "^5.2.1"
   },
   "devDependencies": {

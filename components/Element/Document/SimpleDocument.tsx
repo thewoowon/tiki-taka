@@ -39,7 +39,7 @@ const SimpleDocument = () => {
       return axios({
         method: "GET",
         url:
-          "https://tikitakachatdata.com/resume/getResumeList?userId=" +
+          "https://api.tikitaka.chat/resume/getResumeList?userId=" +
           userRecoilState.userId,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -60,7 +60,7 @@ const SimpleDocument = () => {
       formData.append("userId", userRecoilState.userId.toString());
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/resume/uploadResume",
+        url: "https://api.tikitaka.chat/resume/uploadResume",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -81,7 +81,7 @@ const SimpleDocument = () => {
     mutationFn: (resumeId: number) => {
       return axios({
         method: "DELETE",
-        url: "https://tikitakachatdata.com/resume/deleteResume",
+        url: "https://api.tikitaka.chat/resume/deleteResume",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

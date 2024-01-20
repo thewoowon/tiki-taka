@@ -64,6 +64,8 @@ export default function TemporaryDrawer() {
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
+      display={"flex"}
+      justifyContent={"center"}
     >
       <Ul>
         {CONSTANT_ROUTER.map((item) => (
@@ -87,25 +89,24 @@ export default function TemporaryDrawer() {
 
   return (
     <Container>
-      <HamburgerButton onClick={toggleDrawer("right", true)}>
+      <HamburgerButton onClick={toggleDrawer("top", true)}>
         <Hamburger />
       </HamburgerButton>
       <Drawer
-        anchor={"right"}
-        open={state["right"]}
-        onClose={toggleDrawer("right", false)}
+        anchor={"top"}
+        open={state["top"]}
+        onClose={toggleDrawer("top", false)}
         sx={{
           ".MuiDrawer-paper": {
             backgroundColor: COLORS.DARK_BG,
             marginTop: "60px",
             fontFamily: "Pretendard Variable",
             color: COLORS.WHITE,
-            width: "250px",
             padding: "30px",
           },
         }}
       >
-        {list("right")}
+        {list("top")}
       </Drawer>
     </Container>
   );
@@ -128,7 +129,7 @@ const Ul = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   list-style: none;
   gap: 30px;
 

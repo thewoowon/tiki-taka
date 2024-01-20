@@ -70,7 +70,7 @@ const InterviewChatPage = () => {
       return axios({
         method: "GET",
         url:
-          "https://tikitakachatdata.com/interview/getInterview?userId=" +
+          "https://api.tikitaka.chat/interview/getInterview?userId=" +
           userRecoilState.userId +
           "&interviewId=" +
           params.get("interviewId"),
@@ -89,7 +89,7 @@ const InterviewChatPage = () => {
     queryFn: () => {
       return axios({
         method: "GET",
-        url: `https://tikitakachatdata.com/interview/getQaList?userId=${
+        url: `https://api.tikitaka.chat/interview/getQaList?userId=${
           userRecoilState.userId
         }&interviewId=${params.get("interviewId")}`,
         headers: {
@@ -108,7 +108,7 @@ const InterviewChatPage = () => {
     mutationFn: (answerData: { qaId: number; answer: string }[]) => {
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/interview/insertAnswer",
+        url: "https://api.tikitaka.chat/interview/insertAnswer",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

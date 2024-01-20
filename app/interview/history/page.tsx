@@ -39,7 +39,7 @@ const HistoryPage = () => {
       // }
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/interview/insertInterview",
+        url: "https://api.tikitaka.chat/interview/insertInterview",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

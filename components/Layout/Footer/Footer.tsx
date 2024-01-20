@@ -130,6 +130,7 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.footer`
+  min-width: 350px;
   min-height: 411px;
   padding-top: 40px;
   background-color: ${COLORS.DARK_BG};

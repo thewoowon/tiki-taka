@@ -37,7 +37,7 @@ const Profile = () => {
     mutationFn: () =>
       axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/user/logout",
+        url: "https://api.tikitaka.chat/user/logout",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

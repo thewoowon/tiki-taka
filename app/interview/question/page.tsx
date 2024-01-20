@@ -44,7 +44,7 @@ const QuestionPage = () => {
       return axios({
         method: "GET",
         url:
-          "https://tikitakachatdata.com/interview/getInterviewList?userId=" +
+          "https://api.tikitaka.chat/interview/getInterviewList?userId=" +
           userRecoilState.userId,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -61,7 +61,7 @@ const QuestionPage = () => {
     queryFn: () => {
       return axios({
         method: "GET",
-        url: `https://tikitakachatdata.com/interview/getQaList?userId=${
+        url: `https://api.tikitaka.chat/interview/getQaList?userId=${
           userRecoilState.userId
         }&interviewId=${params.get("interviewId")}`,
         headers: {
@@ -82,7 +82,7 @@ const QuestionPage = () => {
         throw new Error("userRecoilState.userId is null");
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/interview/generateQa",
+        url: "https://api.tikitaka.chat/interview/generateQa",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

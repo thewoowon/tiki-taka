@@ -133,4 +133,12 @@ const Logo = styled.div`
   align-items: center;
   justify-content: center;
   gap: 6px;
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    scale: 0.9;
+  }
+
+  @media (max-width: 480px) {
+    scale: 0.8;
+  }
 `;

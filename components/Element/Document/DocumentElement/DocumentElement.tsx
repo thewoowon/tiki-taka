@@ -44,7 +44,7 @@ const DocumentElement = ({
       formData.append("userId", userRecoilState.userId.toString());
       return axios({
         method: "POST",
-        url: "https://tikitakachatdata.com/resume/uploadResume",
+        url: "https://api.tikitaka.chat/resume/uploadResume",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

@@ -46,7 +46,7 @@ export default function Home() {
             alignItems: "center",
             flexDirection: "column",
             gap: "40px",
-            "@media screen and (max-width: 540px)": {
+            "@media screen and (max-width: 1024px)": {
               width: "350px",
               height: "350px",
               borderRadius: "350px",
@@ -62,7 +62,7 @@ export default function Home() {
               lineHeight: " 54px",
               color: COLORS.WHITE,
               position: "relative",
-              "@media screen and (max-width: 540px)": {
+              "@media screen and (max-width: 1024px)": {
                 fontSize: "24px",
                 lineHeight: "36px",
               },
@@ -76,7 +76,7 @@ export default function Home() {
               viewBox="0 0 81 56"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute top-0 left-[25px] max-[540px]:left-[0px] max-[540px]:top-[-10px] max-[540px]:scale-[0.7]"
+              className="absolute top-0 left-[25px] max-[1024px]:left-[0px] max-[1024px]:top-[-10px] max-[1024px]:scale-[0.7]"
             >
               <path
                 d="M65.2064 55.6585C65.8351 54.7485 66.476 53.8503 67.0885 52.9269C69.1382 49.8375 68.4297 50.6472 70.4591 47.5414C68.1539 47.8175 66.1069 48.0699 64.0585 48.306C56.2329 49.2071 48.4208 50.2938 40.579 50.9486C32.4775 51.6255 24.3923 51.2351 16.4707 48.9221C13.7422 48.1249 11.072 47.1272 8.67885 45.4763C7.12129 44.4015 5.56374 43.2094 4.29552 41.7634C0.146101 37.0335 -1.04234 31.4559 0.927582 25.1968C2.64332 19.7424 5.75032 15.3347 9.70775 11.6173C14.421 7.1902 19.936 4.49418 25.8755 2.78393C34.9977 0.156204 44.2511 -0.709313 53.6275 0.609005C59.4264 1.42405 64.9576 3.24564 69.9778 6.61715C71.6962 7.77216 73.3498 9.08751 74.8816 10.5246C80.0965 15.4208 82.015 21.6368 80.494 28.9781C79.8856 31.9101 79.0513 34.8244 77.9967 37.5976C75.6969 43.6473 74.2218 46.3182 70.6173 51.5529C69.4343 53.2691 70.0265 52.382 68.6744 53.9453C67.8267 54.9251 66.7978 55.6882 65.5661 56C65.4471 55.8857 65.3281 55.7714 65.2091 55.6571L65.2064 55.6585ZM38.2291 49.2502C41.5308 48.9384 47.3567 48.4366 53.1746 47.8265C58.9938 47.2163 64.8008 46.4844 70.6173 45.849C71.2365 45.7807 71.6611 45.6337 71.972 45.0072C74.6518 39.63 77.0449 34.1341 78.1887 28.071C79.3907 21.6991 77.8304 16.316 73.3809 12.0448C71.7828 10.5112 70.0197 9.13799 68.1985 7.93844C64.5466 5.53488 60.5392 4.07107 56.3654 3.23228C45.1137 0.971245 34.0729 2.04461 23.2674 6.05004C17.8687 8.05126 13.0581 11.2016 8.99928 15.636C6.21813 18.675 3.93453 22.1059 2.65144 26.2197C1.19664 30.8828 1.75368 35.2148 4.63488 39.103C6.10996 41.0938 7.81759 42.813 9.91732 43.9175C11.9373 44.979 14.0194 45.9618 16.1583 46.6744C22.5184 48.7944 29.0879 49.1849 38.2291 49.2531V49.2502Z"
@@ -89,7 +89,7 @@ export default function Home() {
               viewBox="0 0 36 35"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute top-[-20px] right-[10px] max-[540px]:right-[0px] max-[540px]:scale-[0.7]"
+              className="absolute top-[-20px] right-[10px] max-[1024px]:right-[0px] max-[1024px]:scale-[0.7]"
             >
               <g clipPath="url(#clip0_574_3345)">
                 <path
@@ -109,7 +109,7 @@ export default function Home() {
               viewBox="0 0 135 29"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute bottom-[-10px] right-[-15px] max-[540px]:bottom-[-15px] max-[540px]:right-[-25px] max-[540px]:scale-[0.7]"
+              className="absolute bottom-[-10px] right-[-15px] max-[1024px]:bottom-[-15px] max-[1024px]:right-[-25px] max-[1024px]:scale-[0.7]"
             >
               <g clipPath="url(#clip0_574_3341)">
                 <path
@@ -841,14 +841,11 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 100px;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   @media (max-width: 768px) {
-    height: 100%;
-    min-height: 100%;
-
-    overflow: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
     gap: 60px;
   }
 
@@ -857,6 +854,9 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 1025px) {
+    height: 100%;
+    min-height: 100%;
+
     gap: 76px;
   }
 `;

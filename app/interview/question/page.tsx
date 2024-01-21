@@ -145,6 +145,9 @@ const QuestionPage = () => {
               color: COLORS.WHITE,
               lineHeight: "36px",
               textAlign: "center",
+              "@media (max-width: 1024px)": {
+                fontSize: "20px",
+              },
             }}
           >
             {
@@ -163,6 +166,9 @@ const QuestionPage = () => {
               color: COLORS.GRAY100,
               lineHeight: "24px",
               textAlign: "center",
+              "@media (max-width: 1024px)": {
+                fontSize: "14px",
+              },
             }}
           >
             연습이 더 필요하면, [마이페이지 {">"} 히스토리] 에서 질문을 확인 후
@@ -175,6 +181,12 @@ const QuestionPage = () => {
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
+            "@media (max-width: 1024px)": {
+              position: "absolute",
+              bottom: "10px",
+              width: "100%",
+              padding: "0 20px",
+            },
           }}
         >
           <Button
@@ -188,6 +200,9 @@ const QuestionPage = () => {
               lineHeight: "16px",
               border: `1px solid ${COLORS.TIKI_GREEN}`,
               color: COLORS.TIKI_GREEN,
+              "@media (max-width: 1024px)": {
+                display: "none",
+              },
             }}
             onClick={async () => {
               await handleCopyClipBoard();
@@ -201,6 +216,10 @@ const QuestionPage = () => {
               justifyContent: "center",
               alignItems: "center",
               gap: "30px",
+              "@media (max-width: 1024px)": {
+                width: "100%",
+                justifyContent: "space-between",
+              },
             }}
           >
             <Button

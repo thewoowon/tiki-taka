@@ -112,8 +112,6 @@ const ChatView = ({
   const onSubmit = async () => {
     const { chat } = getValues();
 
-    console.log(chat, "chatchatchatchat");
-
     if (chat.length < 20) {
       toast.error("20자 이상 입력해주세요.");
       return;

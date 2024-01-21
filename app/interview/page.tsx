@@ -25,24 +25,43 @@ const InterviewPage = () => {
         <Simulation01 />
         <div className="flex flex-col gap-[8px] pt-[10px]">
           <Typography
-            fontSize={24}
             color={COLORS.WHITE}
             textAlign="center"
             fontWeight={700}
+            className="sm:text-[24px] text-[20px]"
           >
             면접을 시작할까요?
           </Typography>
-          <Typography
-            fontSize={16}
-            color={COLORS.WHITE}
-            textAlign="center"
-            fontWeight={400}
-          >
-            면접은 중간에 그만 둘 수 있어요. 부담 없이 시작해 보세요.
-          </Typography>
+          <ScreenHideWrapper>
+            <Typography
+              color={COLORS.GRAY100}
+              textAlign="center"
+              fontWeight={400}
+              className="sm:text-[16px] text-[14px]"
+            >
+              면접은 중간에 그만 둘 수 있어요. 부담 없이 시작해 보세요.
+            </Typography>
+          </ScreenHideWrapper>
+          <ScreenShowWrapper>
+            <Typography
+              color={COLORS.GRAY100}
+              textAlign="center"
+              fontWeight={400}
+              className="sm:text-[16px] text-[14px]"
+            >
+              면접은 중간에 그만 둘 수 있어요.
+              <br />
+              부담 없이 시작해 보세요.
+            </Typography>
+          </ScreenShowWrapper>
         </div>
-        <Button onClick={handleStartInterview}>면접 시작하기</Button>
+        <ScreenHideWrapper>
+          <Button onClick={handleStartInterview}>면접 시작하기</Button>
+        </ScreenHideWrapper>
       </Box>
+      <ScreenHeightWrapper>
+        <Button onClick={handleStartInterview}>면접 시작하기</Button>
+      </ScreenHeightWrapper>
     </Container>
   );
 };
@@ -56,6 +75,7 @@ const Container = styled.main`
   align-items: center;
   height: 100vh;
   width: 100%;
+  min-width: 393px;
 `;
 
 const Box = styled.div`
@@ -79,5 +99,35 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
     background-color: ${COLORS.TIKI_GREEN};
+  }
+
+  @media (max-width: 768px) {
+    width: 353px;
+  }
+`;
+
+const ScreenHeightWrapper = styled.div`
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+const ScreenHideWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ScreenShowWrapper = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
   }
 `;

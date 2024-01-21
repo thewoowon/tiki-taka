@@ -140,6 +140,10 @@ const FooterContainer = styled.footer`
   @media (max-width: 1640px) {
     display: block;
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Logo = styled.div`

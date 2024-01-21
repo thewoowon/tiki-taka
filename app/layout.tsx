@@ -183,9 +183,9 @@ export default function RootLayout({
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
             <div className="min-h-screen flex">{children}</div>
-            <Header />
+            {/* <Header /> */}
             <SideBar />
-            <Footer />
+            {/* <Footer /> */}
             <Analytics />
           </RecoilRoot>
           <Toaster />

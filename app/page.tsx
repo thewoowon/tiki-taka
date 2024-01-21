@@ -17,12 +17,21 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
+import { Header } from "@/components/Layout";
 
 export default function Home() {
   const router = useRouter();
 
+  const downloadFile = (url: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  };
+
   return (
     <Main>
+      <Header />
       <Wrapper>
         <Box
           sx={{
@@ -155,6 +164,9 @@ export default function Home() {
               alignItems: "center",
               flexDirection: "column",
               gap: "30px",
+              "@media (max-width: 1280px)": {
+                gap: "24px",
+              },
             }}
           >
             <Box
@@ -184,6 +196,11 @@ export default function Home() {
                 textAlign="center"
                 fontWeight={700}
                 lineHeight={"36px"}
+                sx={{
+                  "@media (max-width: 1280px)": {
+                    fontSize: "20px",
+                  },
+                }}
               >
                 면접 준비가 끝나는 시간 단 1분
               </Typography>
@@ -209,6 +226,9 @@ export default function Home() {
               alignItems: "center",
               flexDirection: "column",
               gap: "30px",
+              "@media (max-width: 1280px)": {
+                gap: "24px",
+              },
             }}
           >
             <Box
@@ -238,6 +258,11 @@ export default function Home() {
                 textAlign="center"
                 fontWeight={700}
                 lineHeight={"36px"}
+                sx={{
+                  "@media (max-width: 1280px)": {
+                    fontSize: "20px",
+                  },
+                }}
               >
                 환상의 면접 케미를 위한 맞춤형 질문
               </Typography>
@@ -263,6 +288,9 @@ export default function Home() {
               alignItems: "center",
               flexDirection: "column",
               gap: "30px",
+              "@media (max-width: 1280px)": {
+                gap: "24px",
+              },
             }}
           >
             <Box
@@ -292,6 +320,11 @@ export default function Home() {
                 textAlign="center"
                 fontWeight={700}
                 lineHeight={"36px"}
+                sx={{
+                  "@media (max-width: 1280px)": {
+                    fontSize: "20px",
+                  },
+                }}
               >
                 AI가 알려주는 면접관의 속마음
               </Typography>
@@ -504,6 +537,250 @@ export default function Home() {
             </SwiperSlide>
           </Swiper>
         </SwiperWrapper>
+        <Box
+          sx={{
+            display: "none",
+            color: COLORS.WHITE,
+            "@media (max-width: 1024px)": {
+              display: "block",
+            },
+          }}
+        >
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            gap={"6px"}
+            marginBottom={"6px"}
+          >
+            <Typography
+              fontSize={11}
+              color={COLORS.GRAY200}
+              className="cursor-pointer hover:text-white"
+              onClick={() => {
+                downloadFile(
+                  "https://tikitaka.chat/terms/tikitaka_terms_of_use.pdf",
+                  "tikitaka_terms_of_use.pdf"
+                );
+              }}
+            >
+              이용약관
+            </Typography>
+            <Typography fontSize={11} color={COLORS.GRAY200}>
+              |
+            </Typography>
+            <Typography
+              fontSize={11}
+              fontWeight={700}
+              color={COLORS.GRAY200}
+              className="cursor-pointer hover:text-white"
+              onClick={() => {
+                downloadFile(
+                  "https://tikitaka.chat/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf",
+                  "tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
+                );
+              }}
+            >
+              개인정보처리방침
+            </Typography>
+          </Box>
+          <Typography fontSize={12} color={COLORS.GRAY200}>
+            사업자 등록번호 : 225-52-00817
+          </Typography>
+          <Typography fontSize={12} color={COLORS.GRAY200}>
+            대표 : 정진협 |{" "}
+            <Link
+              href={"http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2255200817"}
+              style={{ color: COLORS.TIKI_GREEN }}
+              target="_blank"
+              className="cursor-pointer hover:text-white underline"
+            >
+              사업자정보확인
+            </Link>
+          </Typography>
+          <Typography fontSize={12} color={COLORS.GRAY200}>
+            서울특별시 서초구 사평대로26길 62, 301호(반포동 삼익아트빌라)
+          </Typography>
+          <Typography fontSize={12} color={COLORS.GRAY200}>
+            통신판매업 신고번호 : 2023-서울서초-3908
+          </Typography>
+          <Typography fontSize={12} color={COLORS.GRAY200}>
+            개인정보보호책임자 : 정진협
+          </Typography>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            marginTop={"20px"}
+          >
+            <Typography fontSize={12} color={COLORS.GRAY200}>
+              스톤즈랩
+            </Typography>
+            <Typography fontSize={12} color={COLORS.GRAY200}>
+              <Link
+                href={"mailto:chat.tikitaka@gmail.com"}
+                className="cursor-pointer hover:text-white"
+              >
+                chat.tikitaka
+                <span style={{ color: COLORS.TIKI_GREEN }}>@</span>
+                gmail.com
+              </Link>
+            </Typography>
+          </Box>
+        </Box>
+      </Wrapper>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        position={"absolute"}
+        bottom={0}
+        width={"100%"}
+        paddingRight={"30px"}
+        paddingBottom={"20px"}
+        sx={{
+          "@media (max-width: 1024px)": {
+            display: "none",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: "none",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "13px",
+            gap: "13px",
+            "@media (max-width: 1640px)": {
+              display: "flex",
+              color: COLORS.WHITE,
+            },
+            "@media (max-width: 1025px)": {
+              gap: "20px",
+            },
+          }}
+        >
+          <Box display={"flex"} alignItems={"center"} gap={"6px"}>
+            <svg
+              width="16"
+              height="17"
+              viewBox="0 0 16 17"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.00065 15.1666C7.02572 15.1666 8.66732 13.525 8.66732 11.5C8.66732 9.47491 7.02572 7.83331 5.00065 7.83331C2.9756 7.83331 1.33398 9.47491 1.33398 11.5C1.33398 12.1678 1.51254 12.794 1.82452 13.3333L1.51732 14.9833L3.16732 14.6761C3.70664 14.9881 4.33279 15.1666 5.00065 15.1666Z"
+                stroke="white"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M10.1881 12.4318C10.839 12.327 11.4504 12.1043 11.9999 11.7864L14.3999 12.2333L13.953 9.83331C14.4068 9.04885 14.6665 8.13805 14.6665 7.16665C14.6665 4.22113 12.2787 1.83331 9.33321 1.83331C6.64829 1.83331 4.42676 3.8173 4.05469 6.39921"
+                stroke="white"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <Typography fontSize={12} color={COLORS.GRAY200}>
+              <Link
+                href={"https://open.kakao.com/o/sUonPQYf"}
+                className="cursor-pointer hover:text-white"
+                target="_blank"
+              >
+                고객센터
+              </Link>
+            </Typography>
+          </Box>
+          <Typography fontSize={12} color={COLORS.GRAY200}>
+            스톤즈랩
+          </Typography>
+          <Typography fontSize={12} color={COLORS.GRAY200}>
+            <Link
+              href={"mailto:chat.tikitaka@gmail.com"}
+              className="cursor-pointer hover:text-white"
+            >
+              chat.tikitaka
+              <span style={{ color: COLORS.TIKI_GREEN }}>@</span>
+              gmail.com
+            </Link>
+          </Typography>
+          <Box display={"flex"} alignItems={"center"} gap={"6px"}>
+            <Typography
+              fontSize={11}
+              color={COLORS.GRAY200}
+              className="cursor-pointer hover:text-white"
+              onClick={() => {
+                downloadFile(
+                  "https://tikitaka.chat/terms/tikitaka_terms_of_use.pdf",
+                  "tikitaka_terms_of_use.pdf"
+                );
+              }}
+            >
+              이용약관
+            </Typography>
+            <Typography fontSize={11} color={COLORS.GRAY200}>
+              |
+            </Typography>
+            <Typography
+              fontSize={11}
+              fontWeight={700}
+              color={COLORS.GRAY200}
+              className="cursor-pointer hover:text-white"
+              onClick={() => {
+                downloadFile(
+                  "https://tikitaka.chat/terms/tikitaka_consent_to_collection_and_use_of_personal_information.pdf",
+                  "tikitaka_consent_to_collection_and_use_of_personal_information.pdf"
+                );
+              }}
+            >
+              개인정보처리방침
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          display={"flex"}
+          justifyContent={"flex-end"}
+          gap={"30px"}
+          sx={{
+            "@media (max-width: 1640px)": {
+              justifyContent: "center",
+              gap: "0px",
+            },
+            "@media (max-width: 1280px)": {
+              justifyContent: "center",
+              flexDirection: "column",
+              gap: "0px",
+            },
+          }}
+        >
+          <Box display={"flex"} justifyContent={"center"} gap={"30px"}>
+            <Typography fontSize={12} color={COLORS.GRAY400}>
+              사업자 등록번호 : 225-52-00817
+            </Typography>
+            <Typography fontSize={12} color={COLORS.GRAY400}>
+              대표 : 정진협 |{" "}
+              <Link
+                href={"http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2255200817"}
+                style={{ color: COLORS.TIKI_GREEN }}
+                target="_blank"
+                className="cursor-pointer hover:text-white underline"
+              >
+                사업자정보확인
+              </Link>
+            </Typography>
+            <Typography fontSize={12} color={COLORS.GRAY400}>
+              서울특별시 서초구 사평대로26길 62, 301호(반포동 삼익아트빌라)
+            </Typography>
+          </Box>
+          <Box display={"flex"} justifyContent={"center"} gap={"30px"}>
+            <Typography fontSize={12} color={COLORS.GRAY400}>
+              통신판매업 신고번호 : 2023-서울서초-3908
+            </Typography>
+            <Typography fontSize={12} color={COLORS.GRAY400}>
+              개인정보보호책임자 : 정진협
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <ScreenHeightWrapper>
         <BottomButton
           onClick={() => {
             router.push("/interview");
@@ -523,45 +800,7 @@ export default function Home() {
             />
           </svg>
         </BottomButton>
-      </Wrapper>
-      <Box
-        display={"flex"}
-        justifyContent={"flex-end"}
-        position={"absolute"}
-        bottom={0}
-        width={"100%"}
-        gap={"60px"}
-        paddingRight={"30px"}
-        sx={{
-          "@media (max-width: 1640px)": {
-            visibility: "hidden",
-          },
-        }}
-      >
-        <Typography fontSize={12} color={COLORS.GRAY200}>
-          사업자 등록번호 : 225-52-00817
-        </Typography>
-        <Typography fontSize={12} color={COLORS.GRAY200}>
-          대표 : 정진협 |{" "}
-          <Link
-            href={"http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2255200817"}
-            style={{ color: COLORS.TIKI_GREEN }}
-            target="_blank"
-            className="cursor-pointer hover:text-white underline"
-          >
-            사업자정보확인
-          </Link>
-        </Typography>
-        <Typography fontSize={12} color={COLORS.GRAY200}>
-          서울특별시 서초구 사평대로26길 62, 301호(반포동 삼익아트빌라)
-        </Typography>
-        <Typography fontSize={12} color={COLORS.GRAY200}>
-          통신판매업 신고번호 : 2023-서울서초-3908
-        </Typography>
-        <Typography fontSize={12} color={COLORS.GRAY200}>
-          개인정보보호책임자 : 정진협
-        </Typography>
-      </Box>
+      </ScreenHeightWrapper>
     </Main>
   );
 }
@@ -594,7 +833,6 @@ const Main = styled.main`
   @media (max-width: 1440px) {
     gap: 100px;
   }
-
 `;
 
 const Wrapper = styled.div`
@@ -604,8 +842,22 @@ const Wrapper = styled.div`
   justify-content: center;
   gap: 100px;
 
-  @media (max-width: 1440px) {
-    scale: 0.8;
+  @media (max-width: 768px) {
+    height: 100%;
+    min-height: 100%;
+
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    gap: 60px;
+  }
+
+  @media (max-width: 1640px) {
+    gap: 84px;
+  }
+
+  @media (max-width: 1025px) {
+    gap: 76px;
   }
 `;
 
@@ -628,14 +880,14 @@ const Button = styled.button`
     background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);
   }
 
-  @media (max-width: 540px) {
+  @media (max-width: 1024px) {
     display: none;
   }
 `;
 
 const BottomButton = styled.button`
   display: flex;
-  width: 330px;
+  width: 353px;
   padding: 18px 10px;
   justify-content: center;
   align-items: center;
@@ -651,10 +903,6 @@ const BottomButton = styled.button`
   &:hover {
     background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);
   }
-
-  @media (min-width: 540px) {
-    display: none;
-  }
 `;
 
 const SubWrapper = styled.div`
@@ -662,6 +910,10 @@ const SubWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 60px;
+
+  @media (max-width: 1640px) {
+    gap: 30px;
+  }
 
   @media (max-width: 1024px) {
     display: none;
@@ -684,5 +936,17 @@ const SwiperWrapper = styled.div`
     align-items: center;
     gap: 10px;
     margin-top: 20px;
+  }
+`;
+
+const ScreenHeightWrapper = styled.div`
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    display: flex;
+    justify-content: center;
   }
 `;

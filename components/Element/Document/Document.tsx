@@ -130,6 +130,7 @@ const Document = () => {
               color: COLORS.WHITE,
               lineHeight: "36px",
             }}
+            className="sm:text-[24px] text-[20px]"
           >
             어떤 이력서로 면접을 볼까요?
           </Typography>
@@ -151,20 +152,40 @@ const Document = () => {
               color: COLORS.WHITE,
               lineHeight: "36px",
             }}
+            className="sm:text-[24px] text-[20px]"
           >
             원하는 이력서를 업로드 해주세요
           </Typography>
-          <Typography
-            sx={{
-              fontSize: "16px",
-              fontWeight: 400,
-              color: COLORS.GRAY100,
-              lineHeight: "24px",
-            }}
-          >
-            양식은 상관 없어요. 준비된 이력서를{" "}
-            <span className="text-[#00CE72]">PDF 5장 이하</span>로 올려 주세요.
-          </Typography>
+          <ScreenHideWrapper>
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: 400,
+                color: COLORS.GRAY100,
+                lineHeight: "24px",
+              }}
+              className="sm:text-[16px] text-[14px]"
+            >
+              양식은 상관 없어요. 준비된 이력서를{" "}
+              <span className="text-[#00CE72]">PDF 5장 이하</span>로 올려
+              주세요.
+            </Typography>
+          </ScreenHideWrapper>
+          <ScreenShowWrapper>
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: 400,
+                color: COLORS.GRAY100,
+                lineHeight: "24px",
+              }}
+              className="sm:text-[16px] text-[14px]"
+            >
+              준비된 이력서를{" "}
+              <span className="text-[#00CE72]">PDF 5장 이하</span>로 올려
+              주세요.
+            </Typography>
+          </ScreenShowWrapper>
         </Box>
       )}
       <Box
@@ -240,22 +261,41 @@ const Document = () => {
                   lineHeight: "21px",
                   color: COLORS.GRAY100,
                 }}
+                className="sm:text-[14px] text-[12px]"
               >
                 * 파일은 최대 <span className="text-[#00CE72]">50MB</span> 까지
                 업로드 하실 수 있어요.
               </Typography>
-              <Typography
-                sx={{
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  lineHeight: "21px",
-                  color: COLORS.GRAY100,
-                }}
-              >
-                * 이력서 및 경력기술서는 자유양식이며,{" "}
-                <span className="text-[#00CE72]">한개의 파일로 통합</span>하여
-                올려주세요.
-              </Typography>
+              <ScreenHideWrapper>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "21px",
+                    color: COLORS.GRAY100,
+                  }}
+                  className="sm:text-[14px] text-[12px]"
+                >
+                  * 이력서 및 경력기술서는 자유양식이며,{" "}
+                  <span className="text-[#00CE72]">한개의 파일로 통합</span>해서
+                  올려주세요.
+                </Typography>
+              </ScreenHideWrapper>
+              <ScreenShowWrapper>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    lineHeight: "21px",
+                    color: COLORS.GRAY100,
+                  }}
+                  className="sm:text-[14px] text-[12px]"
+                >
+                  * 이력서는 자유양식이며,{" "}
+                  <span className="text-[#00CE72]">한개의 파일로 통합</span>해서
+                  올려주세요.
+                </Typography>
+              </ScreenShowWrapper>
             </Box>
           </>
         )}
@@ -267,6 +307,16 @@ const Document = () => {
               alignItems: "center",
               justifyContent: "space-between",
               marginTop: "30px",
+              minWidth: "393px",
+              "@media (max-width: 768px)": {
+                position: "absolute",
+                bottom: "10px",
+                width: "100%",
+                padding: "0 20px",
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              },
             }}
           >
             <Button
@@ -280,7 +330,7 @@ const Document = () => {
                 backgroundColor: COLORS.DARK_BG + " !important",
                 color: COLORS.WHITE,
                 fontSize: "16px",
-                fontWeight: 600,
+                fontWeight: 500,
                 lineHeight: "16px",
               }}
               onClick={() => {
@@ -301,7 +351,7 @@ const Document = () => {
                 backgroundColor: COLORS.TIKI_GREEN + " !important",
                 color: COLORS.WHITE,
                 fontSize: "16px",
-                fontWeight: 600,
+                fontWeight: 500,
                 lineHeight: "16px",
               }}
               onClick={() => {
@@ -430,4 +480,19 @@ const Container = styled.main`
   width: 100%;
   gap: 40px;
   margin: 0 auto;
+  padding: 0 20px;
+  min-width: 393px;
+`;
+
+const ScreenHideWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ScreenShowWrapper = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `;

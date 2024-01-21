@@ -66,6 +66,10 @@ const ImageUploadElement = ({
       onMouseLeave={() => {
         divRef.current?.style.setProperty("opacity", "0");
       }}
+      onClick={(e) => {
+        e.stopPropagation();
+        inputRef.current?.click();
+      }}
     >
       <Typography
         sx={{
@@ -82,7 +86,8 @@ const ImageUploadElement = ({
       </Typography>
 
       <Box
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           inputRef.current?.click();
         }}
         sx={{

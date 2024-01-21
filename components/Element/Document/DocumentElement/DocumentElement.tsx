@@ -72,6 +72,7 @@ const DocumentElement = ({
     <Box
       onClick={() => {
         inputRef.current?.click();
+        onSelected?.();
       }}
       sx={{
         display: "flex",
@@ -108,6 +109,11 @@ const DocumentElement = ({
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
+            "& svg": {
+              '&:hover circle[fill="#3E3E3E"]': {
+                fill: COLORS.TIKI_GREEN,
+              },
+            },
           }}
         >
           {isSelected ? (

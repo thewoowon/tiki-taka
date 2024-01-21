@@ -129,19 +129,30 @@ const UploadPage = () => {
               color={COLORS.WHITE}
               textAlign="center"
               fontWeight={700}
+              className="sm:text-[24px] text-[20px]"
             >
               어떤 회사의 직무에 지원하시나요?
             </Typography>
             <Typography
               fontSize={16}
-              color={COLORS.WHITE}
+              color={COLORS.GRAY100}
               textAlign="center"
               fontWeight={400}
+              className="sm:text-[16px] text-[14px]"
             >
               텍스트나 이미지 형태의 채용 공고를 넣을 수 있어요.
             </Typography>
           </Box>
-          <Box className="flex flex-row gap-[30px] pt-[10px]">
+          <Box
+            className="flex flex-row gap-[30px] pt-[10px]"
+            sx={{
+              "@media (max-width: 768px)": {
+                flexDirection: "column !important",
+                gap: "10px !important",
+                width: "100%",
+              },
+            }}
+          >
             <Button
               sx={{
                 width: "300px",
@@ -156,6 +167,9 @@ const UploadPage = () => {
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                "@media (max-width: 768px)": {
+                  width: "353px",
+                },
               }}
               onClick={() => {
                 setTextOrImage("text");
@@ -220,6 +234,9 @@ const UploadPage = () => {
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                "@media (max-width: 768px)": {
+                  width: "353px",
+                },
               }}
               onClick={() => {
                 setTextOrImage("image");
@@ -277,8 +294,21 @@ const UploadPage = () => {
               color={COLORS.WHITE}
               textAlign="center"
               fontWeight={700}
+              className="sm:text-[24px] text-[20px]"
             >
               채용 공고 내용을 입력해 주세요
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: 400,
+                color: COLORS.GRAY100,
+                lineHeight: "24px",
+              }}
+              className="sm:text-[16px] text-[14px]"
+            >
+              회사명, 팀, 직무, 주요업무, 자격요건, 우대사항 6가지 내용 중 입력
+              가능한 내용을 입력해 주세요.
             </Typography>
           </Box>
           <Box
@@ -324,6 +354,9 @@ const UploadPage = () => {
               justifyContent: "flex-end",
               alignItems: "center",
               gap: "30px",
+              "@media (max-width: 768px)": {
+                display: "none",
+              },
             }}
           >
             <Button
@@ -400,6 +433,7 @@ const UploadPage = () => {
                 color: COLORS.WHITE,
                 lineHeight: "36px",
               }}
+              className="sm:text-[24px] text-[20px]"
             >
               채용 공고 내용 캡처하여 업로드 해주세요
             </Typography>
@@ -410,6 +444,7 @@ const UploadPage = () => {
                 color: COLORS.GRAY100,
                 lineHeight: "24px",
               }}
+              className="sm:text-[16px] text-[14px]"
             >
               본인이 해당하는 직무 부분만 캡쳐하여 넣어 주세요.
             </Typography>
@@ -426,6 +461,9 @@ const UploadPage = () => {
               justifyContent: "flex-end",
               alignItems: "center",
               gap: "30px",
+              "@media (max-width: 768px)": {
+                display: "none",
+              },
             }}
           >
             <Button
@@ -544,6 +582,87 @@ const UploadPage = () => {
           </Box>
         </Box>
       </Modal>
+      <Box
+        sx={{
+          width: "100%",
+          display: "none",
+          position: "absolute",
+          bottom: "0px",
+          "@media (max-width: 768px)": {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          },
+          padding: "0 20px 10px 20px",
+          minWidth: "393px",
+        }}
+      >
+        <Button
+          sx={{
+            display: "flex",
+            padding: "18px 24px",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+            flexShrink: 0,
+            backgroundColor: COLORS.DARK_BG + " !important",
+            color: COLORS.WHITE,
+            fontSize: "16px",
+            fontWeight: 600,
+            lineHeight: "16px",
+          }}
+          onClick={() => {
+            setTextOrImage(textOrImage === "text" ? "image" : "text");
+          }}
+        >
+          {textOrImage === "text" ? "이미지로 넣을래요" : "텍스트로 넣을래요"}
+        </Button>
+        <Button
+          sx={{
+            display: "flex",
+            padding: "18px 24px",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+            flexShrink: 0,
+            backgroundColor: COLORS.TIKI_GREEN + " !important",
+            color: COLORS.WHITE,
+            fontSize: "16px",
+            fontWeight: 600,
+            lineHeight: "16px",
+          }}
+          onClick={() => {
+            if (textOrImage === "text") {
+              // 입력한 텍스트 validation
+              // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
+              if (content.length === 0) {
+                toast.error("텍스트를 입력해주세요.");
+                return;
+              }
+              if (data.data.length >= 5) {
+                router.push("/interview/history");
+                return;
+              }
+            } else {
+              // 입력한 이미지 validation
+              // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
+              if (!file) {
+                toast.error("이미지를 업로드 해주세요.");
+                return;
+              }
+
+              if (data.data.length >= 5) {
+                router.push("/interview/history");
+                return;
+              }
+            }
+
+            insertInterviewMutation.mutate();
+          }}
+        >
+          다음
+        </Button>
+      </Box>
     </Container>
   );
 };
@@ -557,6 +676,8 @@ const Container = styled.main`
   align-items: center;
   height: 100vh;
   width: 100%;
+  padding: 0 20px;
+  min-width: 393px;
 `;
 
 const TextArea = styled.textarea`
@@ -569,4 +690,17 @@ const TextArea = styled.textarea`
   background: transparent;
   color: ${COLORS.WHITE};
   font-size: 16px;
+`;
+
+const ScreenHideWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ScreenShowWrapper = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `;

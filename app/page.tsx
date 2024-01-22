@@ -16,6 +16,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import Link from "next/link";
 import { Header } from "@/components/Layout";
 
@@ -47,9 +48,9 @@ export default function Home() {
             flexDirection: "column",
             gap: "40px",
             "@media screen and (max-width: 1024px)": {
-              width: "350px",
-              height: "350px",
-              borderRadius: "350px",
+              width: "300px",
+              height: "300px",
+              borderRadius: "300px",
             },
           }}
         >
@@ -351,17 +352,7 @@ export default function Home() {
               disableOnInteraction: false,
             }}
             modules={[Autoplay, Pagination]}
-            pagination={{
-              clickable: true,
-              // swiper-pagination-bullet-active
-              renderBullet: function (index, className) {
-                return `<span class="${className}">
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6 0H4V2.58578L2.17158 0.75736L0.75736 2.17157L2.58579 4H0V6H2.58578L0.75736 7.8284L2.17158 9.24265L4 7.4142V10H6V7.4142L7.82845 9.24265L9.24265 7.82845L7.4142 6H10V4H7.4142L9.24265 2.17157L7.82845 0.757355L6 2.58578V0Z" fill="#00CE72"/>
-                  </svg>
-                  </span>`;
-              },
-            }}
+            pagination={true}
             className="mainSwiper"
             centerInsufficientSlides={true}
             centeredSlidesBounds={true}
@@ -840,23 +831,26 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 100px;
-  -ms-overflow-style: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
   scrollbar-width: none;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
 
   @media (max-width: 768px) {
     gap: 60px;
   }
-
-  @media (max-width: 1640px) {
-    gap: 84px;
+  @media (max-width: 1024px) {
+    padding-top: 130px;
+    padding-bottom: 130px;
+    justify-content: flex-start;
+    gap: 70px;
   }
-
-  @media (max-width: 1025px) {
-    height: 100%;
-    min-height: 100%;
-
-    gap: 76px;
+  @media (min-width: 1025px) {
+    gap: 84px;
   }
 `;
 
@@ -898,6 +892,7 @@ const BottomButton = styled.button`
   transition: all 0.3s ease-in-out;
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 10px;
 
   &:hover {
     background: linear-gradient(270deg, #04e280 0.14%, #00ca5e 97.77%);
@@ -929,20 +924,36 @@ const SwiperWrapper = styled.div`
     width: 350px;
   }
 
-  .swiper-pagination {
+  .mainSwiper {
+    height: 200px;
+  }
+
+  .swiper-pagination-bullet {
+    background-color: ${COLORS.GRAY400};
+    width: 6px;
+    height: 6px;
+    opacity: 1;
+    margin: 0 6px !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: transparent !important;
+  }
+
+  .swiper-pagination-bullet-active::after {
+    content: url("/svg/main-swiper-active.svg");
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    margin-top: 20px;
   }
 `;
 
 const ScreenHeightWrapper = styled.div`
   display: none;
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
   width: 100%;
+  background-color: #000;
 
   @media (max-width: 1024px) {
     display: flex;

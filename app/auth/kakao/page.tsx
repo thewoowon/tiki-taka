@@ -1,5 +1,6 @@
 "use client";
 import KakaoButton from "@/components/Element/Button/Kakao/KakaoButton";
+import { ShallowHeader } from "@/components/Layout";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
@@ -32,6 +33,7 @@ const KakaoLoginPage = () => {
           </LinkText>
         </div> */}
       </Box>
+      <ShallowHeader />
     </Container>
   );
 };

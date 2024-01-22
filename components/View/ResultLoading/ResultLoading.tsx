@@ -60,4 +60,5 @@ const Container = styled.main`
   width: 100%;
   gap: 40px;
   margin: 0 auto;
+  padding: 66px 20px;
 `;

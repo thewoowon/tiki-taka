@@ -35,6 +35,10 @@ const Simulation01 = () => {
         style={{
           display: loading ? "block" : "none",
         }}
+        sx={{
+          borderRadius: "10px",
+          backgroundColor: "#2D2D2D",
+        }}
       />
     </div>
   );

@@ -2,19 +2,33 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
-import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
-import { TikitakaText } from "@/components/svg";
 import { COLORS } from "@/style/color";
 import { useRecoilState } from "recoil";
 import { loginState } from "@/states";
+import { Box, SxProps } from "@mui/material";
 import TemporaryDrawer from "@/components/Element/Drawer";
+
+type ShallowHeaderProps = {
+  sx?: SxProps;
+  left?: React.ReactNode;
+  center?: React.ReactNode;
+  right?: React.ReactNode;
+  top?: React.ReactNode;
+  bottom?: React.ReactNode;
+};
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
   { pathname: "/history", label: "히스토리" },
 ];
 
-const ShallowHeader = () => {
+const ShallowHeader = ({
+  left,
+  center,
+  right,
+  top,
+  bottom,
+}: ShallowHeaderProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const [pathObj, setPathObj] = useState<{ pathname: string; label: string }>({
@@ -31,40 +45,84 @@ const ShallowHeader = () => {
       setPathObj({ pathname: "/auth/kakao", label: "로그인" });
     }
   }, [isLoggedIn]);
+
   return (
     <Container>
+      {top && <Box>{top}</Box>}
       <Wrapper>
-        <Logo
-          className="cursor-pointer"
-          onClick={() => {
-            router.push("/");
+        {left ? (
+          <Box>{left}</Box>
+        ) : (
+          <Box
+            onClick={() => {
+              // 뒤로가기
+              router.back();
+            }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.82843 10.9999H21V12.9999H6.82843L13.1924 19.3638L11.7782 20.778L3 11.9999L11.7782 3.22168L13.1924 4.63589L6.82843 10.9999Z"
+                fill="white"
+              />
+            </svg>
+          </Box>
+        )}
+        <Box>{center}</Box>
+
+        <Box>
+          {right ? (
+            right
+          ) : (
+            <>
+              <Box>
+                <Ul>
+                  {CONSTANT_ROUTER.map((item) => (
+                    <li
+                      key={item.pathname}
+                      onClick={() => router.push(item.pathname)}
+                      className={
+                        pathname.startsWith(item.pathname) ? "active" : ""
+                      }
+                    >
+                      {item.label}
+                    </li>
+                  ))}
+                  <li
+                    onClick={() => router.push(pathObj.pathname)}
+                    className={
+                      pathname.startsWith(pathObj.pathname) ? "active" : ""
+                    }
+                  >
+                    {pathObj.label}
+                  </li>
+                </Ul>
+              </Box>
+              <TemporaryDrawer />
+            </>
+          )}
+        </Box>
+      </Wrapper>
+      {bottom && (
+        <Box
+          sx={{
+            maxWidth: "1024px",
+            width: "100%",
           }}
         >
-          <TikitakaText color={COLORS.WHITE} />
-          <TikitakaLogo />
-        </Logo>
-        <div>
-          <Ul>
-            {CONSTANT_ROUTER.map((item) => (
-              <li
-                key={item.pathname}
-                onClick={() => router.push(item.pathname)}
-                className={pathname.startsWith(item.pathname) ? "active" : ""}
-              >
-                {item.label}
-              </li>
-            ))}
-            <li
-              onClick={() => router.push(pathObj.pathname)}
-              className={pathname.startsWith(pathObj.pathname) ? "active" : ""}
-            >
-              {pathObj.label}
-            </li>
-          </Ul>
-        </div>
-
-        <TemporaryDrawer />
-      </Wrapper>
+          {bottom}
+        </Box>
+      )}
     </Container>
   );
 };
@@ -73,20 +131,18 @@ export default ShallowHeader;
 
 const Container = styled.header`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 0 1rem;
-  height: 60px;
-  background-color: ${COLORS.DARK_BG};
+  justify-content: center;
+  padding: 0 20px;
   position: fixed;
   top: 0;
   z-index: 999;
   width: 100%;
-  visibility: hidden;
+  max-width: 1024px;
 
-  @media (max-width: 1640px) {
-    visibility: visible;
+  @media (min-width: 1025px) {
+    display: none;
   }
 `;
 
@@ -95,9 +151,10 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  max-width: 1440px;
+  max-width: 1024px;
   margin: 0 auto;
   width: 100%;
+  height: 60px;
 `;
 
 const Ul = styled.ul`
@@ -121,24 +178,5 @@ const Ul = styled.ul`
 
   @media (max-width: 1024px) {
     display: none;
-  }
-`;
-
-const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: #fff;
-  padding: 0.5rem 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-
-  @media (min-width: 481px) and (max-width: 768px) {
-    scale: 0.9;
-  }
-
-  @media (max-width: 480px) {
-    scale: 0.8;
   }
 `;

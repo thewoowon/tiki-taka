@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { modalStyle } from "@/style/modal";
 import { ResultLoading } from "@/components/View/ResultLoading";
 import { Loading } from "@/components/View/Loading";
+import { ShallowHeader } from "@/components/Layout";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -214,6 +215,9 @@ const InterviewChatPage = () => {
           flexDirection: "column",
           position: "fixed",
           top: 0,
+          "@media (max-width: 1024px)": {
+            display: "none",
+          },
         }}
       >
         <Box
@@ -225,6 +229,7 @@ const InterviewChatPage = () => {
             maxWidth: "1040px",
             width: "100%",
             gap: "16px",
+            padding: "0 20px",
           }}
         >
           <Typography
@@ -360,6 +365,51 @@ const InterviewChatPage = () => {
           </Box>
         </Box>
       </Modal>
+      <ShallowHeader
+        sx={{}}
+        center={
+          <Typography
+            sx={{
+              color: COLORS.WHITE,
+              fontSize: "18px",
+              fontStyle: "normal",
+              fontWeight: "600",
+              lineHeight: "18px",
+            }}
+          >
+            <span
+              style={{
+                color: COLORS.TIKI_GREEN,
+              }}
+            >
+              {history.title}
+            </span>{" "}
+            모의 면접 중...
+          </Typography>
+        }
+        right={
+          <Button
+            sx={{
+              color: COLORS.GRAY400,
+            }}
+            onClick={() => {
+              handleOpen();
+            }}
+          >
+            그만하기
+          </Button>
+        }
+        bottom={
+          <BorderLinearProgress
+            variant="determinate"
+            value={
+              Math.floor((indicator / questions.length) * 100) === 0
+                ? 1
+                : Math.floor((indicator / questions.length) * 100)
+            }
+          />
+        }
+      />
     </Box>
   );
 };

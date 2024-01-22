@@ -1,5 +1,6 @@
 "use client";
 import ImageUpload from "@/components/Element/ImageUpload";
+import { ShallowHeader } from "@/components/Layout";
 import { Loading } from "@/components/View/Loading";
 import { userState } from "@/states";
 import { COLORS } from "@/style/color";
@@ -387,7 +388,10 @@ const UploadPage = () => {
                 alignItems: "center",
                 gap: "10px",
                 flexShrink: 0,
-                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                backgroundColor:
+                  content.length > 0
+                    ? COLORS.TIKI_GREEN + " !important"
+                    : COLORS.GRAY400 + " !important",
                 color: COLORS.WHITE,
                 fontSize: "16px",
                 fontWeight: 600,
@@ -494,7 +498,9 @@ const UploadPage = () => {
                 alignItems: "center",
                 gap: "10px",
                 flexShrink: 0,
-                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                backgroundColor: file
+                  ? COLORS.TIKI_GREEN + " !important"
+                  : COLORS.GRAY400 + " !important",
                 color: COLORS.WHITE,
                 fontSize: "16px",
                 fontWeight: 600,
@@ -625,7 +631,14 @@ const UploadPage = () => {
             alignItems: "center",
             gap: "10px",
             flexShrink: 0,
-            backgroundColor: COLORS.TIKI_GREEN + " !important",
+            backgroundColor:
+              textOrImage === "image"
+                ? file
+                  ? COLORS.TIKI_GREEN + " !important"
+                  : COLORS.GRAY400 + " !important"
+                : content.length > 0
+                ? COLORS.TIKI_GREEN + " !important"
+                : COLORS.GRAY400 + " !important",
             color: COLORS.WHITE,
             fontSize: "16px",
             fontWeight: 600,
@@ -663,6 +676,7 @@ const UploadPage = () => {
           다음
         </Button>
       </Box>
+      <ShallowHeader />
     </Container>
   );
 };

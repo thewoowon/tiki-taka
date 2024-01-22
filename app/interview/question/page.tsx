@@ -11,6 +11,8 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import toast from "react-hot-toast";
 import { ResultLoading } from "@/components/View/ResultLoading";
+import { ShallowHeader } from "@/components/Layout";
+import { Loading } from "@/components/View/Loading";
 
 const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
@@ -113,7 +115,13 @@ const QuestionPage = () => {
     }
   }, [interviewsData]);
 
-  if (interviewsIsLoading || isLoading) return <div>loading...</div>;
+  if (interviewsIsLoading || isLoading)
+    return (
+      <Loading
+        title="질문을 가져오고 있어요!"
+        description="잠시만 기다려주세요."
+      />
+    );
 
   if (generateMutation.isPending) {
     return (
@@ -133,11 +141,11 @@ const QuestionPage = () => {
           display: "flex",
           flexDirection: "column",
           gap: "40px",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "center",
         }}
       >
-        <Box className="flex flex-col justify-center items-center gap-[8px] pt-[10px]">
+        <Box className="flex flex-col justify-center items-center gap-[8px] pt-[10px] px-[20px]">
           <Typography
             sx={{
               fontSize: "24px",
@@ -282,6 +290,38 @@ const QuestionPage = () => {
           </Box>
         </Box>
       </Box>
+      <ShallowHeader
+        sx={{}}
+        right={
+          <Box
+            onClick={() => {
+              const element = document.createElement("a");
+              const file = new Blob(
+                [questions.map((question) => question.question).join("\n")],
+                { type: "text/plain" }
+              );
+              element.href = URL.createObjectURL(file);
+              element.download = "interview.txt";
+              document.body.appendChild(element); // Required for this to work in FireFox
+              element.click();
+              toast.success("다운로드에 성공했어요.");
+            }}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"
+                fill="white"
+              />
+            </svg>
+          </Box>
+        }
+      />
     </Container>
   );
 };
@@ -296,5 +336,9 @@ const Container = styled.main`
   height: 100vh;
   width: 100%;
   gap: 40px;
-  padding: 66px auto;
+  padding: 66px 0px;
+
+  @media (max-width: 1024px) {
+    justify-content: flex-start;
+  }
 `;

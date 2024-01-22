@@ -4,6 +4,7 @@ import { COLORS } from "@/style/color";
 import { Box, Typography } from "@mui/material";
 import History from "@/components/View/History";
 import styled from "@emotion/styled";
+import { ShallowHeader } from "@/components/Layout";
 
 const HistoryPage = () => {
   return (
@@ -22,6 +23,7 @@ const HistoryPage = () => {
         </Typography>
       </Box>
       <History type={"all"} />
+      <ShallowHeader />
     </Container>
   );
 };
@@ -36,5 +38,5 @@ const Container = styled.main`
   height: 100vh;
   width: 100%;
   gap: 40px;
-  padding: 66px auto;
+  padding: 66px 20px;
 `;

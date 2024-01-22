@@ -1,5 +1,6 @@
 "use client";
 import { SimpleDocument } from "@/components/Element/Document";
+import { ShallowHeader } from "@/components/Layout";
 import Profile from "@/components/View/Profile";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
@@ -50,6 +51,7 @@ const MyPage = () => {
         </Box>
         <SimpleDocument />
       </Box>
+      <ShallowHeader />
     </Container>
   );
 };
@@ -64,5 +66,5 @@ const Container = styled.main`
   height: 100vh;
   width: 100%;
   gap: 100px;
-  padding: 66px auto;
+  padding: 66px 20px;
 `;

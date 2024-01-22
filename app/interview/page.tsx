@@ -1,6 +1,7 @@
 "use client";
 import { Simulation01 } from "@/components/Element/Loading";
 import Typography from "@/components/Element/Typography";
+import { ShallowHeader } from "@/components/Layout";
 import { useMe } from "@/hooks/useMe";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
@@ -62,6 +63,7 @@ const InterviewPage = () => {
       <ScreenHeightWrapper>
         <Button onClick={handleStartInterview}>면접 시작하기</Button>
       </ScreenHeightWrapper>
+      <ShallowHeader />
     </Container>
   );
 };

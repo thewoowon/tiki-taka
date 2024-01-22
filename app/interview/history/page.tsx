@@ -9,6 +9,7 @@ import axios from "axios";
 import router from "next/router";
 import { useRecoilState } from "recoil";
 import toast from "react-hot-toast";
+import { ShallowHeader } from "@/components/Layout";
 
 const HistoryPage = () => {
   // history fetching
@@ -86,6 +87,7 @@ const HistoryPage = () => {
         </Typography>
       </Box>
       <History type={"deleteOnly"} />
+      <ShallowHeader />
     </Container>
   );
 };
@@ -100,5 +102,5 @@ const Container = styled.main`
   height: 100vh;
   width: 100%;
   gap: 40px;
-  padding: 66px auto;
+  padding: 66px 20px;
 `;

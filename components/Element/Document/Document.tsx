@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import DocumentElement from "./DocumentElement";
 import { PDF_FILE_COUNT_LIMIT } from "@/constants/limit";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
@@ -12,6 +18,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Loading } from "@/components/View/Loading";
 import styled from "@emotion/styled";
+import { ShallowHeader } from "@/components/Layout";
 
 const Document = () => {
   const router = useRouter();
@@ -102,14 +109,17 @@ const Document = () => {
     setIsSelected(documents.map((document) => false));
   }, [documents]);
 
-  if (isLoading) {
+  if (isLoading)
     return (
-      <Loading
-        title={"이력서 불러오는 중"}
-        description={`${userRecoilState.nickname}(카카오 연동)님의 경험과 채용 공고를 바탕으로 면접 질문을 만들고 있어요.`}
-      />
+      <Container>
+        <CircularProgress
+          size={18}
+          sx={{
+            color: COLORS.WHITE,
+          }}
+        />
+      </Container>
     );
-  }
 
   return (
     <Container>
@@ -464,6 +474,7 @@ const Document = () => {
           </Box>
         </Modal>
       </Box>
+      <ShallowHeader />
     </Container>
   );
 };

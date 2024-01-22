@@ -841,7 +841,6 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 100px;
-  overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
 

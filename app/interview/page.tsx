@@ -28,7 +28,12 @@ const InterviewPage = () => {
             color={COLORS.WHITE}
             textAlign="center"
             fontWeight={700}
-            className="sm:text-[24px] text-[20px]"
+            sx={{
+              fontSize: "24px",
+              "@media (max-width: 768px)": {
+                fontSize: "20px",
+              },
+            }}
           >
             면접을 시작할까요?
           </Typography>
@@ -37,7 +42,12 @@ const InterviewPage = () => {
               color={COLORS.GRAY100}
               textAlign="center"
               fontWeight={400}
-              className="sm:text-[16px] text-[14px]"
+              sx={{
+                fontSize: "16px",
+                "@media (max-width: 768px)": {
+                  fontSize: "14px",
+                },
+              }}
             >
               면접은 중간에 그만 둘 수 있어요. 부담 없이 시작해 보세요.
             </Typography>
@@ -47,7 +57,12 @@ const InterviewPage = () => {
               color={COLORS.GRAY100}
               textAlign="center"
               fontWeight={400}
-              className="sm:text-[16px] text-[14px]"
+              sx={{
+                fontSize: "16px",
+                "@media (max-width: 768px)": {
+                  fontSize: "14px",
+                },
+              }}
             >
               면접은 중간에 그만 둘 수 있어요.
               <br />

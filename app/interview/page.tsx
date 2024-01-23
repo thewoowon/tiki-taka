@@ -1,10 +1,9 @@
 "use client";
 import { Simulation01 } from "@/components/Element/Loading";
-import Typography from "@/components/Element/Typography";
 import { ShallowHeader } from "@/components/Layout";
-import { useMe } from "@/hooks/useMe";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
+import { Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

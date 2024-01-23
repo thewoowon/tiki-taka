@@ -41,6 +41,7 @@ const Profile = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
+        withCredentials: true,
         data: {
           userId: userRecoilState.userId,
         },

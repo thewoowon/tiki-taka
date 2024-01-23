@@ -126,4 +126,11 @@ const Container = styled(Box)`
   align-items: flex-start;
   border-radius: 10px;
   background: ${COLORS.DARK_BG};
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+    gap: 10px;
+  }
 `;

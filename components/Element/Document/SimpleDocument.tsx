@@ -243,7 +243,7 @@ const SimpleDocument = () => {
               }}
             />
           ) : (
-            "업로드"
+            "새 이력서 등록"
           )}
         </Button>
         <FileInput

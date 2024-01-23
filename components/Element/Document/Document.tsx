@@ -342,13 +342,14 @@ const Document = () => {
                 fontSize: "16px",
                 fontWeight: 500,
                 lineHeight: "16px",
+                width: "155px",
               }}
               onClick={() => {
                 if (documents.length >= PDF_FILE_COUNT_LIMIT) handleOpen();
                 else setMode("upload");
               }}
             >
-              원하는 이력서가 없어요
+              새 이력서 등록
             </Button>
             <Button
               sx={{
@@ -363,6 +364,7 @@ const Document = () => {
                 fontSize: "16px",
                 fontWeight: 500,
                 lineHeight: "16px",
+                width: "155px",
               }}
               onClick={() => {
                 const selectedIndex = isSelected.indexOf(true);

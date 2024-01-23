@@ -116,6 +116,9 @@ const Profile = () => {
           gap: "10px",
           justifyContent: "center",
           alignItems: "flex-start",
+          "@media (max-width: 768px)": {
+            alignItems: "center",
+          },
         }}
       >
         <Typography
@@ -125,6 +128,9 @@ const Profile = () => {
             color: COLORS.WHITE,
             lineHeight: "28px",
             textAlign: "center",
+            "@media (max-width: 768px)": {
+              fontSize: "14px",
+            },
           }}
         >
           {userRecoilState.nickname}
@@ -136,6 +142,9 @@ const Profile = () => {
             color: COLORS.WHITE,
             lineHeight: "24px",
             textAlign: "center",
+            "@media (max-width: 768px)": {
+              fontSize: "12px",
+            },
           }}
         >
           {userRecoilState.email}
@@ -187,4 +196,8 @@ const Container = styled.main<{
   border-radius: 5px;
   background: ${COLORS.DARK_BG};
   gap: 30px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;

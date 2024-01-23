@@ -268,6 +268,7 @@ const QuestionPage = () => {
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                width: "155px",
               }}
               onClick={() => {
                 const isContinue = params.get("continue") === "true";
@@ -285,7 +286,7 @@ const QuestionPage = () => {
                 );
               }}
             >
-              면접 보기
+              면접 시작
             </Button>
           </Box>
         </Box>

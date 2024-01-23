@@ -23,10 +23,10 @@ const Question = ({ questions }: { questions: QuestionElementType[] }) => {
           height: "540px",
         },
         "@media (max-width: 1440px)": {
-          height: "490px",
+          height: "520px",
         },
         "@media (max-width: 768px)": {
-          height: "440px",
+          height: "510px",
         },
       }}
     >

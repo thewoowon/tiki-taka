@@ -824,6 +824,10 @@ const Main = styled.main`
   @media (max-width: 1440px) {
     gap: 100px;
   }
+
+  @media (max-width: 768px) {
+    background: url("/svg/main-mobile-bg.svg");), lightgray 50% / cover no-repeat;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -954,6 +958,7 @@ const ScreenHeightWrapper = styled.div`
   bottom: 0px;
   width: 100%;
   background-color: #000;
+  z-index: 999;
 
   @media (max-width: 1024px) {
     display: flex;

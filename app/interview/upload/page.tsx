@@ -392,10 +392,11 @@ const UploadPage = () => {
                   content.length > 0
                     ? COLORS.TIKI_GREEN + " !important"
                     : COLORS.GRAY400 + " !important",
-                color: COLORS.WHITE,
+                color: content.length > 0 ? COLORS.WHITE : COLORS.LIGHT_BG,
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                width: "155px",
               }}
               onClick={() => {
                 // 입력한 텍스트 validation
@@ -501,10 +502,11 @@ const UploadPage = () => {
                 backgroundColor: file
                   ? COLORS.TIKI_GREEN + " !important"
                   : COLORS.GRAY400 + " !important",
-                color: COLORS.WHITE,
+                color: file ? COLORS.WHITE : COLORS.LIGHT_BG,
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                width: "155px",
               }}
               onClick={() => {
                 // 입력한 이미지 validation
@@ -588,94 +590,98 @@ const UploadPage = () => {
           </Box>
         </Box>
       </Modal>
-      <Box
-        sx={{
-          width: "100%",
-          display: "none",
-          position: "absolute",
-          bottom: "0px",
-          "@media (max-width: 768px)": {
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          },
-          padding: "0 20px 10px 20px",
-          minWidth: "393px",
-        }}
-      >
-        <Button
+      {textOrImage !== null && (
+        <Box
           sx={{
-            display: "flex",
-            padding: "18px 24px",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "10px",
-            flexShrink: 0,
-            backgroundColor: COLORS.DARK_BG + " !important",
-            color: COLORS.WHITE,
-            fontSize: "16px",
-            fontWeight: 600,
-            lineHeight: "16px",
-          }}
-          onClick={() => {
-            setTextOrImage(textOrImage === "text" ? "image" : "text");
+            width: "100%",
+            display: "none",
+            position: "absolute",
+            bottom: "0px",
+            "@media (max-width: 768px)": {
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            },
+            padding: "0 20px 10px 20px",
+            minWidth: "393px",
           }}
         >
-          {textOrImage === "text" ? "이미지로 넣을래요" : "텍스트로 넣을래요"}
-        </Button>
-        <Button
-          sx={{
-            display: "flex",
-            padding: "18px 24px",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "10px",
-            flexShrink: 0,
-            backgroundColor:
-              textOrImage === "image"
-                ? file
+          <Button
+            sx={{
+              display: "flex",
+              padding: "18px 24px",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
+              flexShrink: 0,
+              backgroundColor: COLORS.DARK_BG + " !important",
+              color: COLORS.WHITE,
+              fontSize: "16px",
+              fontWeight: 600,
+              lineHeight: "16px",
+            }}
+            onClick={() => {
+              setTextOrImage(textOrImage === "text" ? "image" : "text");
+            }}
+          >
+            {textOrImage === "text" ? "이미지로 넣을래요" : "텍스트로 넣을래요"}
+          </Button>
+          <Button
+            sx={{
+              display: "flex",
+              padding: "18px 24px",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
+              flexShrink: 0,
+              backgroundColor:
+                textOrImage === "image"
+                  ? file
+                    ? COLORS.TIKI_GREEN + " !important"
+                    : COLORS.GRAY400 + " !important"
+                  : content.length > 0
                   ? COLORS.TIKI_GREEN + " !important"
-                  : COLORS.GRAY400 + " !important"
-                : content.length > 0
-                ? COLORS.TIKI_GREEN + " !important"
-                : COLORS.GRAY400 + " !important",
-            color: COLORS.WHITE,
-            fontSize: "16px",
-            fontWeight: 600,
-            lineHeight: "16px",
-          }}
-          onClick={() => {
-            if (textOrImage === "text") {
-              // 입력한 텍스트 validation
-              // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
-              if (content.length === 0) {
-                toast.error("텍스트를 입력해주세요.");
-                return;
-              }
-              if (data.data.length >= 5) {
-                router.push("/interview/history");
-                return;
-              }
-            } else {
-              // 입력한 이미지 validation
-              // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
-              if (!file) {
-                toast.error("이미지를 업로드 해주세요.");
-                return;
+                  : COLORS.GRAY400 + " !important",
+              color:
+                file || content.length > 0 ? COLORS.WHITE : COLORS.LIGHT_BG,
+              fontSize: "16px",
+              fontWeight: 600,
+              lineHeight: "16px",
+              width: "155px",
+            }}
+            onClick={() => {
+              if (textOrImage === "text") {
+                // 입력한 텍스트 validation
+                // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
+                if (content.length === 0) {
+                  toast.error("텍스트를 입력해주세요.");
+                  return;
+                }
+                if (data.data.length >= 5) {
+                  router.push("/interview/history");
+                  return;
+                }
+              } else {
+                // 입력한 이미지 validation
+                // 히스토리 개수를 확인하고 5이면 푸시하고 아니면 바로 생성
+                if (!file) {
+                  toast.error("이미지를 업로드 해주세요.");
+                  return;
+                }
+
+                if (data.data.length >= 5) {
+                  router.push("/interview/history");
+                  return;
+                }
               }
 
-              if (data.data.length >= 5) {
-                router.push("/interview/history");
-                return;
-              }
-            }
-
-            insertInterviewMutation.mutate();
-          }}
-        >
-          다음
-        </Button>
-      </Box>
+              insertInterviewMutation.mutate();
+            }}
+          >
+            다음
+          </Button>
+        </Box>
+      )}
       <ShallowHeader />
     </Container>
   );

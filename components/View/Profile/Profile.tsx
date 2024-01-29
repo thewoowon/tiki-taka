@@ -48,7 +48,8 @@ const Profile = () => {
       })
         .then((res) => res.data)
         .catch((err) => {
-          console.log(err, err.response);
+          toast.error("로그아웃 중 오류가 발생했습니다. 다시 로그인해주세요.");
+          router.push("/auth/kakao");
         }),
     onSuccess: (data) => {
       if (data.code === "200") {

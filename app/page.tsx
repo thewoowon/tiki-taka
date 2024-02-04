@@ -934,21 +934,6 @@ const SwiperWrapper = styled.div`
 
   .swiper-pagination-bullet {
     background-color: ${COLORS.GRAY400};
-    width: 6px;
-    height: 6px;
-    opacity: 1;
-    margin: 0 6px !important;
-  }
-
-  .swiper-pagination-bullet-active {
-    background-color: transparent !important;
-  }
-
-  .swiper-pagination-bullet-active::after {
-    content: url("/svg/main-swiper-active.svg");
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 `;
 

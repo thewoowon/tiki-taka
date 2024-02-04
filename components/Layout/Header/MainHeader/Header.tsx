@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
+import TikitakaLogoSmall from "@/public/svg/tikitaka-logo-small.svg";
 import { TikitakaText } from "@/components/svg";
 import { COLORS } from "@/style/color";
 import { useRecoilState } from "recoil";
-import { loginState } from "@/states";
+import { loginState, modalState } from "@/states";
 import TemporaryDrawer from "@/components/Element/Drawer";
+import TikitakaTextMobile from "@/components/svg/TikitakaTextMobile";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -21,7 +23,7 @@ const Header = () => {
     pathname: "/auth/kakao",
     label: "로그인",
   });
-
+  const [state, setState] = useRecoilState(modalState);
   const [isLoggedIn] = useRecoilState(loginState);
 
   useEffect(() => {
@@ -35,14 +37,23 @@ const Header = () => {
     <Container>
       <Wrapper>
         <Logo
-          className="cursor-pointer"
           onClick={() => {
+            setState({ ...state, top: false });
             router.push("/");
           }}
         >
           <TikitakaText color={COLORS.WHITE} />
           <TikitakaLogo />
         </Logo>
+        <MobileLogo
+          onClick={() => {
+            setState({ ...state, top: false });
+            router.push("/");
+          }}
+        >
+          <TikitakaTextMobile color={COLORS.WHITE} />
+          <TikitakaLogoSmall />
+        </MobileLogo>
         <div>
           <Ul>
             {CONSTANT_ROUTER.map((item) => (
@@ -76,7 +87,7 @@ const Container = styled.header`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 20px;
   height: 60px;
   background-color: ${COLORS.DARK_BG};
   position: fixed;
@@ -128,17 +139,28 @@ const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: 900;
   color: #fff;
-  padding: 0.5rem 1.3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  cursor: pointer;
 
-  @media (min-width: 481px) and (max-width: 768px) {
-    scale: 0.9;
+  @media (max-width: 1024px) {
+    display: none;
   }
+`;
 
-  @media (max-width: 480px) {
-    scale: 0.8;
+const MobileLogo = styled.div`
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+
+  @media (max-width: 1024px) {
+    display: flex;
   }
 `;

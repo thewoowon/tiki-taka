@@ -297,20 +297,38 @@ const UploadPage = () => {
               fontWeight={700}
               className="sm:text-[24px] text-[20px]"
             >
-              채용 공고 내용을 입력해 주세요
+              채용공고 내용을 입력해 주세요
             </Typography>
-            <Typography
-              sx={{
-                fontSize: "16px",
-                fontWeight: 400,
-                color: COLORS.GRAY100,
-                lineHeight: "24px",
-              }}
-              className="sm:text-[16px] text-[14px]"
-            >
-              회사명, 팀, 직무, 주요업무, 자격요건, 우대사항 6가지 내용 중 입력
-              가능한 내용을 입력해 주세요.
-            </Typography>
+            <ScreenHideWrapper>
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  color: COLORS.GRAY100,
+                  lineHeight: "24px",
+                }}
+                className="sm:text-[16px] text-[14px]"
+              >
+                회사명, 팀, 직무, 주요업무, 자격요건, 우대사항 6가지 내용 중
+                입력 가능한 내용을 입력해 주세요.
+              </Typography>
+            </ScreenHideWrapper>
+            <ScreenShowWrapper>
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  color: COLORS.GRAY100,
+                  lineHeight: "24px",
+                  textAlign: "center",
+                }}
+                className="sm:text-[16px] text-[14px]"
+              >
+                회사명, 팀, 직무, 주요업무, 자격요건, 우대사항
+                <br />
+                6가지 내용 중 입력 가능한 내용을 입력해 주세요.
+              </Typography>
+            </ScreenShowWrapper>
           </Box>
           <Box
             sx={{
@@ -328,8 +346,13 @@ const UploadPage = () => {
             <TextArea
               value={content}
               onChange={(e) => {
-                if (e.target.value.length > 1500)
-                  return alert("최대 1,500자(2,500byte)까지 입력 가능합니다.");
+                if (e.target.value.length > 1500) {
+                  // 1500을 넘으면 일단 1500은 입력되게 하고, 1500자 이상은 입력되지 않게 한다.
+                  setContent(e.target.value.slice(0, 1500));
+                  return toast.error(
+                    "최대 1,500자(2,500byte)까지 입력 가능합니다."
+                  );
+                }
                 setContent(e.target.value);
               }}
               placeholder="채용 공고를 텍스트로 붙여 넣어 주세요. (최대 1,500자(2,500byte))"
@@ -440,7 +463,7 @@ const UploadPage = () => {
               }}
               className="sm:text-[24px] text-[20px]"
             >
-              채용 공고 내용 캡처하여 업로드 해주세요
+              채용공고를 캡처하여 업로드 해주세요
             </Typography>
             <Typography
               sx={{
@@ -451,7 +474,7 @@ const UploadPage = () => {
               }}
               className="sm:text-[16px] text-[14px]"
             >
-              본인이 해당하는 직무 부분만 캡쳐하여 넣어 주세요.
+              해당하는 직무 부분만 캡처해서 넣어주세요.
             </Typography>
           </Box>
           <ImageUpload
@@ -710,6 +733,9 @@ const TextArea = styled.textarea`
   background: transparent;
   color: ${COLORS.WHITE};
   font-size: 16px;
+  &::placeholder {
+    color: ${COLORS.GRAY200};
+  }
 `;
 
 const ScreenHideWrapper = styled.div`

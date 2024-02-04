@@ -161,10 +161,22 @@ const Document = () => {
               fontWeight: 700,
               color: COLORS.WHITE,
               lineHeight: "36px",
+              "@media (min-width: 1025px)": {
+                "&:after": {
+                  content: '" 업로드 해주세요."',
+                },
+              },
+              "@media (max-width: 1024px)": {
+                fontSize: "20px",
+                lineHeight: "28px",
+                "&:after": {
+                  content: '" 등록해주세요."',
+                },
+              },
             }}
             className="sm:text-[24px] text-[20px]"
           >
-            원하는 이력서를 업로드 해주세요
+            원하는 이력서를
           </Typography>
           <ScreenHideWrapper>
             <Typography
@@ -189,11 +201,11 @@ const Document = () => {
                 color: COLORS.GRAY100,
                 lineHeight: "24px",
               }}
-              className="sm:text-[16px] text-[14px]"
+              className="text-[16px]"
             >
               준비된 이력서를{" "}
-              <span className="text-[#00CE72]">PDF 5장 이하</span>로 올려
-              주세요.
+              <span className="text-[#00CE72]">PDF 5장 이하</span>로
+              등록해주세요.
             </Typography>
           </ScreenShowWrapper>
         </Box>
@@ -302,8 +314,8 @@ const Document = () => {
                   className="sm:text-[14px] text-[12px]"
                 >
                   * 이력서는 자유양식이며,{" "}
-                  <span className="text-[#00CE72]">한개의 파일로 통합</span>해서
-                  올려주세요.
+                  <span className="text-[#00CE72]">한개의 파일로 통합</span>하여
+                  등록해주세요.
                 </Typography>
               </ScreenShowWrapper>
             </Box>
@@ -397,6 +409,9 @@ const Document = () => {
                 fontSize: "23px",
                 color: COLORS.WHITE,
                 fontWeight: 700,
+                "@media (max-width: 1024px)": {
+                  fontSize: "20px",
+                },
               }}
             >
               이력서는 최대 3개까지 저장 가능해요

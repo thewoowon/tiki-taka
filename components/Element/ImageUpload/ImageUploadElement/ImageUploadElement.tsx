@@ -78,11 +78,24 @@ const ImageUploadElement = ({
           fontStyle: "normal",
           fontWeight: 400,
           lineHeight: "24px",
+          overflow: "hidden",
+          maxWidth: "calc(100% - 40px)",
+          "@media (min-width: 1025px)": {
+            "&:after": {
+              content:
+                !imageDocument?.name && !file?.name ? '""' : '" (형식: PNG, JPG, JPEG)"',
+            },
+          },
+          "@media (max-width: 1024px)": {
+            "&:after": {
+              content: !imageDocument?.name && file?.name ? '""' : '" (PNG, JPG, JPEG)"',
+            },
+          },
         }}
       >
         {imageDocument?.name ||
           file?.name ||
-          "이미지 업로드 (형식: PNG, JPG, JPEG)"}
+          "이미지 업로드"}
       </Typography>
 
       <Box

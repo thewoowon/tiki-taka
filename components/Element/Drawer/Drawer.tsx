@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
@@ -7,8 +6,8 @@ import Hamburger from "@/public/svg/hamburger.svg";
 import { COLORS } from "@/style/color";
 import { usePathname, useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
-import { loginState } from "@/states";
-import { useEffect } from "react";
+import { loginState, modalState } from "@/states";
+import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Link from "next/link";
 
@@ -22,19 +21,14 @@ type Anchor = "top" | "left" | "bottom" | "right";
 export default function TemporaryDrawer() {
   const router = useRouter();
   const pathname = usePathname();
-  const [pathObj, setPathObj] = React.useState<{
+  const [pathObj, setPathObj] = useState<{
     pathname: string;
     label: string;
   }>({
     pathname: "/auth/kakao",
     label: "로그인",
   });
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
+  const [state, setState] = useRecoilState(modalState);
 
   const [isLoggedIn] = useRecoilState(loginState);
 
@@ -62,7 +56,9 @@ export default function TemporaryDrawer() {
 
   const list = (anchor: Anchor) => (
     <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
+      sx={{
+        width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
+      }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
@@ -91,7 +87,7 @@ export default function TemporaryDrawer() {
 
   return (
     <Container>
-      <HamburgerButton onClick={toggleDrawer("top", true)}>
+      <HamburgerButton onClick={toggleDrawer("top", !state["top"])}>
         <Hamburger />
       </HamburgerButton>
       <Drawer
@@ -99,9 +95,16 @@ export default function TemporaryDrawer() {
         open={state["top"]}
         onClose={toggleDrawer("top", false)}
         sx={{
+          "@media (min-width: 1024px)": {
+            display: "none",
+          },
+          top: "60px",
+          ".MuiModal-backdrop": {
+            backgroundColor: "transparent",
+            top: "60px",
+          },
           ".MuiDrawer-paper": {
             backgroundColor: COLORS.DARK_BG,
-            marginTop: "60px",
             fontFamily: "Pretendard Variable",
             color: COLORS.WHITE,
             padding: "30px",
@@ -167,6 +170,7 @@ const Container = styled.div`
 const HamburgerButton = styled(Button)`
   min-width: auto !important;
   display: flex;
+  padding: 0;
 `;
 
 const Ul = styled.ul`

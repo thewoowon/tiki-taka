@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import { COLORS } from "@/style/color";
 import { useRecoilState } from "recoil";
-import { loginState } from "@/states";
+import { loginState, modalState } from "@/states";
 import { Box, SxProps } from "@mui/material";
 import TemporaryDrawer from "@/components/Element/Drawer";
 
@@ -36,6 +36,7 @@ const ShallowHeader = ({
     label: "로그인",
   });
 
+  const [state, setState] = useRecoilState(modalState);
   const [isLoggedIn] = useRecoilState(loginState);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const ShallowHeader = ({
           <Box
             onClick={() => {
               // 뒤로가기
+              setState({ ...state, top: false });
               router.back();
             }}
             sx={{
@@ -167,7 +169,7 @@ const Ul = styled.ul`
   list-style: none;
   font-family: "Pretendard Variable", sans-serif;
   li {
-    margin: 0 1rem;
+    margin: 0 20px;
     cursor: pointer;
     color: ${COLORS.WHITE};
   }

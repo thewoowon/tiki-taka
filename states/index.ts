@@ -42,3 +42,18 @@ export const nicknameState = atom<string>({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+
+export const modalState = atom<{
+  top: boolean;
+  left: boolean;
+  bottom: boolean;
+  right: boolean;
+}>({
+  key: "modalState",
+  default: {
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  },
+});

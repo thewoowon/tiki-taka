@@ -16,4 +16,8 @@ export const modalStyle = {
   gap: "10px",
   borderRadius: "20px",
   backgroundColor: COLORS.LIGHT_BG,
+  "@media (max-width: 1024px)": {
+    width: 353,
+    padding: "30px 20px",
+  },
 };

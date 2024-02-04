@@ -18,6 +18,11 @@ const KakaoLoginPage = () => {
           textAlign="center"
           fontWeight={700}
           lineHeight={"36px"}
+          sx={{
+            "@media (max-width: 1024px)": {
+              fontSize: "20px",
+            },
+          }}
         >
           AI 면접 진행을 위해
           <br />
@@ -57,6 +62,10 @@ const Box = styled.div`
   align-items: center;
   background-color: ${COLORS.DARK_BG};
   border-radius: 20px;
+
+  @media (max-width: 1024px) {
+    padding: 30px 20px;
+  }
 `;
 
 const LinkText = styled(Link)<{

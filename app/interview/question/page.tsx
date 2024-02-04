@@ -141,7 +141,7 @@ const QuestionPage = () => {
           display: "flex",
           flexDirection: "column",
           gap: "40px",
-          justifyContent: "flex-start",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
@@ -167,6 +167,7 @@ const QuestionPage = () => {
             면접에
             <br />딱 맞는 질문을 가져왔어요
           </Typography>
+
           <Typography
             sx={{
               fontSize: "16px",
@@ -179,8 +180,9 @@ const QuestionPage = () => {
               },
             }}
           >
-            연습이 더 필요하면, [마이페이지 {">"} 히스토리] 에서 질문을 확인 후
-            다시 진행해도 돼요.
+            면접을 진행할 질문을 골라주세요.
+            <br />
+            생성된 질문은 [히스토리]에서 확인할 수 있어요.
           </Typography>
         </Box>
         <Question questions={questions} />
@@ -190,7 +192,6 @@ const QuestionPage = () => {
             display: "flex",
             justifyContent: "space-between",
             "@media (max-width: 1024px)": {
-              position: "absolute",
               bottom: "10px",
               width: "100%",
               padding: "0 20px",
@@ -332,14 +333,23 @@ export default QuestionPage;
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100vh;
   width: 100%;
   gap: 40px;
   padding: 66px 0px;
+`;
 
-  @media (max-width: 1024px) {
-    justify-content: flex-start;
+const ScreenHideWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const ScreenShowWrapper = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
   }
 `;

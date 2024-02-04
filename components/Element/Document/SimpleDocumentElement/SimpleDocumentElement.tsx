@@ -36,9 +36,19 @@ const SimpleDocumentElement = ({
           fontStyle: "normal",
           fontWeight: 400,
           lineHeight: "24px",
+          "@media (min-width: 1025px)": {
+            "&:after": {
+              content: pdfDocument?.fileName ? '""' : '" (형태: pdf)"',
+            },
+          },
+          "@media (max-width: 1024px)": {
+            "&:after": {
+              content: pdfDocument?.fileName ? '""' : '" (pdf)"',
+            },
+          },
         }}
       >
-        {pdfDocument.fileName || "이력서 및 경력 기술서 (형태: pdf)"}
+        {pdfDocument?.fileName || "이력서 및 경력 기술서"}
       </Typography>
       <Button
         sx={{

@@ -10,7 +10,6 @@ import { loginState, userState } from "@/states";
 import { useMe } from "@/hooks/useMe";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { SimulationQLoading } from "@/components/Element/Loading";
 import { useMutation } from "@tanstack/react-query";
 
 const Profile = () => {

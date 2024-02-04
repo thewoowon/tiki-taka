@@ -23,7 +23,7 @@ const InterviewPage = () => {
     <Container>
       <Box>
         <Simulation01 />
-        <div className="flex flex-col gap-[8px] pt-[10px]">
+        <div className="flex flex-col gap-[8px]">
           <Typography
             color={COLORS.WHITE}
             textAlign="center"

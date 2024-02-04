@@ -123,8 +123,9 @@ const SimpleDocument = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-between",
         gap: "40px",
+        minHeight: "280px",
       }}
     >
       <Box
@@ -183,6 +184,10 @@ const SimpleDocument = () => {
           width: "100%",
           maxWidth: "1040px",
           gap: "10px",
+
+          "@media (max-width: 1024px)": {
+            gap: "0",
+          },
         }}
       >
         <Box>
@@ -229,6 +234,10 @@ const SimpleDocument = () => {
             fontSize: "16px",
             fontWeight: 600,
             lineHeight: "16px",
+
+            "@media (max-width: 1024px)": {
+              width: "100%",
+            },
           }}
           onClick={() => {
             inputRef.current?.click();

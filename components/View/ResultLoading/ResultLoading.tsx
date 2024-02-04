@@ -38,6 +38,7 @@ const Loading = ({
             fontWeight: 400,
             color: COLORS.GRAY100,
             lineHeight: "24px",
+            textAlign: "center",
           }}
         >
           {description}

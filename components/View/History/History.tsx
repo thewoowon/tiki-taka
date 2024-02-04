@@ -18,10 +18,8 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleOpen2 = () => setOpen2(true);
   const handleClose = () => {
     setOpen(false);
-    setOpen2(false);
   };
   const [histories, setHistories] = useState<HistoryElementType[]>([]);
   const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
@@ -145,8 +143,15 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               handleOpen();
             }}
             onContinue={() => {
-              setCurrentHistory(history);
-              handleOpen2();
+              if (history && history.interviewId)
+                router.push(
+                  "/interview/question?interviewId=" +
+                  history.interviewId +
+                    "&continue=true"
+                );
+              else {
+                toast.error("내부에서 에러가 발생했어요. 다시 시도해 주세요.");
+              }
             }}
             onResult={() => {
               router.push(
@@ -286,7 +291,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
           </Box>
         </Box>
       </Modal>
-      <Modal
+      {/* <Modal
         open={open2}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -379,7 +384,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
             </Button>
           </Box>
         </Box>
-      </Modal>
+      </Modal> */}
     </Box>
   );
 };

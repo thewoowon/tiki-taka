@@ -33,7 +33,7 @@ export default HistoryPage;
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100vh;
   width: 100%;

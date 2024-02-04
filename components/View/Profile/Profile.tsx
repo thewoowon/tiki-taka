@@ -113,7 +113,7 @@ const Profile = () => {
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          gap: "10px",
+          gap: "6px",
           justifyContent: "center",
           alignItems: "flex-start",
           "@media (max-width: 768px)": {
@@ -128,9 +128,6 @@ const Profile = () => {
             color: COLORS.WHITE,
             lineHeight: "28px",
             textAlign: "center",
-            "@media (max-width: 768px)": {
-              fontSize: "14px",
-            },
           }}
         >
           {userRecoilState.nickname}
@@ -142,9 +139,6 @@ const Profile = () => {
             color: COLORS.WHITE,
             lineHeight: "24px",
             textAlign: "center",
-            "@media (max-width: 768px)": {
-              fontSize: "12px",
-            },
           }}
         >
           {userRecoilState.email}
@@ -153,7 +147,7 @@ const Profile = () => {
       <Button
         sx={{
           display: "flex",
-          padding: "10px 12px",
+          padding: "6px 8px",
           justifyContent: "center",
           alignItems: "center",
           gap: "10px",
@@ -195,9 +189,10 @@ const Container = styled.main<{
   align-items: center;
   border-radius: 5px;
   background: ${COLORS.DARK_BG};
-  gap: 30px;
+  gap: 20px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
+    padding: 30px 20px;
   }
 `;

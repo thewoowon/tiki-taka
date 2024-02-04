@@ -10,7 +10,7 @@ const MyPage = () => {
   // 여기서 로그인 여부를 확인하고 안되어 있으면 -> 로그인 페이지로 이동
   return (
     <Container>
-      <Box className="flex flex-col justify-center items-center gap-[40px] pt-[10px] w-full">
+      <ProfileBox className="flex flex-col justify-center items-center w-full">
         <Typography
           sx={{
             fontSize: "24px",
@@ -18,14 +18,17 @@ const MyPage = () => {
             color: COLORS.WHITE,
             lineHeight: "36px",
             textAlign: "center",
+            "@media (max-width: 1024px)": {
+              fontSize: "20px",
+            },
           }}
         >
           내 정보
         </Typography>
         <Profile />
-      </Box>
-      <Box className="flex flex-col justify-center items-center gap-[40px] w-full">
-        <Box className="flex flex-col justify-center items-center gap-[8px] pt-[10px] w-full">
+      </ProfileBox>
+      <ResumeBox className="flex flex-col justify-center items-center w-full">
+        <Box className="flex flex-col justify-center items-center gap-[8px] w-full">
           <Typography
             sx={{
               fontSize: "24px",
@@ -50,7 +53,7 @@ const MyPage = () => {
           </Typography>
         </Box>
         <SimpleDocument />
-      </Box>
+      </ResumeBox>
       <ShallowHeader />
     </Container>
   );
@@ -61,10 +64,31 @@ export default MyPage;
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100vh;
   width: 100%;
+  padding: 66px 20px 0 20px;
+  overflow-y: auto;
   gap: 100px;
-  padding: 66px 20px;
+
+  @media (max-width: 1024px) {
+    gap: 50px;
+  }
+`;
+
+const ProfileBox = styled(Box)`
+  gap: 40px;
+
+  @media (max-width: 1024px) {
+    gap: 30px;
+  }
+`;
+
+const ResumeBox = styled(Box)`
+  gap: 40px;
+
+  @media (max-width: 1024px) {
+    gap: 30px;
+  }
 `;

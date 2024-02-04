@@ -1,6 +1,12 @@
 "use client";
 import { COLORS } from "@/style/color";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import Question from "@/components/View/Question";
@@ -13,6 +19,7 @@ import toast from "react-hot-toast";
 import { ResultLoading } from "@/components/View/ResultLoading";
 import { ShallowHeader } from "@/components/Layout";
 import { Loading } from "@/components/View/Loading";
+import { modalStyle } from "@/style/modal";
 
 const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
@@ -20,6 +27,17 @@ const QuestionPage = () => {
 
   // 어떤 회사인지에 대한 정보를 받는다.
   const router = useRouter();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = (
+    event: React.SyntheticEvent<Element, Event>,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
+    if (reason === "backdropClick") return;
+    if (reason === "escapeKeyDown") return;
+    setOpen(false);
+  };
 
   const [userRecoilState] = useRecoilState(userState);
   const [questions, setQuestions] = useState<QuestionElementType[]>([]);
@@ -127,7 +145,13 @@ const QuestionPage = () => {
     return (
       <ResultLoading
         title={"질문 재생성 중"}
-        description={`${userRecoilState.nickname}님의 이력서와 채용 공고를 바탕으로 면접 질문을 재생성하고 있어요.`}
+        description={
+          <Typography>
+            ${userRecoilState.nickname}님의 이력서와 채용공고를 바탕으로
+            <br />
+            면접 질문을 재생성하고 있어요.
+          </Typography>
+        }
       />
     );
   }
@@ -272,19 +296,19 @@ const QuestionPage = () => {
                 width: "155px",
               }}
               onClick={() => {
-                const isContinue = params.get("continue") === "true";
-
-                if (isContinue) {
-                  router.push(
-                    "/interview/chat?interviewId=" +
-                      params.get("interviewId") +
-                      "&continue=true"
-                  );
-                  return;
-                }
-                router.push(
-                  "/interview/chat?interviewId=" + params.get("interviewId")
-                );
+                handleOpen();
+                // const isContinue = params.get("continue") === "true";
+                // if (isContinue) {
+                //   router.push(
+                //     "/interview/chat?interviewId=" +
+                //       params.get("interviewId") +
+                //       "&continue=true"
+                //   );
+                //   return;
+                // }
+                // router.push(
+                //   "/interview/chat?interviewId=" + params.get("interviewId")
+                // );
               }}
             >
               면접 시작
@@ -292,6 +316,53 @@ const QuestionPage = () => {
           </Box>
         </Box>
       </Box>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography
+            sx={{
+              fontSize: "23px",
+              color: COLORS.WHITE,
+              fontWeight: 700,
+            }}
+          >
+            곧 업데이트 될 예정이에요
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+              pt: "20px",
+              width: "100%",
+            }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                width: "100%",
+                padding: "18px 20px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                color: COLORS.WHITE,
+              }}
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              확인
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
       <ShallowHeader
         sx={{}}
         right={

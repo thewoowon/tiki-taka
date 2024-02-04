@@ -44,6 +44,7 @@ const HistoryElement = ({
             fontWeight: 400,
             lineHeight: "21px",
             color: COLORS.TIKI_GREEN,
+            display: "none",
           }}
         >
           {history.status === 1
@@ -119,6 +120,7 @@ export default HistoryElement;
 const Container = styled(Box)`
   width: 100%;
   max-width: 1040px;
+  min-width: 350px;
   height: 148px;
   padding: 30px;
   display: flex;

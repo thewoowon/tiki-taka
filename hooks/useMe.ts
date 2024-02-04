@@ -18,7 +18,7 @@ export const useMe = () => {
     async function getProfile() {
       const response = await axios({
         method: "GET",
-        url: "https://api.tikitaka.chat/user/kakaoDevLogin",
+        url: "https://api.tikitaka.chat/user/kakaoLogin",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

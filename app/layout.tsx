@@ -190,6 +190,15 @@ export default function RootLayout({
           </RecoilRoot>
           <Toaster />
         </QueryClientProvider>
+
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WMPN6NGH"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
       </body>
     </html>
   );

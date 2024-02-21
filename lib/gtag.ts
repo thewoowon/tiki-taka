@@ -1,6 +1,7 @@
 // 기본적으로 GA_ID를 발급 받습니다. firebase에서 어플리케이션을 만들고
 // 애널리틱스를 추가하면 GA_ID를 발급 받을 수 있습니다.
 export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID
+export const GTM_TRACKING_ID = process.env.NEXT_PUBLIC_GTM_ID
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url: URL) => {

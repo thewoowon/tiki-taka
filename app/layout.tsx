@@ -180,6 +180,14 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WMPN6NGH"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
             <div className="min-h-screen flex">{children}</div>
@@ -190,15 +198,6 @@ export default function RootLayout({
           </RecoilRoot>
           <Toaster />
         </QueryClientProvider>
-
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WMPN6NGH"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
       </body>
     </html>
   );

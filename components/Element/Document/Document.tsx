@@ -19,7 +19,6 @@ import axios from "axios";
 import { Loading } from "@/components/View/Loading";
 import styled from "@emotion/styled";
 import { ShallowHeader } from "@/components/Layout";
-import { sendGTMEvent } from '@next/third-parties/google'
 
 const Document = () => {
   const router = useRouter();
@@ -358,7 +357,6 @@ const Document = () => {
                 width: "155px",
               }}
               onClick={() => {
-                sendGTMEvent({ event: 'new_document_button_click', value: 'new' })
                 if (documents.length >= PDF_FILE_COUNT_LIMIT) handleOpen();
                 else setMode("upload");
               }}
@@ -381,7 +379,6 @@ const Document = () => {
                 width: "155px",
               }}
               onClick={() => {
-                sendGTMEvent({ event: 'old_document_button_click', value: 'old' })
                 const selectedIndex = isSelected.indexOf(true);
 
                 if (selectedIndex === -1) {

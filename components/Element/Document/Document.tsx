@@ -360,6 +360,7 @@ const Document = () => {
                 if (documents.length >= PDF_FILE_COUNT_LIMIT) handleOpen();
                 else setMode("upload");
               }}
+              id="document-upload-button"
             >
               새 이력서 등록
             </Button>
@@ -391,6 +392,7 @@ const Document = () => {
                   undefined
                 );
               }}
+              id="document-select-button"
             >
               이력서 선택
             </Button>

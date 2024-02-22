@@ -175,6 +175,7 @@ const UploadPage = () => {
               onClick={() => {
                 setTextOrImage("text");
               }}
+              id="attach-text-button"
             >
               <svg
                 width="25"
@@ -242,6 +243,7 @@ const UploadPage = () => {
               onClick={() => {
                 setTextOrImage("image");
               }}
+              id="attach-image-button"
             >
               <svg
                 width="25"
@@ -400,6 +402,7 @@ const UploadPage = () => {
               onClick={() => {
                 setTextOrImage("image");
               }}
+              id="insert-image-button"
             >
               이미지로 넣을래요
             </Button>
@@ -511,6 +514,7 @@ const UploadPage = () => {
               onClick={() => {
                 setTextOrImage("text");
               }}
+              id="insert-text-button"
             >
               텍스트로 넣을래요
             </Button>

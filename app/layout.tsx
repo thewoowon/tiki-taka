@@ -189,8 +189,8 @@ export default function RootLayout({
           </RecoilRoot>
           <Toaster />
         </QueryClientProvider>
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GA_ID || ""} />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID || ""} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
       </body>
     </html>
   );

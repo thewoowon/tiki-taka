@@ -381,6 +381,7 @@ const Document = () => {
                 width: "155px",
               }}
               onClick={() => {
+                sendGAEvent({ event: 'old_document_button_click', value: 'old' })
                 const selectedIndex = isSelected.indexOf(true);
 
                 if (selectedIndex === -1) {

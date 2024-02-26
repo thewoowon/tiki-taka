@@ -146,7 +146,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
               if (history && history.interviewId)
                 router.push(
                   "/interview/question?interviewId=" +
-                  history.interviewId +
+                    history.interviewId +
                     "&continue=true"
                 );
               else {

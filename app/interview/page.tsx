@@ -104,6 +104,7 @@ const Box = styled.div`
 const Button = styled.button`
   display: flex;
   width: 330px;
+  height: 52px;
   padding: 18px 10px;
   justify-content: center;
   align-items: center;
@@ -111,6 +112,8 @@ const Button = styled.button`
   border-radius: 5px;
   background-color: ${COLORS.TIKI_DARK_GREEN};
   color: ${COLORS.WHITE};
+  font-size: 16px;
+  font-weight: semibold;
 
   &:hover {
     cursor: pointer;

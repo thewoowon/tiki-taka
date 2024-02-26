@@ -34,6 +34,7 @@ export const useMe = () => {
       });
 
       if (!response) {
+        console.log("hello1")
         toast.error("로그인이 필요합니다.");
         setIsLoggedIn(false);
         setUserRecoilState({
@@ -43,6 +44,7 @@ export const useMe = () => {
           userId: null,
         });
         router.push("/auth/kakao");
+        return;
       }
 
       response?.data.email && setEmail(response?.data.email);

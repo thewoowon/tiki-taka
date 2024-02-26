@@ -266,6 +266,7 @@ const QuestionPage = () => {
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                height: "52px",
               }}
               onClick={() => {
                 generateMutation.mutate();
@@ -295,6 +296,7 @@ const QuestionPage = () => {
                 fontWeight: 600,
                 lineHeight: "16px",
                 width: "155px",
+                height: "52px",
               }}
               onClick={() => {
                 handleOpen();

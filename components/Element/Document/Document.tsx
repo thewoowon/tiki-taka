@@ -352,9 +352,10 @@ const Document = () => {
                 backgroundColor: COLORS.DARK_BG + " !important",
                 color: COLORS.WHITE,
                 fontSize: "16px",
-                fontWeight: 500,
+                fontWeight: 600,
                 lineHeight: "16px",
                 width: "155px",
+                height: "52px",
               }}
               onClick={() => {
                 if (documents.length >= PDF_FILE_COUNT_LIMIT) handleOpen();
@@ -375,7 +376,7 @@ const Document = () => {
                 backgroundColor: COLORS.TIKI_GREEN + " !important",
                 color: COLORS.WHITE,
                 fontSize: "16px",
-                fontWeight: 500,
+                fontWeight: 600,
                 lineHeight: "16px",
                 width: "155px",
               }}

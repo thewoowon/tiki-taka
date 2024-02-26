@@ -234,6 +234,7 @@ const SimpleDocument = () => {
             fontSize: "16px",
             fontWeight: 600,
             lineHeight: "16px",
+            height: "52px",
 
             "@media (max-width: 1024px)": {
               width: "100%",

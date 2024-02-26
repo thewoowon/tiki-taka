@@ -606,6 +606,7 @@ const InterviewResultPage = () => {
                 borderRadius: "5px",
                 border: `1px solid ${COLORS.GRAY100}`,
                 color: COLORS.GRAY100,
+                height: "52px",
               }}
               onClick={() => {
                 regenerateMutation.mutate(Number(params.get("interviewId")));
@@ -624,6 +625,7 @@ const InterviewResultPage = () => {
                 flexShrink: 0,
                 backgroundColor: COLORS.TIKI_GREEN + " !important",
                 color: COLORS.WHITE,
+                height: "52px",
               }}
               onClick={async () => {
                 downloadMutation.mutate(Number(params.get("interviewId")));

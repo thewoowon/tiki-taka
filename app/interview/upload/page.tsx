@@ -171,6 +171,7 @@ const UploadPage = () => {
                 "@media (max-width: 768px)": {
                   width: "353px",
                 },
+                height: "52px",
               }}
               onClick={() => {
                 setTextOrImage("text");
@@ -239,6 +240,7 @@ const UploadPage = () => {
                 "@media (max-width: 768px)": {
                   width: "353px",
                 },
+                height: "52px",
               }}
               onClick={() => {
                 setTextOrImage("image");
@@ -398,6 +400,7 @@ const UploadPage = () => {
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                height: "52px",
               }}
               onClick={() => {
                 setTextOrImage("image");
@@ -423,6 +426,7 @@ const UploadPage = () => {
                 fontWeight: 600,
                 lineHeight: "16px",
                 width: "155px",
+                height: "52px",
               }}
               onClick={() => {
                 // 입력한 텍스트 validation
@@ -510,6 +514,7 @@ const UploadPage = () => {
                 fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "16px",
+                height: "52px",
               }}
               onClick={() => {
                 setTextOrImage("text");
@@ -534,6 +539,8 @@ const UploadPage = () => {
                 fontWeight: 600,
                 lineHeight: "16px",
                 width: "155px",
+                height: "52px",
+                height: "52px",
               }}
               onClick={() => {
                 // 입력한 이미지 validation

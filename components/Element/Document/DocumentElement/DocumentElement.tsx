@@ -14,6 +14,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { userState } from "@/states";
 import { useRecoilState } from "recoil";
+import { useRouter } from "next/navigation";
 
 const DocumentElement = ({
   pdfDocument,
@@ -34,6 +35,7 @@ const DocumentElement = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [userRecoilState] = useRecoilState(userState);
+  const router = useRouter();
 
   const fileUploadMutation = useMutation({
     mutationFn: (file: File) => {
@@ -53,7 +55,12 @@ const DocumentElement = ({
     },
     onSuccess: (data) => {
       if (data.code === "200") toast.success("이력서 업로드에 성공했어요.");
-      else toast.error(data.message);
+      else {
+        if (data.code === "800") {
+          toast.error(data.message);
+          router.push("/auth/kakao");
+        }
+      }
       refetch?.();
     },
     onError: (error) => {
@@ -84,7 +91,9 @@ const DocumentElement = ({
         height: "56px",
         borderRadius: "5px",
         border: `1px solid ${
-          isSelected || fileUploadMutation.isPending ? COLORS.TIKI_GREEN : COLORS.GRAY100
+          isSelected || fileUploadMutation.isPending
+            ? COLORS.TIKI_GREEN
+            : COLORS.GRAY100
         }`,
         backgroundColor: COLORS.DARK_BG + " !important",
         cursor: "pointer",

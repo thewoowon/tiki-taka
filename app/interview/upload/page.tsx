@@ -540,7 +540,6 @@ const UploadPage = () => {
                 lineHeight: "16px",
                 width: "155px",
                 height: "52px",
-                height: "52px",
               }}
               onClick={() => {
                 // 입력한 이미지 validation

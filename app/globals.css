@@ -47,3 +47,22 @@ button {
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
 }
+
+.swiper-pagination-bullet-active {
+  position: relative;
+}
+
+/* 활성화된 bullet의 스타일 */
+.swiper-pagination-bullet-active::before {
+  content: "";
+  display: block;
+  width: 11px;
+  height: 10px;
+  background-image: url('data:image/svg+xml;utf8,<svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 0H4.5V2.58578L2.67158 0.75736L1.25736 2.17157L3.08579 4H0.5V6H3.08578L1.25736 7.8284L2.67158 9.24265L4.5 7.4142V10H6.5V7.4142L8.32845 9.24265L9.74265 7.82845L7.9142 6H10.5V4H7.9142L9.74265 2.17157L8.32845 0.757355L6.5 2.58578V0Z" fill="%2300CE72"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -10,10 +10,12 @@ import { loginState, modalState } from "@/states";
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Link from "next/link";
+import TikitakaTextMobile from "@/components/svg/TikitakaTextMobile";
+import TikitakaLogoSmall from "@/public/svg/tikitaka-logo-small.svg";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
-  { pathname: "/history", label: "히스토리" },
+  //{ pathname: "/history", label: "히스토리" },
 ];
 
 type Anchor = "top" | "left" | "bottom" | "right";
@@ -58,6 +60,7 @@ export default function TemporaryDrawer() {
     <Box
       sx={{
         width: anchor === "top" || anchor === "bottom" ? "auto" : 250,
+        padding: "30px 20px",
       }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
@@ -98,17 +101,11 @@ export default function TemporaryDrawer() {
           "@media (min-width: 1024px)": {
             display: "none",
           },
-          top: "60px",
-          ".MuiModal-backdrop": {
-            backgroundColor: "transparent",
-            top: "60px",
-          },
           ".MuiDrawer-paper": {
             backgroundColor: COLORS.DARK_BG,
             fontFamily: "Pretendard Variable",
             color: COLORS.WHITE,
-            padding: "30px",
-            height: "calc(100vh - 60px)",
+            height: "100%",
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -117,7 +114,40 @@ export default function TemporaryDrawer() {
           },
         }}
       >
-        {list("top")}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              borderBottom: "1px solid " + COLORS.LIGHT_BG,
+              padding: "20px",
+            }}
+          >
+            <MobileLogo
+              onClick={() => {
+                setState({ ...state, top: false });
+                router.push("/");
+              }}
+            >
+              <TikitakaTextMobile color={COLORS.WHITE} />
+              <TikitakaLogoSmall />
+            </MobileLogo>
+            <HamburgerButton onClick={toggleDrawer("top", !state["top"])}>
+              <Hamburger />
+            </HamburgerButton>
+          </Box>
+          {list("top")}
+        </Box>
         <Box
           width={"100%"}
           display={"flex"}
@@ -125,6 +155,7 @@ export default function TemporaryDrawer() {
           justifyContent={"center"}
           gap={"6px"}
           bottom={"30px"}
+          padding={"20px"}
         >
           <svg
             width="16"
@@ -146,7 +177,7 @@ export default function TemporaryDrawer() {
               strokeLinejoin="round"
             />
           </svg>
-          <Typography fontSize={12} color={COLORS.WHITE}>
+          <Typography fontSize={16} color={COLORS.WHITE} fontWeight={400}>
             <Link
               href={"https://open.kakao.com/o/sUonPQYf"}
               className="cursor-pointer hover:text-white"
@@ -189,7 +220,7 @@ const Ul = styled.ul`
 
   li {
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -197,5 +228,20 @@ const Ul = styled.ul`
     &:hover {
       color: ${COLORS.TIKI_GREEN};
     }
+  }
+`;
+
+const MobileLogo = styled.div`
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  display: absolute;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+
+  @media (max-width: 1024px) {
+    display: flex;
   }
 `;

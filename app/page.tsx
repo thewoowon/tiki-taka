@@ -852,8 +852,7 @@ const Main = styled.main`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   position: relative;
   
 

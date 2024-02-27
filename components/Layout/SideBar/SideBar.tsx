@@ -172,7 +172,7 @@ const Container = styled.nav`
   width: 250px;
   min-width: 250px;
   max-width: 250px;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   position: fixed;
   left: 0;
   top: 0;

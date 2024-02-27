@@ -187,7 +187,7 @@ const InterviewChatPage = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "calc(var(--vh, 1vh) * 100)",
         maxWidth: "1040px",
         width: "100%",
         gap: "40px",

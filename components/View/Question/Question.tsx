@@ -16,7 +16,7 @@ const Question = ({ questions }: { questions: QuestionElementType[] }) => {
         "&::-webkit-scrollbar": {
           display: "none",
         },
-        height: "calc(100vh - 350px)",
+        height: "calc((var(--vh, 1vh) * 100) - 350px)",
         position: "relative",
         padding: "0 20px",
       }}

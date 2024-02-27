@@ -727,7 +727,7 @@ const Container = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100%;
   padding: 0 20px;
   min-width: 393px;

@@ -99,7 +99,7 @@ const Container = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100%;
   gap: 40px;
   padding: 66px 20px;

@@ -40,6 +40,12 @@ export default function Home() {
           alignItems: "center",
           flexDirection: "column",
           overflowY: "scroll",
+          // scroll바 숨기기
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
         }}
       >
         <Wrapper>

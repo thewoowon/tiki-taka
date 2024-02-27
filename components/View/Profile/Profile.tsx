@@ -8,9 +8,9 @@ import { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { loginState, userState } from "@/states";
 import { useMe } from "@/hooks/useMe";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
+import customAxios from "@/lib/axios";
 
 const Profile = () => {
   const router = useRouter();
@@ -34,13 +34,9 @@ const Profile = () => {
 
   const logoutMutation = useMutation({
     mutationFn: () =>
-      axios({
+      customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/user/logout",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        withCredentials: true,
+        url: "/user/logout",
         data: {
           userId: userRecoilState.userId,
         },

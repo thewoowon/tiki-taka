@@ -18,6 +18,7 @@ import { modalStyle } from "@/style/modal";
 import { ResultLoading } from "@/components/View/ResultLoading";
 import { Loading } from "@/components/View/Loading";
 import { ShallowHeader } from "@/components/Layout";
+import customAxios from "@/lib/axios";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -68,16 +69,13 @@ const InterviewChatPage = () => {
   const { data: interviewData } = useQuery({
     queryKey: ["interview", userRecoilState.userId, params.get("interviewId")],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
         url:
-          "https://api.tikitaka.chat/interview/getInterview?userId=" +
+          "/interview/getInterview?userId=" +
           userRecoilState.userId +
           "&interviewId=" +
           params.get("interviewId"),
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         data: {
           userId: userRecoilState.userId,
         },
@@ -88,14 +86,11 @@ const InterviewChatPage = () => {
   const { isLoading, data } = useQuery({
     queryKey: ["questions", userRecoilState.userId, params.get("interviewId")],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
-        url: `https://api.tikitaka.chat/interview/getQaList?userId=${
+        url: `/interview/getQaList?userId=${
           userRecoilState.userId
         }&interviewId=${params.get("interviewId")}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         data: {
           userId: userRecoilState.userId,
         },
@@ -107,12 +102,9 @@ const InterviewChatPage = () => {
 
   const saveAnswerMutation = useMutation({
     mutationFn: (answerData: { qaId: number; answer: string }[]) => {
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/interview/insertAnswer",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/insertAnswer",
         data: {
           userId: userRecoilState.userId,
           interviewId: Number(params.get("interviewId")),

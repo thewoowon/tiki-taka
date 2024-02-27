@@ -17,9 +17,9 @@ import { modalStyle } from "@/style/modal";
 import { useMutation } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
-import axios from "axios";
 import toast from "react-hot-toast";
 import parse from "html-react-parser";
+import customAxios from "@/lib/axios";
 
 type FormType = {
   chat: string;
@@ -82,12 +82,9 @@ const ChatView = ({
   // /interview/insertAnswer
   const saveAnswerMutation = useMutation({
     mutationFn: (answerData: { qaId: number; answer: string }[]) => {
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/interview/insertAnswer",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/insertAnswer",
         data: {
           userId: userRecoilState.userId,
           interviewId,

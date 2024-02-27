@@ -1,5 +1,5 @@
+import customAxios from "@/lib/axios";
 import { loginState, userState } from "@/states";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -12,10 +12,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const result = await axios({
+      const result = await customAxios({
         method: "GET",
-        url: `https://api.tikitaka.chat/user/cookie`,
-        withCredentials: true,
+        url: `/user/cookie`,
       })
         .then((res) => {
           return res;

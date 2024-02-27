@@ -7,11 +7,11 @@ import { useEffect, useState } from "react";
 import HistoryElement from "./HistoryElement/HistoryElement";
 import ExclamationMark2 from "@/public/svg/exclamation-mark-2.svg";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { loginState, userState } from "@/states";
 import { useRecoilState } from "recoil";
 import { Loading } from "../Loading";
 import toast from "react-hot-toast";
+import customAxios from "@/lib/axios";
 
 const History = ({ type }: { type: "deleteOnly" | "all" }) => {
   const router = useRouter();
@@ -31,14 +31,9 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
   const { isLoading, data, refetch } = useQuery({
     queryKey: ["interviews", userRecoilState.userId],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
-        url:
-          "https://api.tikitaka.chat/interview/getInterviewList?userId=" +
-          userRecoilState.userId,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/getInterviewList?userId=" + userRecoilState.userId,
         data: {
           userId: userRecoilState.userId,
         },
@@ -48,12 +43,9 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
 
   const deleteInterviewMutation = useMutation({
     mutationFn: (interviewId: number) => {
-      return axios({
+      return customAxios({
         method: "DELETE",
-        url: "https://api.tikitaka.chat/interview/deleteInterview",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/deleteInterview",
         data: {
           userId: userRecoilState.userId,
           interviewId,
@@ -75,12 +67,9 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
 
   const initInterviewMutation = useMutation({
     mutationFn: (interviewId: number) => {
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/interview/initQa",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/initQa",
         data: {
           userId: userRecoilState.userId,
           interviewId,

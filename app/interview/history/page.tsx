@@ -5,11 +5,11 @@ import { Box, Typography } from "@mui/material";
 import { COLORS } from "@/style/color";
 import { useMutation } from "@tanstack/react-query";
 import { userState } from "@/states";
-import axios from "axios";
 import router from "next/router";
 import { useRecoilState } from "recoil";
 import toast from "react-hot-toast";
 import { ShallowHeader } from "@/components/Layout";
+import customAxios from "@/lib/axios";
 
 const HistoryPage = () => {
   // history fetching
@@ -38,12 +38,9 @@ const HistoryPage = () => {
       //     })
       //   );
       // }
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/interview/insertInterview",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/insertInterview",
         data: formData,
       }).then((res) => res.data);
     },

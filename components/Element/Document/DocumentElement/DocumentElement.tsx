@@ -10,11 +10,11 @@ import {
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { userState } from "@/states";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
+import customAxios from "@/lib/axios";
 
 const DocumentElement = ({
   pdfDocument,
@@ -44,12 +44,9 @@ const DocumentElement = ({
       if (!userRecoilState.userId)
         throw new Error("userRecoilState.userId is null");
       formData.append("userId", userRecoilState.userId.toString());
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/resume/uploadResume",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/resume/uploadResume",
         data: formData,
       }).then((res) => res.data);
     },

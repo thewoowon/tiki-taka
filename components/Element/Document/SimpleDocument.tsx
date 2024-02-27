@@ -13,12 +13,12 @@ import SimpleDocumentElement from "./SimpleDocumentElement";
 import styled from "@emotion/styled";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
-import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Loading } from "@/components/View/Loading";
 import ExclamationMark2 from "@/public/svg/exclamation-mark-2.svg";
 import { SimulationQLoading } from "../Loading";
+import customAxios from "@/lib/axios";
 
 const SimpleDocument = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,14 +36,9 @@ const SimpleDocument = () => {
   const { isLoading, data, refetch } = useQuery({
     queryKey: ["resumes", userRecoilState.userId],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
-        url:
-          "https://api.tikitaka.chat/resume/getResumeList?userId=" +
-          userRecoilState.userId,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/resume/getResumeList?userId=" + userRecoilState.userId,
         data: {
           userId: userRecoilState.userId,
         },
@@ -58,12 +53,9 @@ const SimpleDocument = () => {
       if (!userRecoilState.userId)
         throw new Error("userRecoilState.userId is null");
       formData.append("userId", userRecoilState.userId.toString());
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/resume/uploadResume",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/resume/uploadResume",
         data: formData,
       }).then((res) => res.data);
     },
@@ -79,12 +71,9 @@ const SimpleDocument = () => {
 
   const fileDeleteMutation = useMutation({
     mutationFn: (resumeId: number) => {
-      return axios({
+      return customAxios({
         method: "DELETE",
-        url: "https://api.tikitaka.chat/resume/deleteResume",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/resume/deleteResume",
         data: {
           resumeId,
           userId: userRecoilState.userId,

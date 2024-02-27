@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import Question from "@/components/View/Question";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import toast from "react-hot-toast";
@@ -20,6 +19,7 @@ import { ResultLoading } from "@/components/View/ResultLoading";
 import { ShallowHeader } from "@/components/Layout";
 import { Loading } from "@/components/View/Loading";
 import { modalStyle } from "@/style/modal";
+import customAxios from "@/lib/axios";
 
 const QuestionPage = () => {
   // 공고 자료를 보내고 응답을 받는다.
@@ -61,14 +61,11 @@ const QuestionPage = () => {
   const { isLoading: interviewsIsLoading, data: interviewsData } = useQuery({
     queryKey: ["interviews", userRecoilState.userId],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
         url:
-          "https://api.tikitaka.chat/interview/getInterviewList?userId=" +
+          "/interview/getInterviewList?userId=" +
           userRecoilState.userId,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         data: {
           userId: userRecoilState.userId,
         },
@@ -79,14 +76,11 @@ const QuestionPage = () => {
   const { isLoading, data, refetch } = useQuery({
     queryKey: ["questions", params.get("interviewId")],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
-        url: `https://api.tikitaka.chat/interview/getQaList?userId=${
+        url: `/interview/getQaList?userId=${
           userRecoilState.userId
         }&interviewId=${params.get("interviewId")}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         data: {
           userId: userRecoilState.userId,
         },
@@ -100,12 +94,9 @@ const QuestionPage = () => {
     mutationFn: () => {
       if (!userRecoilState.userId)
         throw new Error("userRecoilState.userId is null");
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/interview/generateQa",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/generateQa",
         data: {
           userId: userRecoilState.userId,
           interviewId: params.get("interviewId"),

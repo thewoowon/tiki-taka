@@ -1,5 +1,5 @@
+import customAxios from "@/lib/axios";
 import { loginState, userState } from "@/states";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -16,12 +16,9 @@ export const useMe = () => {
 
   useEffect(() => {
     async function getProfile() {
-      const response = await axios({
+      const response = await customAxios({
         method: "GET",
-        url: "https://api.tikitaka.chat/user/kakaoLogin",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/user/kakaoLogin",
       }).catch((err) => {
         toast.error("사용자를 확인하는 중 오류가 발생했습니다.");
         setIsLoggedIn(false);
@@ -34,7 +31,7 @@ export const useMe = () => {
       });
 
       if (!response) {
-        console.log("hello1")
+        console.log("hello1");
         toast.error("로그인이 필요합니다.");
         setIsLoggedIn(false);
         setUserRecoilState({

@@ -5,13 +5,13 @@ import { COLORS } from "@/style/color";
 import Interviewer from "@/public/svg/interviewer.svg";
 import { Box, Button, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { userState } from "@/states";
 import { useRecoilState } from "recoil";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { ResultLoading } from "@/components/View/ResultLoading";
 import { ShallowHeader } from "@/components/Layout";
+import customAxios from "@/lib/axios";
 
 type FeedbackType = {
   id: number;
@@ -42,14 +42,11 @@ const InterviewResultPage = () => {
   const { isLoading, data, refetch } = useQuery({
     queryKey: ["result", userRecoilState.userId, params.get("interviewId")],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
-        url: `https://api.tikitaka.chat/interview/getInterview?userId=${
+        url: `/interview/getInterview?userId=${
           userRecoilState.userId
         }&interviewId=${params.get("interviewId")}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         data: {
           userId: userRecoilState.userId,
         },
@@ -61,16 +58,13 @@ const InterviewResultPage = () => {
 
   const downloadMutation = useMutation({
     mutationFn: (interviewId: number) => {
-      return axios({
+      return customAxios({
         method: "GET",
         url:
-          "https://api.tikitaka.chat/interview/downloadInterview?userId=" +
+          "/interview/downloadInterview?userId=" +
           userRecoilState.userId +
           "&interviewId=" +
           interviewId,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         data: {
           userId: userRecoilState.userId,
           interviewId,
@@ -93,12 +87,9 @@ const InterviewResultPage = () => {
 
   const regenerateMutation = useMutation({
     mutationFn: (interviewId: number) => {
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/interview/generateFeedback",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/generateFeedback",
         data: {
           userId: userRecoilState.userId,
           interviewId,

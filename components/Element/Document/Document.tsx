@@ -15,10 +15,10 @@ import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { userState } from "@/states";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Loading } from "@/components/View/Loading";
 import styled from "@emotion/styled";
 import { ShallowHeader } from "@/components/Layout";
+import customAxios from "@/lib/axios";
 
 const Document = () => {
   const router = useRouter();
@@ -38,14 +38,9 @@ const Document = () => {
   const { isLoading, data, refetch } = useQuery({
     queryKey: ["resumes", userRecoilState.userId],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
-        url:
-          "https://api.tikitaka.chat/resume/getResumeList?userId=" +
-          userRecoilState.userId,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/resume/getResumeList?userId=" + userRecoilState.userId,
         data: {
           userId: userRecoilState.userId,
         },
@@ -55,12 +50,9 @@ const Document = () => {
 
   const fileDeleteMutation = useMutation({
     mutationFn: (resumeId: number) => {
-      return axios({
+      return customAxios({
         method: "DELETE",
-        url: "https://api.tikitaka.chat/resume/deleteResume",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/resume/deleteResume",
         data: {
           resumeId,
           userId: userRecoilState.userId,
@@ -78,12 +70,9 @@ const Document = () => {
 
   const deleteOldResumeMutation = useMutation({
     mutationFn: () => {
-      return axios({
+      return customAxios({
         method: "DELETE",
-        url: "https://api.tikitaka.chat/resume/deleteOldResume",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/resume/deleteOldResume",
         data: {
           userId: userRecoilState.userId,
         },

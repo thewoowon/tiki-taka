@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { loginState, userState } from "@/states";
+import customAxios from "@/lib/axios";
 
 type kakaoParamType = {
   client_id?: string;
@@ -37,10 +38,9 @@ const useKakaoLogin = () => {
 
   const handleLogin = useCallback(
     async (code: string | string[] | null) => {
-      const result = await axios({
+      const result = await customAxios({
         method: "GET",
-        url: `https://api.tikitaka.chat/user/kakaoLogin?code=${code}`,
-        withCredentials: true,
+        url: `/user/kakaoLogin?code=${code}`,
       })
         .then((res) => {
           return res;

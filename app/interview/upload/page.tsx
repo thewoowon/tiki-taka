@@ -2,6 +2,7 @@
 import ImageUpload from "@/components/Element/ImageUpload";
 import { ShallowHeader } from "@/components/Layout";
 import { Loading } from "@/components/View/Loading";
+import customAxios from "@/lib/axios";
 import { userState } from "@/states";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
@@ -14,7 +15,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
@@ -45,14 +45,11 @@ const UploadPage = () => {
   const { data } = useQuery({
     queryKey: ["interviews", userRecoilState.userId],
     queryFn: () => {
-      return axios({
+      return customAxios({
         method: "GET",
         url:
-          "https://api.tikitaka.chat/interview/getInterviewList?userId=" +
+          "/interview/getInterviewList?userId=" +
           userRecoilState.userId,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
         data: {
           userId: userRecoilState.userId,
         },
@@ -86,12 +83,9 @@ const UploadPage = () => {
         );
       }
 
-      return axios({
+      return customAxios({
         method: "POST",
-        url: "https://api.tikitaka.chat/interview/insertInterview",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        url: "/interview/insertInterview",
         data: formData,
       }).then((res) => res.data);
     },

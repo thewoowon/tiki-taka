@@ -7,8 +7,11 @@ import { COLORS } from "@/style/color";
 import { TikitakaText } from "@/components/svg";
 import Typography from "@/components/Element/Typography";
 import { useRecoilState } from "recoil";
-import { loginState } from "@/states";
+import { loginState, userState } from "@/states";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import customAxios from "@/lib/axios";
+import axios from "axios";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -23,7 +26,8 @@ const SideBar = () => {
     label: "로그인",
   });
 
-  const [isLoggedIn] = useRecoilState(loginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const [, setUserState] = useRecoilState(userState);
 
   const downloadFile = (url: string, fileName: string) => {
     const link = document.createElement("a");
@@ -32,6 +36,22 @@ const SideBar = () => {
     link.click();
   };
 
+  const { isLoading, data } = useQuery({
+    queryKey: ["userInfo", "get"],
+    queryFn: () => {
+      return axios({
+        withCredentials: true,
+        baseURL: "https://api.tikitaka.chat",
+        method: "GET",
+        url: `/user/getUserInfo`,
+      })
+        .then((res) => res.data ?? {})
+        .catch((err) => err.response.data);
+    },
+    // 캐시를 사용하지 않음
+    staleTime: 0,
+  });
+
   useEffect(() => {
     if (isLoggedIn) {
       setPathObj({ pathname: "/mypage", label: "마이페이지" });
@@ -39,6 +59,27 @@ const SideBar = () => {
       setPathObj({ pathname: "/auth/kakao", label: "로그인" });
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoading || !data) return;
+    if (data?.code === "950") {
+      setUserState({
+        email: "",
+        profileImage: "",
+        nickname: "",
+        userId: null,
+      });
+      setIsLoggedIn(false);
+    } else if (data?.code === "200") {
+      setUserState({
+        email: data.data.email,
+        profileImage: data.data.profileImage,
+        nickname: data.data.nickname,
+        userId: data.data.userId,
+      });
+      setIsLoggedIn(true);
+    }
+  }, [data, isLoading, setIsLoggedIn, setUserState]);
 
   return (
     <Container>

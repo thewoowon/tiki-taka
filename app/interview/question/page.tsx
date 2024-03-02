@@ -63,9 +63,7 @@ const QuestionPage = () => {
     queryFn: () => {
       return customAxios({
         method: "GET",
-        url:
-          "/interview/getInterviewList?userId=" +
-          userRecoilState.userId,
+        url: "/interview/getInterviewList?userId=" + userRecoilState.userId,
         data: {
           userId: userRecoilState.userId,
         },
@@ -138,7 +136,7 @@ const QuestionPage = () => {
         title={"질문 재생성 중"}
         description={
           <Typography>
-            ${userRecoilState.nickname}님의 이력서와 채용공고를 바탕으로
+            {userRecoilState.nickname}님의 이력서와 채용공고를 바탕으로
             <br />
             면접 질문을 재생성하고 있어요.
           </Typography>

@@ -302,6 +302,7 @@ const QuestionPage = () => {
                 //   "/interview/chat?interviewId=" + params.get("interviewId")
                 // );
               }}
+              id="start-interview-button"
             >
               면접 시작
             </Button>

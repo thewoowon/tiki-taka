@@ -51,6 +51,7 @@ const DocumentElement = ({
       }).then((res) => res.data);
     },
     onSuccess: (data) => {
+      console.log("data", data);
       if (data.code === "200") toast.success("이력서 업로드에 성공했어요.");
       else {
         if (data.code === "800") {
@@ -61,6 +62,7 @@ const DocumentElement = ({
       refetch?.();
     },
     onError: (error) => {
+      console.error("error",error);
       toast.error("이력서 업로드에 실패했어요. 다시 시도해 주세요.");
     },
   });

@@ -13,7 +13,8 @@ customAxios.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.data.code == 950) {
+    console.error("error", error);
+    if (error.response.data.code == 950) {
       window.location.replace("/auth/kakao");
     }
     // 요청 실패 시 특별히 처리할 작업이 없으면 그대로 반환

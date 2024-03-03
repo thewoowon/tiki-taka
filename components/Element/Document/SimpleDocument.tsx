@@ -65,6 +65,7 @@ const SimpleDocument = () => {
       refetch?.();
     },
     onError: (error) => {
+      console.error(error);
       toast.error("이력서 업로드에 실패했어요. 다시 시도해 주세요.");
     },
   });

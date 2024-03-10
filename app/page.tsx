@@ -11,6 +11,15 @@ import Question from "@/public/svg/question.svg";
 import BlackLogo from "@/public/svg/black-logo.svg";
 import RightArrow from "@/public/svg/right-arrow.svg";
 import Sunglasses from "@/public/svg/sunglasses.svg";
+import SurprisedMobile from "@/public/svg/surprised-mobile.svg";
+import ExclamationMarkMobile from "@/public/svg/exclamation-mark-mobile.svg";
+import TimerMobile from "@/public/svg/timer-mobile.svg";
+import TargetMobile from "@/public/svg/target-mobile.svg";
+import WhiteDocumentMobile from "@/public/svg/white-document-mobile.svg";
+import QuestionMobile from "@/public/svg/question-mobile.svg";
+import BlackLogoMobile from "@/public/svg/black-logo-mobile.svg";
+import RightArrowMobile from "@/public/svg/right-arrow-mobile.svg";
+import SunglassesMobile from "@/public/svg/sunglasses-mobile.svg";
 import { useRouter } from "next/navigation";
 import { Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -403,8 +412,8 @@ export default function Home() {
                 <SwiperSlide>
                   <Box
                     sx={{
-                      minWidth: "350px",
-                      width: "350px",
+                      minWidth: "370px",
+                      width: "370px",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -420,9 +429,9 @@ export default function Home() {
                         gap: "16px",
                       }}
                     >
-                      <Surprised />
-                      <ExclamationMark />
-                      <Timer />
+                      <SurprisedMobile />
+                      <ExclamationMarkMobile />
+                      <TimerMobile />
                     </Box>
                     <Box
                       sx={{
@@ -459,8 +468,8 @@ export default function Home() {
                 <SwiperSlide>
                   <Box
                     sx={{
-                      minWidth: "350px",
-                      width: "350px",
+                      minWidth: "370px",
+                      width: "370px",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -476,9 +485,9 @@ export default function Home() {
                         gap: "16px",
                       }}
                     >
-                      <Target />
-                      <WhiteDocument />
-                      <Question />
+                      <TargetMobile />
+                      <WhiteDocumentMobile />
+                      <QuestionMobile />
                     </Box>
                     <Box
                       sx={{
@@ -515,8 +524,8 @@ export default function Home() {
                 <SwiperSlide>
                   <Box
                     sx={{
-                      minWidth: "350px",
-                      width: "350px",
+                      minWidth: "370px",
+                      width: "370px",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -532,9 +541,9 @@ export default function Home() {
                         gap: "16px",
                       }}
                     >
-                      <BlackLogo />
-                      <RightArrow />
-                      <Sunglasses />
+                      <BlackLogoMobile />
+                      <RightArrowMobile />
+                      <SunglassesMobile />
                     </Box>
                     <Box
                       sx={{
@@ -932,7 +941,7 @@ const BottomButton = styled.button`
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   font-size: 16px;
-  font-weight: semibold;
+  font-weight: 600;
   margin-bottom: 10px;
 
   &:hover {

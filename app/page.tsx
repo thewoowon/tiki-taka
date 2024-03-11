@@ -412,8 +412,7 @@ export default function Home() {
                 <SwiperSlide>
                   <Box
                     sx={{
-                      minWidth: "370px",
-                      width: "370px",
+                      width: "100%",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -468,8 +467,7 @@ export default function Home() {
                 <SwiperSlide>
                   <Box
                     sx={{
-                      minWidth: "370px",
-                      width: "370px",
+                      width: "100%",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -524,8 +522,7 @@ export default function Home() {
                 <SwiperSlide>
                   <Box
                     sx={{
-                      minWidth: "370px",
-                      width: "370px",
+                      width: "100%",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",

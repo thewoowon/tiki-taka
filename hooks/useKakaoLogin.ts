@@ -40,7 +40,7 @@ const useKakaoLogin = () => {
     async (code: string | string[] | null) => {
       const result = await customAxios({
         method: "GET",
-        url: `/user/kakaoDevLogin?code=${code}`,
+        url: `/user/kakaoLogin?code=${code}`,
       })
         .then((res) => {
           return res;

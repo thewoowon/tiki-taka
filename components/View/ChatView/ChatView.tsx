@@ -20,6 +20,7 @@ import { userState } from "@/states";
 import toast from "react-hot-toast";
 import parse from "html-react-parser";
 import customAxios from "@/lib/axios";
+import { debounce } from "lodash";
 
 type FormType = {
   chat: string;
@@ -154,10 +155,38 @@ const ChatView = ({
     }, 100);
   };
 
+  const handleSubmitDebounced = debounce((onSubmit: () => void) => {
+    handleSubmit(onSubmit)();
+  }, 300);
+
+  const addNewLineDebounced = debounce((event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!event?.currentTarget?.value) return;
+    event.preventDefault();
+    event.currentTarget.value += "\n";
+    adjustHeight();
+  }, 300); 
+
+  // 디바운스 처리
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault(); // 기본 동작 방지
-      handleSubmit(onSubmit)(); // 폼 제출
+    if (event.key === "Enter" && !event.currentTarget.value) {
+      event.preventDefault();
+      return;
+    }
+    // shift + enter는 줄바꿈
+    if (event.shiftKey && event.key === "Enter") {
+      //줄바꿈
+      addNewLineDebounced(event);
+      return;
+    }
+    if (event.key === "Enter" && event.currentTarget.value.includes("\n")) {
+      // submit이 아닌 줄바꿈
+      adjustHeight();
+      return;
+    }
+    // 현재 value에 \n이 없으면 submit
+    if (event.key === "Enter" && !event.currentTarget.value.includes("\n")) {
+      event.preventDefault();
+      handleSubmitDebounced(onSubmit);
     }
   };
 

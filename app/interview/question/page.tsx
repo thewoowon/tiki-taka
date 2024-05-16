@@ -288,19 +288,19 @@ const QuestionPage = () => {
                 height: "52px",
               }}
               onClick={() => {
-                handleOpen();
-                // const isContinue = params.get("continue") === "true";
-                // if (isContinue) {
-                //   router.push(
-                //     "/interview/chat?interviewId=" +
-                //       params.get("interviewId") +
-                //       "&continue=true"
-                //   );
-                //   return;
-                // }
-                // router.push(
-                //   "/interview/chat?interviewId=" + params.get("interviewId")
-                // );
+                // handleOpen();
+                const isContinue = params.get("continue") === "true";
+                if (isContinue) {
+                  router.push(
+                    "/interview/chat?interviewId=" +
+                      params.get("interviewId") +
+                      "&continue=true"
+                  );
+                  return;
+                }
+                router.push(
+                  "/interview/chat?interviewId=" + params.get("interviewId")
+                );
               }}
               id="start-interview-button"
             >

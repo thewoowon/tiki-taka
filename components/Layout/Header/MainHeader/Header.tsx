@@ -14,6 +14,7 @@ import TikitakaTextMobile from "@/components/svg/TikitakaTextMobile";
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
   { pathname: "/history", label: "히스토리" },
+  { pathname: "/study", label: "취업스터디 찾기" },
 ];
 
 const Header = () => {

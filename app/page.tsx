@@ -1,7 +1,7 @@
 "use client";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import Surprised from "@/public/svg/surprised.svg";
 import ExclamationMark from "@/public/svg/exclamation-mark.svg";
 import Timer from "@/public/svg/timer.svg";
@@ -28,9 +28,21 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Link from "next/link";
 import { Header } from "@/components/Layout";
+import { useState } from "react";
+import { modalStyle } from "@/style/modal";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
+  const [open, setOpen] = useState(true);
+  const handleClose = (
+    event: React.SyntheticEvent<Element, Event>,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
+    if (reason === "backdropClick") return;
+    if (reason === "escapeKeyDown") return;
+    setOpen(false);
+  };
 
   const downloadFile = (url: string, fileName: string) => {
     const link = document.createElement("a");
@@ -184,7 +196,7 @@ export default function Home() {
                   </defs>
                 </svg>
               </Typography>
-              <Button
+              <MainButton
                 onClick={() => {
                   router.push("/interview");
                 }}
@@ -202,7 +214,7 @@ export default function Home() {
                     fill="white"
                   />
                 </svg>
-              </Button>
+              </MainButton>
             </Box>
             {/* 서브 디스크립션 */}
             <SubWrapper>
@@ -833,6 +845,163 @@ export default function Home() {
           티키타카 하러가기
         </BottomButton>
       </ScreenHeightWrapper>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            ...modalStyle,
+            padding: "30px 30px 36px 30px",
+            width: "fit-content",
+            "@media (max-width: 1024px)": {
+              width: "353px",
+              padding: "20px",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                fill="#B9B9B9"
+              />
+            </svg>
+          </Box>
+          <Typography
+            sx={{
+              fontSize: "23px",
+              color: COLORS.WHITE,
+              fontWeight: 700,
+              textAlign: "center",
+
+              "@media (max-width: 1024px)": {
+                fontSize: "20px",
+              },
+            }}
+          >
+            면접 시뮬레이션과 <br /> 피드백 서비스를 오픈했어요 🥳
+          </Typography>
+          <Typography
+            sx={{
+              color: COLORS.GRAY100,
+              textAlign: "center",
+              fontSize: "16px",
+              fontStyle: "normal",
+              fontWeight: "400",
+              lineHeight: "24px",
+
+              "@media (max-width: 1024px)": {
+                fontSize: "16px",
+              },
+            }}
+          >
+            실제 기업 정보를 학습한 AI 면접관 티키와 <br /> 모의 면접을 보고,
+            피드백을 받을 수 있어요.
+          </Typography>
+          <Box
+            sx={{
+              backgroundColor: "#1D1D1D",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "12px",
+              padding: "16px",
+              borderRadius: "20px",
+
+              "@media (max-width: 1024px)": {
+                padding: "10px",
+                gap: "10px",
+              },
+            }}
+          >
+            <Box
+              sx={{
+                position: "relative",
+              }}
+            >
+              <Image
+                src={"/assets/interviewing.png"}
+                alt=""
+                priority
+                width={200}
+                height={310}
+              />
+            </Box>
+            <Box
+              sx={{
+                position: "relative",
+              }}
+            >
+              <Image
+                src={"/assets/thankyou.png"}
+                alt=""
+                priority
+                width={200}
+                height={310}
+              />
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+              pt: "20px",
+            }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                width: "330px",
+                padding: "18px 20px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                backgroundColor: COLORS.TIKI_GREEN + " !important",
+                color: COLORS.WHITE,
+              }}
+              onClick={async () => {
+                router.push("/interview");
+              }}
+            >
+              지금 바로 시작해볼까요?
+              <svg
+                width="9"
+                height="14"
+                viewBox="0 0 9 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.67146 7.0007L0.72168 2.05093L2.1359 0.636719L8.49986 7.0007L2.1359 13.3646L0.72168 11.9504L5.67146 7.0007Z"
+                  fill="white"
+                />
+              </svg>
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Main>
   );
 }
@@ -900,7 +1069,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Button = styled.button`
+const MainButton = styled.button`
   display: flex;
   width: 330px;
   padding: 18px 10px;

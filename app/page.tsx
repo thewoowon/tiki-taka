@@ -971,6 +971,7 @@ export default function Home() {
           >
             <Button
               sx={{
+                fontSize: "16px",
                 display: "flex",
                 width: "330px",
                 padding: "18px 20px",
@@ -980,6 +981,7 @@ export default function Home() {
                 flexShrink: 0,
                 backgroundColor: COLORS.TIKI_GREEN + " !important",
                 color: COLORS.WHITE,
+                fontWeight: "bold",
               }}
               onClick={async () => {
                 router.push("/interview");

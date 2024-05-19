@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
@@ -10,12 +10,11 @@ import { useRecoilState } from "recoil";
 import { loginState, userState } from "@/states";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import customAxios from "@/lib/axios";
 import axios from "axios";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
-  //{ pathname: "/history", label: "히스토리" },
+  { pathname: "/history", label: "히스토리" },
 ];
 
 const SideBar = () => {

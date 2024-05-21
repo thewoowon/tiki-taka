@@ -29,7 +29,7 @@ import "swiper/css/pagination";
 import Link from "next/link";
 import { Header } from "@/components/Layout";
 import { useState } from "react";
-import { modalStyle } from "@/style/modal";
+import { bottomModalStyle, modalStyle } from "@/style/modal";
 import Image from "next/image";
 
 export default function Home() {
@@ -860,46 +860,57 @@ export default function Home() {
               width: "353px",
               padding: "20px",
             },
+
+            "@media (max-width: 768px)": {
+              // 여기서 부터는 bottomSheetStyle
+              ...bottomModalStyle,
+            },
           }}
         >
           <Box
             sx={{
               width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-            onClick={() => {
-              setOpen(false);
             }}
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+              onClick={() => {
+                setOpen(false);
+              }}
             >
-              <path
-                d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
-                fill="#B9B9B9"
-              />
-            </svg>
-          </Box>
-          <Typography
-            sx={{
-              fontSize: "23px",
-              color: COLORS.WHITE,
-              fontWeight: 700,
-              textAlign: "center",
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"
+                  fill="#B9B9B9"
+                />
+              </svg>
+            </Box>
+            <Typography
+              sx={{
+                fontSize: "23px",
+                color: COLORS.WHITE,
+                fontWeight: 700,
+                textAlign: "center",
 
-              "@media (max-width: 1024px)": {
-                fontSize: "20px",
-              },
-            }}
-          >
-            면접 시뮬레이션과 <br /> 피드백 서비스를 오픈했어요 🥳
-          </Typography>
+                "@media (max-width: 1024px)": {
+                  fontSize: "20px",
+                },
+              }}
+            >
+              면접 시뮬레이션과 <br /> 피드백 서비스를 오픈했어요 🥳
+            </Typography>
+          </Box>
           <Typography
             sx={{
               color: COLORS.GRAY100,
@@ -930,6 +941,10 @@ export default function Home() {
               "@media (max-width: 1024px)": {
                 padding: "10px",
                 gap: "10px",
+              },
+
+              "@media (max-width: 768px)": {
+                maxWidth: "320px",
               },
             }}
           >
@@ -967,6 +982,10 @@ export default function Home() {
               alignItems: "center",
               gap: "20px",
               pt: "20px",
+
+              "@media (max-width: 768px)": {
+                pt: "14px",
+              },
             }}
           >
             <Button
@@ -982,6 +1001,7 @@ export default function Home() {
                 backgroundColor: COLORS.TIKI_GREEN + " !important",
                 color: COLORS.WHITE,
                 fontWeight: "bold",
+                height: "56px",
               }}
               onClick={async () => {
                 router.push("/interview");

@@ -20,6 +20,9 @@ export const modalStyle = {
     width: 353,
     padding: "30px 20px",
   },
+  "&:focus": {
+    outline: "none",
+  },
 };
 
 export const bottomModalStyle = {

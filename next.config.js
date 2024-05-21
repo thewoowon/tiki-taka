@@ -25,7 +25,7 @@ const nextConfig = {
 
     return config;
   },
-  swcMinify: false,
+  swcMinify: true,
   images: {
     remotePatterns: [
       {

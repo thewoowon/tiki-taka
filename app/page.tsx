@@ -31,10 +31,11 @@ import { Header } from "@/components/Layout";
 import { useState } from "react";
 import { bottomModalStyle, modalStyle } from "@/style/modal";
 import Image from "next/image";
+import BackgroundVideo from "@/components/Element/BackgroundVideo";
 
 export default function Home() {
   const router = useRouter();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const handleClose = (
     event: React.SyntheticEvent<Element, Event>,
     reason: "backdropClick" | "escapeKeyDown"
@@ -54,6 +55,7 @@ export default function Home() {
   return (
     <Main>
       <Header />
+      <BackgroundVideo />
       <Box
         sx={{
           display: "flex",
@@ -1036,29 +1038,28 @@ const Main = styled.main`
   width: 100%;
   min-width: 350px;
   overflow: hidden;
-  background: radial-gradient(
-      137.47% 43.57% at 50% 50%,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.2) 100%
-    ),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%),
-    linear-gradient(187deg, rgba(0, 0, 0, 0) 56.14%, #000 72.48%, #000 98.3%),
-    url("/svg/main-bg.svg");),
-    lightgray 1.123px -839.09px / 100.158% 53.767% no-repeat, #000;
-  background-blend-mode: normal, normal, normal, normal, normal;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  // background: radial-gradient(
+  //     137.47% 43.57% at 50% 50%,
+  //     rgba(0, 0, 0, 0) 0%,
+  //     rgba(0, 0, 0, 0.2) 100%
+  //   ),
+  //   linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%),
+  //   linear-gradient(187deg, rgba(0, 0, 0, 0) 56.14%, #000 72.48%, #000 98.3%),
+  //   url("/svg/main-bg.svg");),
+  //   lightgray 1.123px -839.09px / 100.158% 53.767% no-repeat, #000;
+  // background-blend-mode: normal, normal, normal, normal, normal;
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: cover;
   height: calc(var(--vh, 1vh) * 100);
   position: relative;
-  
 
   @media (max-width: 768px) {
-    background: url("/svg/main-mobile-bg.svg");), lightgray 50% / cover no-repeat;
-    background-blend-mode: normal, normal;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    // background: url("/svg/main-mobile-bg.svg");), lightgray 50% / cover no-repeat;
+    // background-blend-mode: normal, normal;
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: cover;
   }
 `;
 
@@ -1176,7 +1177,7 @@ const ScreenHeightWrapper = styled.div`
   position: absolute;
   bottom: 0px;
   width: 100%;
-  background-color: #000;
+  background-color: transparent;
   z-index: 999;
 
   @media (max-width: 1024px) {

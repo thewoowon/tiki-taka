@@ -159,12 +159,15 @@ const ChatView = ({
     handleSubmit(onSubmit)();
   }, 300);
 
-  const addNewLineDebounced = debounce((event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (!event?.currentTarget?.value) return;
-    event.preventDefault();
-    event.currentTarget.value += "\n";
-    adjustHeight();
-  }, 300); 
+  const addNewLineDebounced = debounce(
+    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (!event?.currentTarget?.value) return;
+      event.preventDefault();
+      event.currentTarget.value += "\n";
+      adjustHeight();
+    },
+    300
+  );
 
   // 디바운스 처리
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -708,6 +711,8 @@ const Answer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  scrollbar-width: none;
+  --ms-overflow-style: none;
   placeholder {
     color: #333333;
   }

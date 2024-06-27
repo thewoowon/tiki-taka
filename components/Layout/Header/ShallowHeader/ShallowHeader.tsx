@@ -19,8 +19,8 @@ type ShallowHeaderProps = {
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
-  { pathname: "/history", label: "히스토리" },
-  { pathname: "/study", label: "취업스터디 찾기" },
+  { pathname: "/article", label: "취업 아티클" },
+  { pathname: "/study", label: "취업 스터디 찾기" },
 ];
 
 const ShallowHeader = ({

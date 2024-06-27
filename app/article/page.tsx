@@ -4,8 +4,13 @@ import ArticleView from "@/components/View/ArticleView";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { Box } from "@mui/material";
+import { Loading } from "@/components/View/Loading";
 
 const ArticlePage = () => {
+  return (
+    <Loading title="오픈 준비 중이에요 🥳" description="조금만 기다려주세요!" />
+  );
+
   return (
     <Container>
       <Box

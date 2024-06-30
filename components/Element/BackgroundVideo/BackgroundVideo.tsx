@@ -32,19 +32,6 @@ const BackgroundVideo = () => {
     playVideo(mVideo);
   }, []);
 
-  // 모바일 사용자 상호작용 이벤트 추가
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      const mVideo = mVideoRef.current;
-      playVideo(mVideo);
-      window.removeEventListener("touchstart", handleUserInteraction);
-    };
-
-    window.addEventListener("touchstart", handleUserInteraction);
-    return () =>
-      window.removeEventListener("touchstart", handleUserInteraction);
-  }, []);
-
   return (
     <Container>
       {(isVideoLoading || isMVideoLoading) && <LoadingSpinner />}

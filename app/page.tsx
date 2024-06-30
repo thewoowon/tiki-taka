@@ -32,6 +32,7 @@ import { useState } from "react";
 import { bottomModalStyle, modalStyle } from "@/style/modal";
 import Image from "next/image";
 import BackgroundVideo from "@/components/Element/BackgroundVideo";
+import ArticleView from "@/components/View/ArticleView";
 
 export default function Home() {
   const router = useRouter();
@@ -62,8 +63,8 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          overflowY: "scroll",
-          // scroll바 숨기기
+          overflowY: "hidden",
+          // 바 숨기기
           "&::-webkit-scrollbar": {
             display: "none",
           },
@@ -591,6 +592,8 @@ export default function Home() {
               </Swiper>
             </SwiperWrapper>
           </Box>
+          {/* 취업 아티클 */}
+          {/* <ArticleView viewAll={true} /> */}
           {/* 부가 정보 */}
           <Box
             sx={{

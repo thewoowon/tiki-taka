@@ -5,6 +5,7 @@ import Profile from "@/components/View/Profile";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
+import History from "@/components/View/History";
 
 const MyPage = () => {
   // 여기서 로그인 여부를 확인하고 안되어 있으면 -> 로그인 페이지로 이동
@@ -54,6 +55,20 @@ const MyPage = () => {
         </Box>
         <SimpleDocument />
       </ResumeBox>
+      <Box className="flex flex-col justify-center items-center gap-[8px] pt-[10px]">
+        <Typography
+          sx={{
+            fontSize: "24px",
+            fontWeight: 700,
+            color: COLORS.WHITE,
+            lineHeight: "36px",
+            textAlign: "center",
+          }}
+        >
+          면접 히스토리
+        </Typography>
+      </Box>
+      <History type={"all"} />
       <ShallowHeader />
     </Container>
   );
@@ -68,7 +83,7 @@ const Container = styled.main`
   align-items: center;
   height: calc(var(--vh, 1vh) * 100);
   width: 100%;
-  padding: 66px 20px 0 20px;
+  padding: 66px 20px 44px 20px;
   overflow-y: auto;
   gap: 100px;
 

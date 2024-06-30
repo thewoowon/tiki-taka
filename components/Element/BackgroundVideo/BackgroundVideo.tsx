@@ -1,44 +1,59 @@
-// components/BackgroundVideo.js
 import React, { useEffect, useRef, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 import styled from "@emotion/styled";
 
 const BackgroundVideo = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
+  const [isMVideoLoading, setIsMVideoLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mVideoRef = useRef<HTMLVideoElement>(null);
 
-  const handleCanPlay = () => {
-    setIsLoading(false);
+  const handleVideoCanPlay = () => {
+    setIsVideoLoading(false);
   };
 
-  useEffect(() => {
-    const video = videoRef.current;
+  const handleMVideoCanPlay = () => {
+    setIsMVideoLoading(false);
+  };
+
+  const playVideo = (video: HTMLVideoElement | null) => {
     if (video) {
       video.play().catch((error) => {
         console.error("비디오 재생 중 오류가 발생했습니다.", error);
       });
     }
-  }, []);
+  };
 
   useEffect(() => {
+    const video = videoRef.current;
+    playVideo(video);
+
     const mVideo = mVideoRef.current;
-    if (mVideo) {
-      mVideo.play().catch((error) => {
-        console.error("비디오 재생 중 오류가 발생했습니다.", error);
-      });
-    }
+    playVideo(mVideo);
+  }, []);
+
+  // 모바일 사용자 상호작용 이벤트 추가
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      const mVideo = mVideoRef.current;
+      playVideo(mVideo);
+      window.removeEventListener("touchstart", handleUserInteraction);
+    };
+
+    window.addEventListener("touchstart", handleUserInteraction);
+    return () =>
+      window.removeEventListener("touchstart", handleUserInteraction);
   }, []);
 
   return (
     <Container>
-      {isLoading && <LoadingSpinner />}
+      {(isVideoLoading || isMVideoLoading) && <LoadingSpinner />}
       <Video
         ref={videoRef}
         autoPlay
         muted
         loop
-        onCanPlay={handleCanPlay}
+        onCanPlay={handleVideoCanPlay}
         preload="auto"
       >
         <source src="/videos/background.mp4" type="video/mp4" />
@@ -49,7 +64,7 @@ const BackgroundVideo = () => {
         autoPlay
         muted
         loop
-        onCanPlay={handleCanPlay}
+        onCanPlay={handleMVideoCanPlay}
         preload="auto"
       >
         <source src="/videos/m-background.mp4" type="video/mp4" />

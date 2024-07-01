@@ -53,6 +53,7 @@ const BackgroundVideo = () => {
         loop
         onCanPlay={handleMVideoCanPlay}
         preload="auto"
+        playsInline
       >
         <source src="/videos/m-background.mp4" type="video/mp4" />
         비디오를 지원하지 않는 브라우저입니다.

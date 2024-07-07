@@ -22,15 +22,26 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
           borderRadius={"10px"}
           overflow={"hidden"}
         >
-          <Image src={article.thumbnail} alt="thumbnail" fill priority />
+          <Image
+            loader={({ src }) => (src ? src : "/assets/tikitaka-thumbnail.png")}
+            src={article.thumbnail || "/assets/tikitaka-thumbnail.png"}
+            alt="thumbnail"
+            fill
+            priority
+          />
         </Box>
-        <Flex justify="flex-start">
+        <Flex justify="space-between">
           <Typography
             fontSize={"14px"}
             color={"#B9B9B9"}
-          >{`${article.company} | ${article.author}`}</Typography>
+          >{`${article.companyName}`}</Typography>
           <Typography fontSize={"14px"} color={"#B9B9B9"}>
-            {article.createdAt}
+            {
+              // YYYYMMDD -> YYYY-MM-DD
+              article.published
+                .slice(0, 8)
+                .replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")
+            }
           </Typography>
         </Flex>
         <Flex
@@ -50,7 +61,15 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
           </Typography>
           <Flex justify="flex-start">
             <Typography fontSize={"16px"} lineHeight={"24px"} color={"#E8E8E8"}>
-              {article.description}
+              {
+                // 태그, 특수문자 제거, 처음 공백 제거, &#160; 제거 100자로 자르기
+                article.description
+                  .replace(/<[^>]*>?/gm, "")
+                  .trim()
+                  .replace(/&nbsp;/g, " ")
+                  .replace(/&#160;/g, "")
+                  .slice(0, 100)
+              }
             </Typography>
           </Flex>
         </Flex>

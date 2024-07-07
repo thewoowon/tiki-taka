@@ -1,16 +1,16 @@
 "use client";
 
-import ArticleView from "@/components/View/ArticleView";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { Box } from "@mui/material";
-import { Loading } from "@/components/View/Loading";
+import { COLORS } from "@/style/color";
+import dynamic from "next/dynamic";
+
+const ArticleView = dynamic(() => import("@/components/View/ArticleView"), {
+  ssr: false,
+});
 
 const ArticlePage = () => {
-  return (
-    <Loading title="오픈 준비 중이에요 🥳" description="조금만 기다려주세요!" />
-  );
-
   return (
     <Container>
       <Box
@@ -21,7 +21,50 @@ const ArticlePage = () => {
         borderRadius={"10px"}
         overflow={"hidden"}
       >
+        <div
+          style={{
+            position: "absolute",
+            top: "0",
+            width: "100%",
+            height: "100%",
+            color: COLORS.WHITE,
+            zIndex: 1,
+            padding: "36px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "32px",
+                fontWeight: "bold",
+                lineHeight: "1.3",
+              }}
+            >
+              기회는 주어지는 것이 아니라, <br />
+              만들어내는 것
+            </div>
+            <div
+              style={{
+                fontSize: "20px",
+                fontWeight: "medium",
+                lineHeight: "1.5",
+              }}
+            >
+              지금 구독하고 누구보다 빠르게 취업에 성공하세요!
+            </div>
+          </div>
+          <Button>아티클 구독하기</Button>
+        </div>
         <Image
+          loader={({ src }) => (src ? src : "/assets/article-banner.png")}
           src="/assets/article-banner.png"
           alt="thumbnail"
           fill
@@ -31,7 +74,7 @@ const ArticlePage = () => {
           }}
         />
       </Box>
-      <ArticleView viewAll={false} />;
+      <ArticleView viewAll={false} />
     </Container>
   );
 };
@@ -60,4 +103,15 @@ const Flex = styled.div<{
   justify-content: ${(props) => props.justify || "center"};
   flex-direction: ${(props) => props.direction || "row"};
   gap: ${(props) => props.gap || 0}px;
+`;
+
+const Button = styled.button`
+  padding: 20px 40px;
+  border-radius: 8px;
+  background-color: ${COLORS.TIKI_GREEN};
+  color: ${COLORS.WHITE};
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
 `;

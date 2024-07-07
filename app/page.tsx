@@ -593,7 +593,7 @@ export default function Home() {
             </SwiperWrapper>
           </Box>
           {/* 취업 아티클 */}
-          {/* <ArticleView viewAll={true} /> */}
+          <ArticleView viewAll={true} />
           {/* 부가 정보 */}
           <Box
             sx={{

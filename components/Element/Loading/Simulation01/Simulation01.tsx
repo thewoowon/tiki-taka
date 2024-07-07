@@ -1,9 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  DotLottiePlayer,
-  Controls,
-  PlayerEvents,
-} from "@dotlottie/react-player";
+"use client";
+import React, { useState } from "react";
+import { DotLottiePlayer, PlayerEvents } from "@dotlottie/react-player";
 import "@dotlottie/react-player/dist/index.css";
 import { Skeleton } from "@mui/material";
 

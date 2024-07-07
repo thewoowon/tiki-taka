@@ -1,111 +1,46 @@
-"use client";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RecoilRoot } from "recoil";
-import { Footer, Header, SideBar } from "@/components/Layout";
-import Script from "next/script";
-import { useCallback, useEffect } from "react";
-import Analytics from "@/components/Analytics";
-import { usePathname } from "next/navigation";
-import * as gtag from "@/lib/gtag";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { Metadata } from "next";
+import Providers from "./providers";
+
+export const metadata: Metadata = {
+  title: "티키타카",
+  description: "면접부터 합격까지! AI 면접 코칭, 티키타카!",
+  metadataBase: new URL("https://tikitaka.chat"),
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: "https://tikitaka.chat",
+    siteName: "티키타카",
+    images: [
+      {
+        url: "https://tikitaka.chat/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "티키타카",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@tikitaka",
+    siteId: "1467726470533754880",
+    creatorId: "1467726470533754880",
+    creator: "@stoneslab",
+    title: "티키타카",
+    description: "면접부터 합격까지! AI 면접 코칭, 티키탸!",
+    images: "",
+  },
+  generator: "tikitaka",
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        staleTime: Infinity,
-        retry: 0,
-      },
-    },
-  });
-
-  const handleKakaoInit = () => {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
-  };
-
-  // const pathName = usePathname();
-
-  // const handleRouteChange = useCallback((url: URL) => {
-  //   gtag.pageview(url);
-  // }, []);
-
-  // useEffect(() => {
-  //   pathName && handleRouteChange(new URL(pathName, window.location.href));
-
-  //   return () => {
-  //     pathName && handleRouteChange(new URL(pathName, window.location.href));
-  //   };
-  // }, [handleRouteChange, pathName]);
-
-  useEffect(() => {
-    if (document.body.getAttribute("style") === "") {
-      document.body.removeAttribute("style");
-    }
-    // 뷰포트 높이를 계산하고 해당 값을 사용하여 요소의 스타일을 업데이트하는 함수
-    function adjustViewportHeight() {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
-    }
-
-    // 뷰포트 높이를 계산하는 함수를 실행
-    adjustViewportHeight();
-
-    // 뷰포트 높이를 계산하는 함수를 resize 이벤트에 바인딩
-    window.addEventListener("resize", adjustViewportHeight);
-
-    // 이벤트를 제거하는 함수를 반환
-    return () => {
-      window.removeEventListener("resize", adjustViewportHeight);
-    };
-  }, []);
-
   return (
     <html lang="en">
       <head>
-        <title>{process.env.NEXT_PUBLIC_TITLE}</title>
-        <meta property="og:title" content={process.env.NEXT_PUBLIC_TITLE} />
-        <meta
-          property="og:description"
-          content={process.env.NEXT_PUBLIC_DESCRIPTION}
-        />
-        <meta property="og:image" content={process.env.NEXT_PUBLIC_OG_IMAGE} />
-        <meta property="og:image:alt" content="My custom alt" />
-        <meta
-          name="description"
-          content={process.env.NEXT_PUBLIC_DESCRIPTION}
-        />
-        <meta property="og:type" content={process.env.NEXT_PUBLIC_OG_TYPE} />
-        <meta
-          property="og:description"
-          content={process.env.NEXT_PUBLIC_OG_DESCRIPTION}
-        />
-
-        <meta
-          property="og:site_name"
-          content={process.env.NEXT_PUBLIC_OG_SITE_NAME}
-        />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_OG_URL} />
-        <meta
-          property="og:locale"
-          content={process.env.NEXT_PUBLIC_OG_LOCALE}
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site:id" content="1467726470533754880" />
-        <meta name="twitter:creator" content="@nextjs" />
-        <meta name="twitter:creator:id" content="1467726470533754880" />
-        <meta name="twitter:title" content="Next.js" />
-        <meta
-          name="twitter:description"
-          content="The React Framework for the Web"
-        />
-        <meta name="twitter:image" content="https://nextjs.org/og.png" />
         <link
           rel="apple-touch-icon"
           sizes="57x57"
@@ -187,28 +122,9 @@ export default function RootLayout({
           name="naver-site-verification"
           content={process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION}
         />
-        <Script
-          src={`https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js`}
-          integrity={
-            "sha384-kYPsUbBPlktXsY6/oNHSUDZoTX6+YI51f63jCPEIPFP09ttByAdxd2mEjKuhdqn4"
-          }
-          crossOrigin="anonymous"
-          onLoad={handleKakaoInit}
-        />
       </head>
       <body>
-        <Analytics />
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <div className="min-h-screen flex">{children}</div>
-            {/* <Header /> */}
-            <SideBar />
-            {/* <Footer /> */}
-          </RecoilRoot>
-          <Toaster />
-        </QueryClientProvider>
-        <GoogleAnalytics gaId={gtag.GA_TRACKING_ID || ""} />
-        <GoogleTagManager gtmId={gtag.GTM_TRACKING_ID || ""} />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -10,6 +10,7 @@ const GlobalLoading = () => {
       target={
         <>
           <Image
+            loader={({ src }) => src}
             src="/svg/picky-character.svg"
             alt="Circle"
             style={{ visibility: "hidden" }}
@@ -17,6 +18,7 @@ const GlobalLoading = () => {
             height={81}
           />
           <Image
+            loader={({ src }) => src}
             src="/svg/sunglass-character.svg"
             alt="Triangle"
             style={{ visibility: "hidden" }}
@@ -24,6 +26,7 @@ const GlobalLoading = () => {
             height={80}
           />
           <Image
+            loader={({ src }) => src}
             src="/svg/surprised-character.svg"
             alt="Rectangle"
             style={{ visibility: "hidden" }}

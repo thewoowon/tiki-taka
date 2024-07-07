@@ -1,14 +1,12 @@
 import customAxios from "@/lib/axios";
 import { loginState, userState } from "@/states";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
+  const [, setIsLoggedIn] = useRecoilState(loginState);
   const [, setUserState] = useRecoilState(userState);
-  const [isLoading, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function checkLogin() {
@@ -37,7 +35,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     checkLogin();
-  }, []);
+  }, [setIsLoggedIn, setUserState]);
 
   return children;
 };

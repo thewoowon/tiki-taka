@@ -4,10 +4,13 @@ export type instantPopUpType = {
 };
 
 export type ArticleType = {
-  thumbnail: string;
+  id: number;
   title: string;
   description: string;
-  company: string;
-  author: string;
+  link: string;
+  thumbnail: string;
+  published: string;
+  guid: string;
+  companyName: string;
   createdAt: string;
 };

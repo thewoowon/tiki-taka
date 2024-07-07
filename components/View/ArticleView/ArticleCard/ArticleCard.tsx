@@ -11,6 +11,13 @@ type ArticleCardProps = {
 const ArticleCard = ({ article }: ArticleCardProps) => {
   const [isValidThumbnail, setIsValidThumbnail] = useState(false);
 
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   useEffect(() => {
     const validateImage = async () => {
       if (article.thumbnail) {
@@ -85,15 +92,15 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
           </Typography>
           <Flex justify="flex-start">
             <Typography fontSize={"16px"} lineHeight={"24px"} color={"#E8E8E8"}>
-              {
+              {truncateText(
                 // 태그, 특수문자 제거, 처음 공백 제거, &#160; 제거 50자로 자르기
                 article.description
                   .replace(/<[^>]*>?/gm, "")
                   .trim()
                   .replace(/&nbsp;/g, " ")
-                  .replace(/&#160;/g, "")
-                  .slice(0, 50)
-              }
+                  .replace(/&#160;/g, ""),
+                50
+              )}
             </Typography>
           </Flex>
         </Flex>

@@ -41,25 +41,13 @@ const ArticlePage = () => {
               flexDirection: "column",
             }}
           >
-            <div
-              style={{
-                fontSize: "32px",
-                fontWeight: "bold",
-                lineHeight: "1.3",
-              }}
-            >
+            <Title>
               기회는 주어지는 것이 아니라, <br />
               만들어내는 것
-            </div>
-            <div
-              style={{
-                fontSize: "20px",
-                fontWeight: "medium",
-                lineHeight: "1.5",
-              }}
-            >
+            </Title>
+            <Description>
               지금 구독하고 누구보다 빠르게 취업에 성공하세요!
-            </div>
+            </Description>
           </div>
           <Button>아티클 구독하기</Button>
         </div>
@@ -114,4 +102,50 @@ const Button = styled.button`
   font-weight: 600;
   cursor: pointer;
   width: fit-content;
+
+  &:hover {
+    background-color: ${COLORS.TIKI_GREEN};
+  }
+
+  &:active {
+    background-color: ${COLORS.TIKI_GREEN};
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px 32px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 24px;
+    font-size: 12px;
+  }
+`;
+
+const Title = styled.div`
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.3;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+  }
+`;
+
+const Description = styled.div`
+  font-size: 20px;
+  font-weight: medium;
+  line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;

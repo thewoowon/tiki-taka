@@ -2,12 +2,32 @@ import { ArticleType } from "@/types";
 import styled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 type ArticleCardProps = {
   article: ArticleType;
 };
 
 const ArticleCard = ({ article }: ArticleCardProps) => {
+  const [isValidThumbnail, setIsValidThumbnail] = useState(false);
+
+  useEffect(() => {
+    const validateImage = async () => {
+      if (article.thumbnail) {
+        try {
+          const response = await fetch(
+            `/api/checkImage?url=${encodeURIComponent(article.thumbnail)}`
+          );
+          const data = await response.json();
+          setIsValidThumbnail(data.isValid);
+        } catch {
+          setIsValidThumbnail(false);
+        }
+      }
+    };
+
+    validateImage();
+  }, [article.thumbnail]);
   return (
     <Container>
       <Wrapper>
@@ -24,7 +44,11 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
         >
           <Image
             loader={({ src }) => (src ? src : "/assets/tikitaka-thumbnail.png")}
-            src={article.thumbnail || "/assets/tikitaka-thumbnail.png"}
+            src={
+              isValidThumbnail
+                ? article.thumbnail
+                : "/assets/tikitaka-thumbnail.png"
+            }
             alt="thumbnail"
             fill
             priority
@@ -62,13 +86,13 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
           <Flex justify="flex-start">
             <Typography fontSize={"16px"} lineHeight={"24px"} color={"#E8E8E8"}>
               {
-                // 태그, 특수문자 제거, 처음 공백 제거, &#160; 제거 100자로 자르기
+                // 태그, 특수문자 제거, 처음 공백 제거, &#160; 제거 50자로 자르기
                 article.description
                   .replace(/<[^>]*>?/gm, "")
                   .trim()
                   .replace(/&nbsp;/g, " ")
                   .replace(/&#160;/g, "")
-                  .slice(0, 100)
+                  .slice(0, 50)
               }
             </Typography>
           </Flex>

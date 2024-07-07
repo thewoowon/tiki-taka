@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 
+const { i18n } = require("./next-i18next.config");
 const nextConfig = {
+  i18n,
   reactStrictMode: false,
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>
@@ -27,6 +29,8 @@ const nextConfig = {
   },
   swcMinify: true,
   images: {
+    loader: "custom", // 커스텀 로더 사용
+    unoptimized: true, // 이미지 최적화 비활성화
     remotePatterns: [
       {
         protocol: "https",

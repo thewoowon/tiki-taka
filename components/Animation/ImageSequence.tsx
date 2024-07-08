@@ -22,7 +22,7 @@ const ImageSequence = () => {
     <>
       <Image
         ref={refCircle}
-        loader={({ src }) => src}
+        loader={({ src }) => (src ? src : "/assets/article-banner.png")}
         src="/svg/picky-character.svg"
         alt="Circle"
         style={{ visibility: "hidden" }}
@@ -31,7 +31,7 @@ const ImageSequence = () => {
       />
       <Image
         ref={refTriangle}
-        loader={({ src }) => src}
+        loader={({ src }) => (src ? src : "/assets/article-banner.png")}
         src="/svg/sunglass-character.svg"
         alt="Triangle"
         style={{ visibility: "hidden" }}
@@ -40,7 +40,7 @@ const ImageSequence = () => {
       />
       <Image
         ref={refRectangle}
-        loader={({ src }) => src}
+        loader={({ src }) => (src ? src : "/assets/article-banner.png")}
         src="/svg/surprised-character.svg"
         alt="Rectangle"
         style={{ visibility: "hidden" }}

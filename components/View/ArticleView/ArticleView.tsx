@@ -48,12 +48,9 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
   }): Promise<GetArticleListResponse> => {
     const response = await customAxios({
       method: "GET",
-      url: `/article/getArticleList?${
-        categoryForm.category
-          .map((categoryId) => `categoryList=${categoryId}`)
-          .join("&") || ""
-      }`,
+      url: `/article/getArticleList`,
       params: {
+        categoryIdList: categoryForm.category,
         startNumber: pageParam,
         offsetNumber: 10,
       },
@@ -74,11 +71,10 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
     queryKey: ["articles", categoryForm.mainCategory],
     queryFn: fetchArticles,
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage) {
-        return pages.length * 10;
-      } else {
+      if (!lastPage.data || lastPage.data.length === 0) {
         return undefined;
       }
+      return pages.length * 10;
     },
     initialPageParam: 0, // Add the initialPageParam property with a value of 0
     enabled: categoryForm.category.length > 0,
@@ -136,10 +132,16 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
   useEffect(() => {
     if (categoryData) {
       if (categoryData.code === "200") {
-        setCategoryList(categoryData.data);
+        setCategoryList([
+          {
+            categoryId: 0,
+            categoryName: "전체",
+          },
+          ...categoryData.data,
+        ]);
         setCategoryForm({
           ...categoryForm,
-          category: [categoryData.data[0].categoryId] || [0],
+          category: [0],
         });
       }
     }
@@ -330,21 +332,49 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
                   selected={categoryForm.category.includes(category.categoryId)}
                   key={category.categoryId}
                   onClick={() => {
-                    if (categoryForm.category.includes(category.categoryId)) {
-                      setCategoryForm({
-                        ...categoryForm,
-                        category: categoryForm.category.filter(
-                          (categoryId) => categoryId !== category.categoryId
-                        ),
-                      });
+                    if (category.categoryId === 0) {
+                      if (categoryForm.category.includes(category.categoryId)) {
+                        // 이미 전체가 있을 때 -> 전체만 있는 상황임 -> 풀지 않음
+                      } else {
+                        // 전체가 없을 때 -> 전체 추가 -> 나머지 다 없애기
+                        setCategoryForm({
+                          ...categoryForm,
+                          category: [0],
+                        });
+                      }
                     } else {
-                      setCategoryForm({
-                        ...categoryForm,
-                        category: [
-                          ...categoryForm.category,
-                          category.categoryId,
-                        ],
-                      });
+                      if (categoryForm.category.includes(0)) {
+                        setCategoryForm({
+                          ...categoryForm,
+                          category: [
+                            ...categoryForm.category.filter(
+                              (categoryId) => categoryId !== 0
+                            ),
+                            category.categoryId,
+                          ],
+                        });
+                      } else {
+                        if (
+                          categoryForm.category.includes(category.categoryId)
+                        ) {
+                          // 이미 있을 때 -> 빼기 -> 그런데 filter
+                          const filtered = categoryForm.category.filter(
+                            (categoryId) => categoryId !== category.categoryId
+                          );
+                          setCategoryForm({
+                            ...categoryForm,
+                            category: filtered.length === 0 ? [0] : filtered,
+                          });
+                        } else {
+                          setCategoryForm({
+                            ...categoryForm,
+                            category: [
+                              ...categoryForm.category,
+                              category.categoryId,
+                            ],
+                          });
+                        }
+                      }
                     }
                   }}
                 >
@@ -356,11 +386,44 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
           </>
         )}
       </Flex>
-      <Grid>
-        {articleList.map((article, index) => (
-          <ArticleCard key={index} article={article} />
-        ))}
-      </Grid>
+      {articleList.length > 0 ? (
+        <Grid>
+          {articleList.map((article, index) => (
+            <ArticleCard key={index} article={article} />
+          ))}
+        </Grid>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            marginTop: 24,
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: "20px",
+              fontWeight: 600,
+              color: COLORS.WHITE,
+            }}
+          >
+            아직 글이 없어요..🤣
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "20px",
+              fontWeight: 600,
+              color: COLORS.WHITE,
+            }}
+          >
+            다른 카테고리를 선택해보세요!
+          </Typography>
+        </div>
+      )}
+
       <div ref={loadMoreRef} style={{ height: 1 }} />
       {isFetching && !isFetchingNextPage && (
         <Loading
@@ -429,9 +492,4 @@ const Tag = styled.div<{ selected: boolean }>`
     props.selected
       ? `1px solid ${COLORS.TIKI_DARK_GREEN}`
       : `1px solid ${COLORS.GRAY200}`};
-
-  &:hover {
-    background-color: ${COLORS.GRAY200};
-    color: ${COLORS.WHITE};
-  }
 `;

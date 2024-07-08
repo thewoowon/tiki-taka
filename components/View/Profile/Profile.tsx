@@ -89,7 +89,13 @@ const Profile = () => {
           inputRef.current?.click();
         }}
       >
-        <Image src={myProfileUrl} alt="profile" width={52} height={52} />
+        <Image
+          loader={({ src }) => (src ? src : "/assets/black-logo.png")}
+          src={myProfileUrl}
+          alt="profile"
+          width={52}
+          height={52}
+        />
         <input
           ref={inputRef}
           type={"file"}

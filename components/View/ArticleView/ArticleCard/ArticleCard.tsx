@@ -48,6 +48,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
           position={"relative"}
           borderRadius={"10px"}
           overflow={"hidden"}
+          onClick={() => window.open(article.link, "_blank")}
         >
           <Image
             loader={({ src }) => (src ? src : "/assets/tikitaka-thumbnail.png")}
@@ -87,6 +88,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
             fontWeight={"bold"}
             color={"white"}
             style={{ cursor: "pointer" }}
+            onClick={() => window.open(article.link, "_blank")}
           >
             {article.title}
           </Typography>
@@ -115,7 +117,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
   width: 100%;
 `;

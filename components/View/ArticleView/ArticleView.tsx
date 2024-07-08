@@ -50,7 +50,9 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
       method: "GET",
       url: `/article/getArticleList`,
       params: {
-        categoryIdList: categoryForm.category,
+        categoryIdList: categoryForm.category.includes(0)
+          ? []
+          : categoryForm.category,
         startNumber: pageParam,
         offsetNumber: 10,
       },

@@ -94,7 +94,7 @@ const Flex = styled.div<{
 `;
 
 const Button = styled.button`
-  padding: 20px 40px;
+  padding: 18px 40px;
   border-radius: 8px;
   background-color: ${COLORS.TIKI_GREEN};
   color: ${COLORS.WHITE};
@@ -102,6 +102,7 @@ const Button = styled.button`
   font-weight: 600;
   cursor: pointer;
   width: fit-content;
+  line-height: 16px;
 
   &:hover {
     background-color: ${COLORS.TIKI_GREEN};

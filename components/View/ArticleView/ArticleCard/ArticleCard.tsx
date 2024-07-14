@@ -89,11 +89,12 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
             color={"white"}
             style={{ cursor: "pointer" }}
             onClick={() => window.open(article.link, "_blank")}
+            height={"52px"}
           >
-            {article.title}
+            {truncateText(article.title, 48)}
           </Typography>
           <Flex justify="flex-start">
-            <Typography fontSize={"16px"} lineHeight={"24px"} color={"#E8E8E8"}>
+            <Typography width={"100%"} fontSize={"16px"} lineHeight={"24px"} color={"#E8E8E8"}>
               {truncateText(
                 // 태그, 특수문자 제거, 처음 공백 제거, &#160; 제거 50자로 자르기
                 article.description
@@ -101,7 +102,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
                   .trim()
                   .replace(/&nbsp;/g, " ")
                   .replace(/&#160;/g, ""),
-                50
+                26
               )}
             </Typography>
           </Flex>

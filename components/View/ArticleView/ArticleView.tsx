@@ -161,7 +161,7 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
         style={{
           width: "100%",
         }}
-        gap={16}
+        gap={18}
       >
         <Flex
           justify={"space-between"}
@@ -240,7 +240,9 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
         </Flex>
         {!viewAll && (
           <>
-            <Flex gap={6}>
+            <Flex gap={6} style={{
+               marginTop: "2px",
+            }}>
               <Typography
                 fontSize={"18px"}
                 fontWeight={"bold"}
@@ -446,7 +448,7 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 1040px;
-  gap: 24px;
+  gap: 40px;
 `;
 
 const Flex = styled.div<{
@@ -465,7 +467,7 @@ const Flex = styled.div<{
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 16px;
+  column-gap: 24px;
   row-gap: 32px;
   width: 100%;
   max-width: 1040px;

@@ -70,6 +70,10 @@ export default function Home() {
           },
           msOverflowStyle: "none",
           scrollbarWidth: "none",
+          marginTop: "100px",
+          "@media screen and (max-width: 1024px)": {
+            marginTop: "0px",
+          },
         }}
       >
         <Wrapper>

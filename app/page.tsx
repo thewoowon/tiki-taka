@@ -70,10 +70,6 @@ export default function Home() {
           },
           msOverflowStyle: "none",
           scrollbarWidth: "none",
-          marginTop: "100px",
-          "@media screen and (max-width: 1024px)": {
-            marginTop: "0px",
-          },
         }}
       >
         <Wrapper>
@@ -1081,6 +1077,8 @@ const Wrapper = styled.div`
   scrollbar-width: none;
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
+  padding-top: 100px;
+          
   &::-webkit-scrollbar {
     display: none !important;
   }

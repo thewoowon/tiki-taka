@@ -467,7 +467,7 @@ const Flex = styled.div<{
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 24px;
+  column-gap: 16px;
   row-gap: 32px;
   width: 100%;
   max-width: 1040px;

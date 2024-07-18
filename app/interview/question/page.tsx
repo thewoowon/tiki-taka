@@ -14,7 +14,7 @@ const QuestionPage = () => {
         />
       }
     >
-      ƒ<QuestionView />
+      <QuestionView />
     </Suspense>
   );
 };

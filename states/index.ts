@@ -25,6 +25,12 @@ export const userState = atom<{
   effects_UNSTABLE: [persistAtom],
 });
 
+export const destinationState = atom<string | null>({
+  key: "destinationState",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const emailState = atom<string>({
   key: "emailState",
   default: "",

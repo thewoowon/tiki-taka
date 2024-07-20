@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { useRecoilState } from "recoil";
+import { destinationState } from "@/states";
 
 type kakaoParamType = {
   client_id?: string;
@@ -8,14 +10,22 @@ type kakaoParamType = {
   response_type: string;
 };
 
-const KakaoButton = () => {
+type KakaoButtonProps = {
+  destination?: string | null;
+};
+
+const KakaoButton = ({
+  destination
+}: KakaoButtonProps) => {
   const [locationOrigin, setLocationOrigin] = useState("");
+  const [_, setDestination] = useRecoilState(destinationState);
+
   const kakaoParam: kakaoParamType | URLSearchParams | Record<string, string> =
-    {
-      client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
-      redirect_uri: `${locationOrigin}/auth/kakao/callback`,
-      response_type: "code",
-    };
+  {
+    client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY,
+    redirect_uri: `${locationOrigin}/auth/kakao/callback`,
+    response_type: "code",
+  };
   const kakaoCodeURL = `https://kauth.kakao.com/oauth/authorize?${new URLSearchParams(
     kakaoParam
   ).toString()}`;
@@ -26,7 +36,11 @@ const KakaoButton = () => {
   }, []);
 
   return (
-    <Button href={kakaoCodeURL}>
+    <Button onClick={() => {
+      if (destination) {
+        setDestination(destination);
+      }
+    }} href={kakaoCodeURL}>
       <svg
         width="25"
         height="24"

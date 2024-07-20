@@ -28,15 +28,20 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Link from "next/link";
 import { Header } from "@/components/Layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { bottomModalStyle, modalStyle } from "@/style/modal";
 import Image from "next/image";
 import BackgroundVideo from "@/components/Element/BackgroundVideo";
 import ArticleView from "@/components/View/ArticleView";
+import { useRecoilState } from "recoil";
+import { destinationState } from "@/states";
 
 export default function Home() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const [destination, setDestination] = useRecoilState(destinationState);
+
   const handleClose = (
     event: React.SyntheticEvent<Element, Event>,
     reason: "backdropClick" | "escapeKeyDown"
@@ -52,6 +57,14 @@ export default function Home() {
     link.download = fileName;
     link.click();
   };
+
+  useEffect(() => {
+    if (destination) {
+      const destinationClone = destination;
+      setDestination(null);
+      window.location.href = destinationClone;
+    }
+  }, []);
 
   return (
     <Main>

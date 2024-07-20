@@ -4,11 +4,13 @@ import { ShallowHeader } from "@/components/Layout";
 import Profile from "@/components/View/Profile";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import History from "@/components/View/History";
+import Subscription from "@/components/View/Subscription";
+import { useState } from "react";
+import { modalStyle } from "@/style/modal";
 
 const MyPage = () => {
-  // 여기서 로그인 여부를 확인하고 안되어 있으면 -> 로그인 페이지로 이동
   return (
     <Container>
       <ProfileBox className="flex flex-col justify-center items-center w-full">
@@ -28,6 +30,23 @@ const MyPage = () => {
         </Typography>
         <Profile />
       </ProfileBox>
+      <SubscriptionBox className="flex flex-col justify-center items-center w-full">
+        <Typography
+          sx={{
+            fontSize: "24px",
+            fontWeight: 700,
+            color: COLORS.WHITE,
+            lineHeight: "36px",
+            textAlign: "center",
+            "@media (max-width: 1024px)": {
+              fontSize: "20px",
+            },
+          }}
+        >
+          구독 정보
+        </Typography>
+        <Subscription />
+      </SubscriptionBox>
       <ResumeBox className="flex flex-col justify-center items-center w-full">
         <Box className="flex flex-col justify-center items-center gap-[8px] w-full">
           <Typography
@@ -93,6 +112,14 @@ const Container = styled.main`
 `;
 
 const ProfileBox = styled(Box)`
+  gap: 40px;
+
+  @media (max-width: 1024px) {
+    gap: 30px;
+  }
+`;
+
+const SubscriptionBox = styled(Box)`
   gap: 40px;
 
   @media (max-width: 1024px) {

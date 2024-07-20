@@ -40,7 +40,7 @@ const useKakaoLogin = () => {
     async (code: string | string[] | null) => {
       const result = await customAxios({
         method: "GET",
-        url: `/user/kakaoLogin?code=${code}`,
+        url: `/user/kakaoDevLogin?code=${code}`,
       })
         .then((res) => {
           return res;
@@ -85,31 +85,6 @@ const useKakaoLogin = () => {
       }
 
       setIsLoading(false);
-      // const options = {
-      //   method: "POST",
-      //   url: `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${
-      //     process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
-      //   }&redirect_uri=${
-      //     window && window.location.origin + "/auth/kakao/callback"
-      //   }&code=${code}`,
-      //   data: code,
-      // };
-
-      // const response = await axios(options).catch((err) => {
-      //   console.error(err);
-      //   setIsLoading(false);
-      // });
-
-      // if (response?.status !== 200) {
-      //   setIsLoading(false);
-      //   return;
-      // }
-
-      // window.Kakao.Auth.setAccessToken(response?.data?.access_token);
-
-      // localStorage.setItem("accessToken", response?.data?.access_token);
-
-      //handleGetProfile();
     },
     [router]
   );

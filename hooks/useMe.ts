@@ -18,7 +18,7 @@ export const useMe = () => {
     async function getProfile() {
       const response = await customAxios({
         method: "GET",
-        url: "/user/kakaoDevLogin",
+        url: "/user/kakaoLogin",
       }).catch((err) => {
         toast.error("사용자를 확인하는 중 오류가 발생했습니다.");
         setIsLoggedIn(false);

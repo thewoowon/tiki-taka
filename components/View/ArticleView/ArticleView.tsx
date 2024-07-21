@@ -70,7 +70,7 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
     refetch,
     status,
   } = useInfiniteQuery({
-    queryKey: ["articles", categoryForm.mainCategory],
+    queryKey: ["articles", categoryForm.mainCategory, categoryForm.category],
     queryFn: fetchArticles,
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage.data || lastPage.data.length === 0) {
@@ -241,7 +241,7 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
         {!viewAll && (
           <>
             <Flex gap={6} style={{
-               marginTop: "2px",
+              marginTop: "2px",
             }}>
               <Typography
                 fontSize={"18px"}
@@ -293,7 +293,6 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
                 }}
               >
                 {
-                  // ArticleCard
                   mainCategoryList.map((category) => (
                     <Typography
                       key={category.categoryId}
@@ -336,50 +335,55 @@ export const ArticleView = ({ viewAll }: ArticleViewProps) => {
                   selected={categoryForm.category.includes(category.categoryId)}
                   key={category.categoryId}
                   onClick={() => {
-                    if (category.categoryId === 0) {
-                      if (categoryForm.category.includes(category.categoryId)) {
-                        // 이미 전체가 있을 때 -> 전체만 있는 상황임 -> 풀지 않음
-                      } else {
-                        // 전체가 없을 때 -> 전체 추가 -> 나머지 다 없애기
-                        setCategoryForm({
-                          ...categoryForm,
-                          category: [0],
-                        });
-                      }
-                    } else {
-                      if (categoryForm.category.includes(0)) {
-                        setCategoryForm({
-                          ...categoryForm,
-                          category: [
-                            ...categoryForm.category.filter(
-                              (categoryId) => categoryId !== 0
-                            ),
-                            category.categoryId,
-                          ],
-                        });
-                      } else {
-                        if (
-                          categoryForm.category.includes(category.categoryId)
-                        ) {
-                          // 이미 있을 때 -> 빼기 -> 그런데 filter
-                          const filtered = categoryForm.category.filter(
-                            (categoryId) => categoryId !== category.categoryId
-                          );
-                          setCategoryForm({
-                            ...categoryForm,
-                            category: filtered.length === 0 ? [0] : filtered,
-                          });
-                        } else {
-                          setCategoryForm({
-                            ...categoryForm,
-                            category: [
-                              ...categoryForm.category,
-                              category.categoryId,
-                            ],
-                          });
-                        }
-                      }
-                    }
+                    // 그냥 유니크로 태그를 관리하자
+                    setCategoryForm({
+                      ...categoryForm,
+                      category: [category.categoryId],
+                    });
+                    // if (category.categoryId === 0) {
+                    //   if (categoryForm.category.includes(category.categoryId)) {
+                    //     // 이미 전체가 있을 때 -> 전체만 있는 상황임 -> 풀지 않음
+                    //   } else {
+                    //     // 전체가 없을 때 -> 전체 추가 -> 나머지 다 없애기
+                    //     setCategoryForm({
+                    //       ...categoryForm,
+                    //       category: [0],
+                    //     });
+                    //   }
+                    // } else {
+                    //   if (categoryForm.category.includes(0)) {
+                    //     setCategoryForm({
+                    //       ...categoryForm,
+                    //       category: [
+                    //         ...categoryForm.category.filter(
+                    //           (categoryId) => categoryId !== 0
+                    //         ),
+                    //         category.categoryId,
+                    //       ],
+                    //     });
+                    //   } else {
+                    //     if (
+                    //       categoryForm.category.includes(category.categoryId)
+                    //     ) {
+                    //       // 이미 있을 때 -> 빼기 -> 그런데 filter
+                    //       const filtered = categoryForm.category.filter(
+                    //         (categoryId) => categoryId !== category.categoryId
+                    //       );
+                    //       setCategoryForm({
+                    //         ...categoryForm,
+                    //         category: filtered.length === 0 ? [0] : filtered,
+                    //       });
+                    //     } else {
+                    //       setCategoryForm({
+                    //         ...categoryForm,
+                    //         category: [
+                    //           ...categoryForm.category,
+                    //           category.categoryId,
+                    //         ],
+                    //       });
+                    //     }
+                    //   }
+                    // }
                   }}
                 >
                   {" "}

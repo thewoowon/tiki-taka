@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     creatorId: "1467726470533754880",
     creator: "@stoneslab",
     title: "티키타카",
-    description: "면접부터 합격까지! AI 면접 코칭, 티키탸!",
+    description: "면접부터 합격까지! AI 면접 코칭, 티키타카!",
     images: "",
   },
   generator: "tikitaka",

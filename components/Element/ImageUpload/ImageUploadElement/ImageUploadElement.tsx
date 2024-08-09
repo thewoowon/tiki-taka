@@ -83,19 +83,22 @@ const ImageUploadElement = ({
           "@media (min-width: 1025px)": {
             "&:after": {
               content:
-                !imageDocument?.name && !file?.name ? '""' : '" (형식: PNG, JPG, JPEG)"',
+                !imageDocument?.name && !file?.name
+                  ? '""'
+                  : '" (형식: PNG, JPG, JPEG)"',
             },
           },
           "@media (max-width: 1024px)": {
             "&:after": {
-              content: !imageDocument?.name && file?.name ? '""' : '" (PNG, JPG, JPEG)"',
+              content:
+                !imageDocument?.name && file?.name
+                  ? '""'
+                  : '" (PNG, JPG, JPEG)"',
             },
           },
         }}
       >
-        {imageDocument?.name ||
-          file?.name ||
-          "이미지 업로드"}
+        {imageDocument?.name || file?.name || "이미지 업로드"}
       </Typography>
 
       <Box
@@ -189,6 +192,7 @@ const ImageUploadElement = ({
             width={120}
             height={120}
             alt="my upload url"
+            loader={({ src }) => (src ? src : "/assets/black-logo.png")}
           />
         )}
       </Box>

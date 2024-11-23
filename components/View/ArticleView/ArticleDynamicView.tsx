@@ -20,7 +20,7 @@ type ArticleViewProps = {
   viewAll?: boolean;
 };
 
-export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
+export const ArticleDynamicView = ({ viewAll = true }: ArticleViewProps) => {
   const router = useRouter();
   const [categoryForm, setCategoryForm] = useState<{
     mainCategory: number;
@@ -444,7 +444,7 @@ export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
   );
 };
 
-export default ArticleView;
+export default ArticleDynamicView;
 
 const Container = styled.div`
   display: flex;

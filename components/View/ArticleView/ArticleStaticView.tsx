@@ -16,11 +16,13 @@ type GetArticleListResponse = {
   message: string;
 };
 
-type ArticleViewProps = {
-  viewAll?: boolean;
+type ArticleStaticViewProps = {
+  initialData: ArticleType[];
 };
 
-export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
+// 초기 100개의 데이터를 가져오는 정적 컴포넌트
+export const ArticleStaticView = ({ initialData }: ArticleStaticViewProps) => {
+  const viewAll = true;
   const router = useRouter();
   const [categoryForm, setCategoryForm] = useState<{
     mainCategory: number;
@@ -29,7 +31,7 @@ export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
     mainCategory: 0,
     category: [],
   });
-  const [articleList, setArticleList] = useState<ArticleType[]>([]);
+  const [articleList, setArticleList] = useState<ArticleType[]>(initialData);
   const [mainCategoryList, setMainCategoryList] = useState<
     {
       categoryId: number;
@@ -43,6 +45,7 @@ export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
     }[]
   >([]);
 
+  // 만약 initialData가 있으면 startNumber는 10으로 설정
   const fetchArticles = async ({
     pageParam = 0,
   }): Promise<GetArticleListResponse> => {
@@ -78,7 +81,8 @@ export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
       }
       return pages.length * 10;
     },
-    initialPageParam: 0, // Add the initialPageParam property with a value of 0
+    initialPageParam: initialData.length,
+    // 처음에 100개를 가져왔다면, 다음 페이지부터는 10개씩 가져옴
     enabled: categoryForm.category.length > 0,
   });
 
@@ -114,7 +118,10 @@ export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
 
   useEffect(() => {
     if (data) {
-      setArticleList([...data.pages.flatMap((page) => page.data)]);
+      setArticleList([
+        ...initialData,
+        ...data.pages.flatMap((page) => page.data),
+      ]);
     }
   }, [data]);
 
@@ -444,7 +451,7 @@ export const ArticleView = ({ viewAll = true }: ArticleViewProps) => {
   );
 };
 
-export default ArticleView;
+export default ArticleStaticView;
 
 const Container = styled.div`
   display: flex;

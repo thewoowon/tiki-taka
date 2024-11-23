@@ -15,7 +15,6 @@ import axios from "axios";
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
   { pathname: "/article", label: "취업 아티클" },
-  { pathname: "/study", label: "취업 스터디 찾기" },
 ];
 
 const SideBar = () => {

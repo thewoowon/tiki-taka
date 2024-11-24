@@ -123,7 +123,7 @@ export const ArticleStaticView = ({ initialData }: ArticleStaticViewProps) => {
         ...data.pages.flatMap((page) => page.data),
       ]);
     }
-  }, [data]);
+  }, [initialData, data]);
 
   useEffect(() => {
     if (mainCategoryData) {

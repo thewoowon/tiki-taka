@@ -1,9 +1,9 @@
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { ArticleType } from "@/types";
 import HomeView from "@/components/View/HomeView";
 import customAxios from "@/lib/axios";
+import { Suspense } from "react";
 
 // export const getStaticProps: GetStaticProps = async () => {
 //   try {
@@ -43,5 +43,9 @@ export default async function Home() {
   });
 
   const articles = response.data.data;
-  return <HomeView initialData={articles} />;
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <HomeView initialData={articles} />
+    </Suspense>
+  );
 }

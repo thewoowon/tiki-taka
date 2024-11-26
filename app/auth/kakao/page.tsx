@@ -1,4 +1,5 @@
 "use client";
+import GoogleButton from "@/components/Element/Button/Google";
 import KakaoButton from "@/components/Element/Button/Kakao/KakaoButton";
 import { ShallowHeader } from "@/components/Layout";
 import { COLORS } from "@/style/color";
@@ -28,7 +29,8 @@ const KakaoLoginPage = () => {
           <br />
           로그인이 필요해요
         </Typography>
-        <div className="pt-[30px] pb-[20px]">
+        <div className="pt-[30px] pb-[20px] flex flex-col gap-[6px]">
+          <GoogleButton />
           <KakaoButton />
         </div>
         {/* <div className="flex w-full justify-between">
@@ -56,7 +58,7 @@ const Container = styled.main`
 
 const Box = styled.div`
   display: flex;
-  height: 240px;
+  height: 296px;
   padding: 40px;
   flex-direction: column;
   align-items: center;
@@ -65,6 +67,7 @@ const Box = styled.div`
 
   @media (max-width: 1024px) {
     padding: 30px 20px;
+    height: 272px;
   }
 `;
 

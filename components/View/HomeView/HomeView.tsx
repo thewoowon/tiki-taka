@@ -20,12 +20,12 @@ import QuestionMobile from "@/public/svg/question-mobile.svg";
 import BlackLogoMobile from "@/public/svg/black-logo-mobile.svg";
 import RightArrowMobile from "@/public/svg/right-arrow-mobile.svg";
 import SunglassesMobile from "@/public/svg/sunglasses-mobile.svg";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import { Header } from "@/components/Layout";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { bottomModalStyle, modalStyle } from "@/style/modal";
 import Image from "next/image";
 import BackgroundVideo from "@/components/Element/BackgroundVideo";
@@ -40,6 +40,7 @@ export default function HomeView({
   initialData: ArticleType[];
 }) {
   const router = useRouter();
+  const params = useSearchParams();
   const [open, setOpen] = useState(false);
 
   const [destination, setDestination] = useRecoilState(destinationState);
@@ -67,6 +68,13 @@ export default function HomeView({
       window.location.href = destinationClone;
     }
   }, [setDestination]);
+
+  useEffect(() => {
+    // 구글 회원가입 여부
+    if (params.get("signup")) {
+      setOpen(true);
+    }
+  }, [params]);
 
   return (
     <Main>
@@ -874,7 +882,7 @@ export default function HomeView({
         <Box
           sx={{
             ...modalStyle,
-            padding: "30px 30px 36px 30px",
+            padding: "24px 20px 24px 20px",
             width: "fit-content",
             "@media (max-width: 1024px)": {
               width: "353px",
@@ -928,7 +936,7 @@ export default function HomeView({
                 },
               }}
             >
-              면접 시뮬레이션과 <br /> 피드백 서비스를 오픈했어요 🥳
+              티키타카에 오신 것을 환영해요! 🥳
             </Typography>
           </Box>
           <Typography
@@ -945,62 +953,16 @@ export default function HomeView({
               },
             }}
           >
-            실제 기업 정보를 학습한 AI 면접관 티키와 <br /> 모의 면접을 보고,
-            피드백을 받을 수 있어요.
+            이제 실제 기업 정보를 학습한 AI 면접관 티키와 <br /> 모의 면접을
+            보고, 피드백을 받을 수 있어요.
           </Typography>
           <Box
             sx={{
-              backgroundColor: "#1D1D1D",
               display: "flex",
+              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              gap: "12px",
-              padding: "16px",
-              borderRadius: "20px",
-
-              "@media (max-width: 1024px)": {
-                padding: "10px",
-                gap: "10px",
-              },
-
-              "@media (max-width: 768px)": {
-                maxWidth: "320px",
-              },
-            }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-              }}
-            >
-              <Image
-                src={"/assets/interviewing.png"}
-                alt=""
-                priority
-                width={200}
-                height={310}
-              />
-            </Box>
-            <Box
-              sx={{
-                position: "relative",
-              }}
-            >
-              <Image
-                src={"/assets/thankyou.png"}
-                alt=""
-                priority
-                width={200}
-                height={310}
-              />
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "20px",
+              gap: "8px",
               pt: "20px",
 
               "@media (max-width: 768px)": {
@@ -1040,6 +1002,28 @@ export default function HomeView({
                   fill="white"
                 />
               </svg>
+            </Button>
+            <Button
+              sx={{
+                fontSize: "12px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                flexShrink: 0,
+                color: COLORS.GRAY200,
+                height: "fit-content",
+                ":hover": {
+                  color: COLORS.WHITE,
+                },
+                textDecoration: "underline",
+              }}
+              onClick={() => {
+                setOpen(false);
+                router.replace("/");
+              }}
+            >
+              괜찮아요, 좀 더 둘러볼게요
             </Button>
           </Box>
         </Box>

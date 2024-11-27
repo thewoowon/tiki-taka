@@ -4,6 +4,7 @@ import "swiper/css/pagination";
 import HomeView from "@/components/View/HomeView";
 import customAxios from "@/lib/axios";
 import { Suspense } from "react";
+import GlobalLoading from "@/components/Element/GlobalLoading";
 
 // export const getStaticProps: GetStaticProps = async () => {
 //   try {
@@ -44,7 +45,21 @@ export default async function Home() {
 
   const articles = response.data.data;
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense
+      fallback={
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            width: "100vw",
+          }}
+        >
+          <GlobalLoading />
+        </div>
+      }
+    >
       <HomeView initialData={articles} />
     </Suspense>
   );

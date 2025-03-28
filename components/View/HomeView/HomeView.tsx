@@ -664,7 +664,7 @@ export default function HomeView({
                 개인정보처리방침
               </Typography>
             </Box>
-            <Typography fontSize={12} color={COLORS.GRAY200}>
+            {/* <Typography fontSize={12} color={COLORS.GRAY200}>
               사업자 등록번호 : 225-52-00817
             </Typography>
             <Typography fontSize={12} color={COLORS.GRAY200}>
@@ -683,7 +683,7 @@ export default function HomeView({
             </Typography>
             <Typography fontSize={12} color={COLORS.GRAY200}>
               통신판매업 신고번호 : 2023-서울서초-3908
-            </Typography>
+            </Typography> */}
             <Typography fontSize={12} color={COLORS.GRAY200}>
               개인정보보호책임자 : 정진협
             </Typography>
@@ -815,7 +815,7 @@ export default function HomeView({
                 </Typography>
               </Box>
             </Box>
-            <Box
+            {/* <Box
               display={"flex"}
               justifyContent={"flex-end"}
               gap={"30px"}
@@ -860,7 +860,7 @@ export default function HomeView({
                   개인정보보호책임자 : 정진협
                 </Typography>
               </Box>
-            </Box>
+            </Box> */}
           </Box>
         </Wrapper>
       </Box>

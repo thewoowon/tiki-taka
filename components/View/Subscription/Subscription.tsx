@@ -21,7 +21,7 @@ const Profile = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["resumes", userRecoilState.userId],
+    queryKey: ["subscriptions", userRecoilState.userId],
     queryFn: () => {
       return customAxios({
         method: "GET",

@@ -67,7 +67,7 @@ export default function HomeView({
       setDestination(null);
       window.location.href = destinationClone;
     }
-  }, [setDestination]);
+  }, [destination, setDestination]);
 
   useEffect(() => {
     // 구글 회원가입 여부

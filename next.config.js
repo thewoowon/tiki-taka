@@ -27,7 +27,6 @@ const nextConfig = {
 
     return config;
   },
-  swcMinify: true,
   images: {
     loader: "custom", // 커스텀 로더 사용
     unoptimized: true, // 이미지 최적화 비활성화

@@ -8,8 +8,6 @@ import { COLORS } from "@/style/color";
 import { Button, Modal, Typography } from "@mui/material";
 import ChatView from "@/components/View/ChatView";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRecoilState } from "recoil";
-import { userState } from "@/states";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { modalStyle } from "@/style/modal";
@@ -17,6 +15,7 @@ import { ResultLoading } from "@/components/View/ResultLoading";
 import { Loading } from "@/components/View/Loading";
 import { ShallowHeader } from "@/components/Layout";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -49,7 +48,7 @@ const InterviewPage = () => {
     if (reason === "escapeKeyDown") return;
     setOpen(false);
   };
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [indicator, setIndicator] = useState(0);
   const [lastQaId, setLastQaId] = useState(0);
@@ -65,32 +64,32 @@ const InterviewPage = () => {
   const [chatStack, setChatStack] = useState<QuestionType[]>([]);
 
   const { data: interviewData } = useQuery({
-    queryKey: ["interview", userRecoilState.userId, params.get("interviewId")],
+    queryKey: ["interview", user.userId, params.get("interviewId")],
     queryFn: () => {
       return customAxios({
         method: "GET",
         url:
           "/interview/getInterview?userId=" +
-          userRecoilState.userId +
+          user.userId +
           "&interviewId=" +
           params.get("interviewId"),
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
   });
 
   const { isLoading, data } = useQuery({
-    queryKey: ["questions", userRecoilState.userId, params.get("interviewId")],
+    queryKey: ["questions", user.userId, params.get("interviewId")],
     queryFn: () => {
       return customAxios({
         method: "GET",
         url: `/interview/getQaList?userId=${
-          userRecoilState.userId
+          user.userId
         }&interviewId=${params.get("interviewId")}`,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       })
         .then((res) => res.data)
@@ -104,7 +103,7 @@ const InterviewPage = () => {
         method: "POST",
         url: "/interview/insertAnswer",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
           interviewId: Number(params.get("interviewId")),
           lastBtnCk: 0,
           answerData,
@@ -165,7 +164,7 @@ const InterviewPage = () => {
     return (
       <ResultLoading
         title={"중간 저장 중"}
-        description={`${userRecoilState.nickname}님의 답변을 저장하고 있어요.`}
+        description={`${user.nickname}님의 답변을 저장하고 있어요.`}
       />
     );
   }

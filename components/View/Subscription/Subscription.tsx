@@ -2,32 +2,37 @@
 
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
-import { Box, Button, CircularProgress, Modal, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { userState } from "@/states";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import customAxios from "@/lib/axios";
 import { modalStyle } from "@/style/modal";
+import { useUser } from "@/contexts/UserContext";
 
 const Profile = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["subscriptions", userRecoilState.userId],
+    queryKey: ["subscriptions", user.userId],
     queryFn: () => {
       return customAxios({
         method: "GET",
-        url: "/subscription/subscriptionCheck?userId=" + userRecoilState.userId,
+        url: "/subscription/subscriptionCheck?userId=" + user.userId,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
@@ -39,7 +44,7 @@ const Profile = () => {
         method: "DELETE",
         url: "/subscription/subscriptionCancel",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       })
         .then((res) => res.data)
@@ -61,8 +66,7 @@ const Profile = () => {
     if (data && data.code === "200") {
       setIsSubscribed(data.data.check);
     }
-  }
-    , [data]);
+  }, [data]);
 
   if (isLoading)
     return (
@@ -100,7 +104,7 @@ const Profile = () => {
             textAlign: "center",
           }}
         >
-          {userRecoilState.email}
+          {user.email}
         </Typography>
       </Box>
       <Button
@@ -132,9 +136,10 @@ const Profile = () => {
               color: COLORS.WHITE,
             }}
           />
+        ) : isSubscribed ? (
+          "구독취소"
         ) : (
-          isSubscribed ? "구독취소" :
-            "구독가능"
+          "구독가능"
         )}
       </Button>
       <Modal
@@ -143,18 +148,20 @@ const Profile = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={{
-          ...modalStyle,
-          width: "fit-content !important",
-          height: "auto",
-          "@media (max-width: 768px)": {
+        <Box
+          sx={{
+            ...modalStyle,
             width: "fit-content !important",
-            padding: "30px 20px",
-          },
-          "&:focus": {
-            outline: "none",
-          },
-        }}>
+            height: "auto",
+            "@media (max-width: 768px)": {
+              width: "fit-content !important",
+              padding: "30px 20px",
+            },
+            "&:focus": {
+              outline: "none",
+            },
+          }}
+        >
           <Typography
             sx={{
               fontSize: "23px",
@@ -270,7 +277,6 @@ const Profile = () => {
             </Button>
           </Box>
         </Box>
-
       </Modal>
     </Container>
   );

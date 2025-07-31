@@ -11,10 +11,9 @@ import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { userState } from "@/states";
-import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
 
 const DocumentElement = ({
   pdfDocument,
@@ -34,16 +33,15 @@ const DocumentElement = ({
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const router = useRouter();
 
   const fileUploadMutation = useMutation({
     mutationFn: (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
-      if (!userRecoilState.userId)
-        throw new Error("userRecoilState.userId is null");
-      formData.append("userId", userRecoilState.userId.toString());
+      if (!user.userId) throw new Error("user.userId is null");
+      formData.append("userId", user.userId.toString());
       return customAxios({
         method: "POST",
         url: "/resume/uploadResume",
@@ -88,10 +86,11 @@ const DocumentElement = ({
         width: "100%",
         height: "56px",
         borderRadius: "5px",
-        border: `1px solid ${isSelected || fileUploadMutation.isPending
-          ? COLORS.TIKI_GREEN
-          : COLORS.GRAY100
-          }`,
+        border: `1px solid ${
+          isSelected || fileUploadMutation.isPending
+            ? COLORS.TIKI_GREEN
+            : COLORS.GRAY100
+        }`,
         backgroundColor: COLORS.DARK_BG + " !important",
         cursor: "pointer",
       }}

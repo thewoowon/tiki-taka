@@ -4,12 +4,11 @@ import History from "@/components/View/History";
 import { Box, Typography } from "@mui/material";
 import { COLORS } from "@/style/color";
 import { useMutation } from "@tanstack/react-query";
-import { userState } from "@/states";
 import router from "next/router";
-import { useRecoilState } from "recoil";
 import toast from "react-hot-toast";
 import { ShallowHeader } from "@/components/Layout";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
 
 const HistoryPage = () => {
   // history fetching
@@ -18,26 +17,13 @@ const HistoryPage = () => {
 
   // 사전에 차단해야한다.
   // 계속 확인 -> 삭제 후 -> refetching이 발생하고 -> 바로 push
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
 
   const insertInterviewMutation = useMutation({
     mutationFn: () => {
-      if (!userRecoilState.userId)
-        throw new Error("면접을 진행할 유저 정보가 없습니다.");
+      if (!user.userId) throw new Error("면접을 진행할 유저 정보가 없습니다.");
       const formData = new FormData();
-      // if (textOrImage === "image" && file) {
-      //   formData.append("file", file as File);
-      // }
-      // if (textOrImage === "text") {
-      //   formData.append(
-      //     "interviewData",
-      //     JSON.stringify({
-      //       userId: userRecoilState.userId,
-      //       resumeId: data.data[0].resumeId,
-      //       recruitContent: content,
-      //     })
-      //   );
-      // }
+
       return customAxios({
         method: "POST",
         url: "/interview/insertInterview",

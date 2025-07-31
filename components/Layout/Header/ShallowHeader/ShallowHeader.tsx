@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { usePathname, useRouter } from "next/navigation";
 import { COLORS } from "@/style/color";
-import { useRecoilState } from "recoil";
-import { loginState, modalState } from "@/states";
 import { Box, SxProps } from "@mui/material";
 import TemporaryDrawer from "@/components/Element/Drawer";
+import { useModal } from "@/contexts/ModalContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 type ShallowHeaderProps = {
   sx?: SxProps;
@@ -36,16 +36,16 @@ const ShallowHeader = ({
     label: "로그인",
   });
 
-  const [state, setState] = useRecoilState(modalState);
-  const [isLoggedIn] = useRecoilState(loginState);
+  const { state, setState } = useModal();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       setPathObj({ pathname: "/mypage", label: "마이페이지" });
     } else {
       setPathObj({ pathname: "/auth/kakao", label: "로그인" });
     }
-  }, [isLoggedIn]);
+  }, [isAuthenticated]);
 
   return (
     <Container>

@@ -4,13 +4,12 @@ import { COLORS } from "@/style/color";
 import Interviewer from "@/public/svg/interviewer.svg";
 import { Box, Button, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { userState } from "@/states";
-import { useRecoilState } from "recoil";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { ResultLoading } from "@/components/View/ResultLoading";
 import { ShallowHeader } from "@/components/Layout";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
 
 type FeedbackType = {
   id: number;
@@ -22,7 +21,7 @@ type FeedbackType = {
 
 const InterviewResultView = () => {
   const params = useSearchParams();
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const [openTooltip, setOpenTooltip] = useState<boolean>(false);
 
   const [downloadLink, setDownloadLink] = useState<string>("");
@@ -39,15 +38,15 @@ const InterviewResultView = () => {
   });
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["result", userRecoilState.userId, params.get("interviewId")],
+    queryKey: ["result", user.userId, params.get("interviewId")],
     queryFn: () => {
       return customAxios({
         method: "GET",
         url: `/interview/getInterview?userId=${
-          userRecoilState.userId
+          user.userId
         }&interviewId=${params.get("interviewId")}`,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       })
         .then((res) => res.data)
@@ -61,11 +60,11 @@ const InterviewResultView = () => {
         method: "GET",
         url:
           "/interview/downloadInterview?userId=" +
-          userRecoilState.userId +
+          user.userId +
           "&interviewId=" +
           interviewId,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
           interviewId,
         },
       }).then((res) => res.data);
@@ -90,7 +89,7 @@ const InterviewResultView = () => {
         method: "POST",
         url: "/interview/generateFeedback",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
           interviewId,
         },
       }).then((res) => res.data);
@@ -115,18 +114,18 @@ const InterviewResultView = () => {
   useEffect(() => {
     const url =
       "https://api.tikitaka.chat/interview/downloadInterview?userId=" +
-      userRecoilState.userId +
+      user.userId +
       "&interviewId=" +
       params.get("interviewId");
 
     setDownloadLink(url);
-  }, [params, userRecoilState.userId]);
+  }, [params, user.userId]);
 
   if (regenerateMutation.isPending) {
     return (
       <ResultLoading
         title={"결과 재생성 중"}
-        description={`${userRecoilState.nickname}님의 답변과 채용 공고를 바탕으로 면접 결과를 재생성하고 있어요.`}
+        description={`${user.nickname}님의 답변과 채용 공고를 바탕으로 면접 결과를 재생성하고 있어요.`}
       />
     );
   }
@@ -161,7 +160,7 @@ const InterviewResultView = () => {
               color: COLORS.TIKI_GREEN,
             }}
           >
-            {userRecoilState.nickname}
+            {user.nickname}
           </span>
           님, 수고하셨어요. 합격까지 한걸음 가까워졌네요!
         </Typography>
@@ -624,7 +623,7 @@ const InterviewResultView = () => {
                 //   method: "GET",
                 //   url:
                 //     "https://api.tikitaka.chat/interview/downloadInterview?userId=" +
-                //     userRecoilState.userId +
+                //     user.userId +
                 //     "&interviewId=" +
                 //     params.get("interviewId"),
                 //   headers: {

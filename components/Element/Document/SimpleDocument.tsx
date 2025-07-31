@@ -11,21 +11,20 @@ import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import SimpleDocumentElement from "./SimpleDocumentElement";
 import styled from "@emotion/styled";
-import { useRecoilState } from "recoil";
-import { userState } from "@/states";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Loading } from "@/components/View/Loading";
 import ExclamationMark2 from "@/public/svg/exclamation-mark-2.svg";
 import { SimulationQLoading } from "../Loading";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
 
 const SimpleDocument = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const [documents, setDocuments] = useState<DocumentPDFType[]>([]);
 
   const [overLimit, setOverLimit] = useState(false);
@@ -34,13 +33,13 @@ const SimpleDocument = () => {
 
   // Queries
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["resumes", userRecoilState.userId],
+    queryKey: ["resumes", user.userId],
     queryFn: () => {
       return customAxios({
         method: "GET",
-        url: "/resume/getResumeList?userId=" + userRecoilState.userId,
+        url: "/resume/getResumeList?userId=" + user.userId,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
@@ -50,9 +49,8 @@ const SimpleDocument = () => {
     mutationFn: (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
-      if (!userRecoilState.userId)
-        throw new Error("userRecoilState.userId is null");
-      formData.append("userId", userRecoilState.userId.toString());
+      if (!user.userId) throw new Error("user.userId is null");
+      formData.append("userId", user.userId.toString());
       return customAxios({
         method: "POST",
         url: "/resume/uploadResume",
@@ -77,7 +75,7 @@ const SimpleDocument = () => {
         url: "/resume/deleteResume",
         data: {
           resumeId,
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },

@@ -1,11 +1,11 @@
+import { useAuth } from "@/contexts/AuthContext";
+import { useUser } from "@/contexts/UserContext";
 import customAxios from "@/lib/axios";
-import { loginState, userState } from "@/states";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [, setIsLoggedIn] = useRecoilState(loginState);
-  const [, setUserState] = useRecoilState(userState);
+  const { setIsAuthenticated } = useAuth();
+  const { setUser } = useUser();
   const [, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -20,8 +20,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .catch((err) => {
           console.error(err);
           setIsLoading(false);
-          setIsLoggedIn(false);
-          setUserState({
+          setIsAuthenticated(false);
+          setUser({
             email: "",
             profileImage: "",
             nickname: "",
@@ -35,7 +35,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     checkLogin();
-  }, [setIsLoggedIn, setUserState]);
+  }, [setIsAuthenticated, setUser]);
 
   return children;
 };

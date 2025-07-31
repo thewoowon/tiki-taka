@@ -7,11 +7,11 @@ import { useEffect, useState } from "react";
 import HistoryElement from "./HistoryElement/HistoryElement";
 import ExclamationMark2 from "@/public/svg/exclamation-mark-2.svg";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { loginState, userState } from "@/states";
-import { useRecoilState } from "recoil";
 import { Loading } from "../Loading";
 import toast from "react-hot-toast";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const History = ({ type }: { type: "deleteOnly" | "all" }) => {
   const router = useRouter();
@@ -22,20 +22,20 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
     setOpen(false);
   };
   const [histories, setHistories] = useState<HistoryElementType[]>([]);
-  const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
-  const [, setIsLoggedIn] = useRecoilState(loginState);
+  const { user, setUser } = useUser();
+  const { setIsAuthenticated } = useAuth();
 
   const [currentHistory, setCurrentHistory] =
     useState<HistoryElementType | null>(null);
 
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["interviews", userRecoilState.userId],
+    queryKey: ["interviews", user.userId],
     queryFn: () => {
       return customAxios({
         method: "GET",
-        url: "/interview/getInterviewList?userId=" + userRecoilState.userId,
+        url: "/interview/getInterviewList?userId=" + user.userId,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
@@ -47,7 +47,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
         method: "DELETE",
         url: "/interview/deleteInterview",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
           interviewId,
         },
       }).then((res) => res.data);
@@ -71,7 +71,7 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
         method: "POST",
         url: "/interview/initQa",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
           interviewId,
         },
       }).then((res) => res.data);
@@ -96,11 +96,11 @@ const History = ({ type }: { type: "deleteOnly" | "all" }) => {
       if (data.code === "로그인이 필요합니다") {
         toast.error("로그인이 필요합니다.");
         router.push("/auth/kakao");
-        setIsLoggedIn(false);
+        setIsAuthenticated(false);
       }
       if (data.code === "200") setHistories(data.data);
     }
-  }, [data, router, setIsLoggedIn]);
+  }, [data, router, setIsAuthenticated]);
 
   if (isLoading)
     return (

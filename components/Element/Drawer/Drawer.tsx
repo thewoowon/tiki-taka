@@ -5,13 +5,13 @@ import styled from "@emotion/styled";
 import Hamburger from "@/public/svg/hamburger.svg";
 import { COLORS } from "@/style/color";
 import { usePathname, useRouter } from "next/navigation";
-import { useRecoilState } from "recoil";
-import { loginState, modalState } from "@/states";
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import TikitakaTextMobile from "@/components/svg/TikitakaTextMobile";
 import TikitakaLogoSmall from "@/public/svg/tikitaka-logo-small.svg";
+import { useAuth } from "@/contexts/AuthContext";
+import { useModal } from "@/contexts/ModalContext";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -30,17 +30,16 @@ export default function TemporaryDrawer() {
     pathname: "/auth/kakao",
     label: "로그인",
   });
-  const [state, setState] = useRecoilState(modalState);
-
-  const [isLoggedIn] = useRecoilState(loginState);
+  const { state, setState } = useModal();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       setPathObj({ pathname: "/mypage", label: "마이페이지" });
     } else {
       setPathObj({ pathname: "/auth/kakao", label: "로그인" });
     }
-  }, [isLoggedIn]);
+  }, [isAuthenticated]);
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>

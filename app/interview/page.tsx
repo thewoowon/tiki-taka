@@ -1,21 +1,19 @@
 "use client";
 import { Simulation01 } from "@/components/Element/Loading";
 import { ShallowHeader } from "@/components/Layout";
-import { loginState, userState } from "@/states";
+import { useAuth } from "@/contexts/AuthContext";
 import { COLORS } from "@/style/color";
 import styled from "@emotion/styled";
 import { Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useRecoilState } from "recoil";
 
 const InterviewPage = () => {
   const router = useRouter();
-
-  const [isLoggedIn] = useRecoilState(loginState);
+  const { isAuthenticated } = useAuth();
 
   const handleStartInterview = () => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       toast.error("로그인이 필요합니다.");
       router.push("/auth/kakao");
       return;

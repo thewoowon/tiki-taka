@@ -15,12 +15,11 @@ import Interviewer from "@/public/svg/interviewer.svg";
 import { useRouter } from "next/navigation";
 import { modalStyle } from "@/style/modal";
 import { useMutation } from "@tanstack/react-query";
-import { useRecoilState } from "recoil";
-import { userState } from "@/states";
 import toast from "react-hot-toast";
 import parse from "html-react-parser";
 import customAxios from "@/lib/axios";
 import { debounce } from "lodash";
+import { useUser } from "@/contexts/UserContext";
 
 type FormType = {
   chat: string;
@@ -57,7 +56,7 @@ const ChatView = ({
     setOpen(false);
   };
   const [inputDisabled, setInputDisabled] = useState(false);
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [lastBtnCk, setLastBtnCk] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -87,7 +86,7 @@ const ChatView = ({
         method: "POST",
         url: "/interview/insertAnswer",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
           interviewId,
           lastBtnCk,
           answerData,
@@ -266,7 +265,7 @@ const ChatView = ({
     return (
       <ResultLoading
         title={"결과 만드는 중"}
-        description={`${userRecoilState.nickname}님의 답변과 채용 공고를 바탕으로 면접 결과를 만들고 있어요.`}
+        description={`${user.nickname}님의 답변과 채용 공고를 바탕으로 면접 결과를 만들고 있어요.`}
       />
     );
   }

@@ -30,9 +30,8 @@ import { bottomModalStyle, modalStyle } from "@/style/modal";
 import Image from "next/image";
 import BackgroundVideo from "@/components/Element/BackgroundVideo";
 import { ArticleStaticView } from "@/components/View/ArticleView";
-import { useRecoilState } from "recoil";
-import { destinationState } from "@/states";
 import { ArticleType } from "@/types";
+import { useDestination } from "@/contexts/DestinationContext";
 
 export default function HomeView({
   initialData,
@@ -43,7 +42,7 @@ export default function HomeView({
   const params = useSearchParams();
   const [open, setOpen] = useState(false);
 
-  const [destination, setDestination] = useRecoilState(destinationState);
+  const { destination, setDestination } = useDestination();
 
   const handleClose = (
     event: React.SyntheticEvent<Element, Event>,

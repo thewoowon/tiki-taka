@@ -1,9 +1,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { loginState, userState } from "@/states";
 import customAxios from "@/lib/axios";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUser } from "@/contexts/UserContext";
 
 type kakaoParamType = {
   client_id?: string;
@@ -15,8 +15,8 @@ const useKakaoLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const params = useSearchParams();
-  const [, setIsLoggedIn] = useRecoilState(loginState);
-  const [, setUserState] = useRecoilState(userState);
+  const { setIsAuthenticated } = useAuth();
+  const { setUser } = useUser();
 
   const handleLoadingToggle = (flag: boolean) => {
     setIsLoading(flag);
@@ -66,13 +66,13 @@ const useKakaoLogin = () => {
         // 로그인 완료
         setIsLoading(false);
         localStorage.setItem("accessToken", result.headers.accesstoken);
-        setUserState({
+        setUser({
           email: result.data.data.email,
           profileImage: result.data.data.profileImage,
           nickname: result.data.data.name,
           userId: result.data.data.userId,
         });
-        setIsLoggedIn(true);
+        setIsAuthenticated(true);
         router.push("/");
         return;
       }

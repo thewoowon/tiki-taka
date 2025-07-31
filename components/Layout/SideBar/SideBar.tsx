@@ -6,11 +6,11 @@ import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
 import { COLORS } from "@/style/color";
 import { TikitakaText } from "@/components/svg";
 import Typography from "@/components/Element/Typography";
-import { useRecoilState } from "recoil";
-import { loginState, userState } from "@/states";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -25,8 +25,8 @@ const SideBar = () => {
     label: "로그인",
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [, setUserState] = useRecoilState(userState);
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const { user, setUser } = useUser();
 
   const downloadFile = (url: string, fileName: string) => {
     const link = document.createElement("a");
@@ -52,33 +52,33 @@ const SideBar = () => {
   });
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       setPathObj({ pathname: "/mypage", label: "마이페이지" });
     } else {
       setPathObj({ pathname: "/auth/kakao", label: "로그인" });
     }
-  }, [isLoggedIn]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isLoading || !data) return;
     if (data?.code === "950") {
-      setUserState({
+      setUser({
         email: "",
         profileImage: "",
         nickname: "",
         userId: null,
       });
-      setIsLoggedIn(false);
+      setIsAuthenticated(false);
     } else if (data?.code === "200") {
-      setUserState({
+      setUser({
         email: data.data.email,
         profileImage: data.data.profileImage,
         nickname: data.data.nickname,
         userId: data.data.userId,
       });
-      setIsLoggedIn(true);
+      setIsAuthenticated(true);
     }
-  }, [data, isLoading, setIsLoggedIn, setUserState]);
+  }, [data, isLoading, setIsAuthenticated, setUser]);
 
   return (
     <Container>

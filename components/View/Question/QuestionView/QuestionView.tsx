@@ -11,14 +11,13 @@ import { useEffect, useState } from "react";
 import Question from "@/components/View/Question";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRecoilState } from "recoil";
-import { userState } from "@/states";
 import toast from "react-hot-toast";
 import { ResultLoading } from "@/components/View/ResultLoading";
 import { ShallowHeader } from "@/components/Layout";
 import { Loading } from "@/components/View/Loading";
 import { modalStyle } from "@/style/modal";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
 
 const QuestionView = () => {
   // 공고 자료를 보내고 응답을 받는다.
@@ -38,7 +37,7 @@ const QuestionView = () => {
     setOpen(false);
   };
 
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const [questions, setQuestions] = useState<QuestionElementType[]>([]);
   const [histories, setHistories] = useState<HistoryElementType[]>([]);
 
@@ -58,13 +57,13 @@ const QuestionView = () => {
 
   // no cache
   const { isLoading: interviewsIsLoading, data: interviewsData } = useQuery({
-    queryKey: ["interviews", userRecoilState.userId],
+    queryKey: ["interviews", user.userId],
     queryFn: () => {
       return customAxios({
         method: "GET",
-        url: "/interview/getInterviewList?userId=" + userRecoilState.userId,
+        url: "/interview/getInterviewList?userId=" + user.userId,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
@@ -76,10 +75,10 @@ const QuestionView = () => {
       return customAxios({
         method: "GET",
         url: `/interview/getQaList?userId=${
-          userRecoilState.userId
+          user.userId
         }&interviewId=${params.get("interviewId")}`,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       })
         .then((res) => res.data)
@@ -89,13 +88,12 @@ const QuestionView = () => {
 
   const generateMutation = useMutation({
     mutationFn: () => {
-      if (!userRecoilState.userId)
-        throw new Error("userRecoilState.userId is null");
+      if (!user.userId) throw new Error("user.userId is null");
       return customAxios({
         method: "POST",
         url: "/interview/generateQa",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
           interviewId: params.get("interviewId"),
         },
       }).then((res) => res.data);
@@ -135,7 +133,7 @@ const QuestionView = () => {
         title={"질문 재생성 중"}
         description={
           <Typography>
-            {userRecoilState.nickname}님의 이력서와 채용공고를 바탕으로
+            {user.nickname}님의 이력서와 채용공고를 바탕으로
             <br />
             면접 질문을 재생성하고 있어요.
           </Typography>

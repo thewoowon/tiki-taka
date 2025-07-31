@@ -2,8 +2,8 @@
 import ImageUpload from "@/components/Element/ImageUpload";
 import { ShallowHeader } from "@/components/Layout";
 import { Loading } from "@/components/View/Loading";
+import { useUser } from "@/contexts/UserContext";
 import customAxios from "@/lib/axios";
-import { userState } from "@/states";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import styled from "@emotion/styled";
@@ -12,7 +12,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useRecoilState } from "recoil";
 
 const UploadView = () => {
   const params = useSearchParams();
@@ -28,7 +27,7 @@ const UploadView = () => {
   const handleClose2 = () => setOpen2(false);
 
   const [file, setFile] = useState<File | null>(null);
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
 
   const handleImageUpload = (file: File) => {
     setFile(file);
@@ -36,13 +35,13 @@ const UploadView = () => {
 
   // no cache
   const { data } = useQuery({
-    queryKey: ["interviews", userRecoilState.userId],
+    queryKey: ["interviews", user.userId],
     queryFn: () => {
       return customAxios({
         method: "GET",
-        url: "/interview/getInterviewList?userId=" + userRecoilState.userId,
+        url: "/interview/getInterviewList?userId=" + user.userId,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
@@ -50,15 +49,14 @@ const UploadView = () => {
 
   const insertInterviewMutation = useMutation({
     mutationFn: () => {
-      if (!userRecoilState.userId)
-        throw new Error("면접을 진행할 유저 정보가 없습니다.");
+      if (!user.userId) throw new Error("면접을 진행할 유저 정보가 없습니다.");
       const formData = new FormData();
       if (textOrImage === "image" && file) {
         formData.append("file", file as File);
         formData.append(
           "interviewData",
           JSON.stringify({
-            userId: userRecoilState.userId,
+            userId: user.userId,
             resumeId: params.get("resumeId"),
           })
         );
@@ -67,7 +65,7 @@ const UploadView = () => {
         formData.append(
           "interviewData",
           JSON.stringify({
-            userId: userRecoilState.userId,
+            userId: user.userId,
             resumeId: params.get("resumeId"),
             recruitContent: content,
           })

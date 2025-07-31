@@ -12,20 +12,19 @@ import { useRouter } from "next/navigation";
 import { COLORS } from "@/style/color";
 import { modalStyle } from "@/style/modal";
 import toast from "react-hot-toast";
-import { useRecoilState } from "recoil";
-import { userState } from "@/states";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Loading } from "@/components/View/Loading";
 import styled from "@emotion/styled";
 import { ShallowHeader } from "@/components/Layout";
 import customAxios from "@/lib/axios";
+import { useUser } from "@/contexts/UserContext";
 
 const Document = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [userRecoilState] = useRecoilState(userState);
+  const { user } = useUser();
   const [documents, setDocuments] = useState<DocumentPDFType[]>([]);
 
   const [overLimit, setOverLimit] = useState(false);
@@ -36,13 +35,13 @@ const Document = () => {
 
   // Queries
   const { isLoading, data, refetch } = useQuery({
-    queryKey: ["resumes", userRecoilState.userId],
+    queryKey: ["resumes", user.userId],
     queryFn: () => {
       return customAxios({
         method: "GET",
-        url: "/resume/getResumeList?userId=" + userRecoilState.userId,
+        url: "/resume/getResumeList?userId=" + user.userId,
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
@@ -55,7 +54,7 @@ const Document = () => {
         url: "/resume/deleteResume",
         data: {
           resumeId,
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },
@@ -74,7 +73,7 @@ const Document = () => {
         method: "DELETE",
         url: "/resume/deleteOldResume",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       }).then((res) => res.data);
     },

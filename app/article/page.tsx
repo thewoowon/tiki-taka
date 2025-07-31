@@ -10,11 +10,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { loginState, userState } from "@/states";
-import { useRecoilState } from "recoil";
 import { modalStyle } from "@/style/modal";
 import KakaoButton from "@/components/Element/Button/Kakao/KakaoButton";
 import axios from "axios";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUser } from "@/contexts/UserContext";
 
 const ArticleDynamicView = dynamic(
   () => import("@/components/View/ArticleView/ArticleDynamicView"),
@@ -29,8 +29,9 @@ const ArticlePage = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [user, setUserState] = useRecoilState(userState);
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const { user, setUser } = useUser();
+
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   const downloadFile = (url: string, fileName: string) => {
@@ -52,7 +53,7 @@ const ArticlePage = () => {
         },
       }).then((res) => res.data);
     },
-    enabled: isLoggedIn && !!user && !!user.userId,
+    enabled: isAuthenticated && !!user && !!user.userId,
   });
 
   const subscriptionMutation = useMutation({
@@ -91,8 +92,8 @@ const ArticlePage = () => {
 
     if (response.code === "950") {
       handleOpen();
-      setIsLoggedIn(false);
-      setUserState({
+      setIsAuthenticated(false);
+      setUser({
         email: "",
         profileImage: "",
         nickname: "",
@@ -101,8 +102,8 @@ const ArticlePage = () => {
       return;
     }
 
-    setIsLoggedIn(true);
-    setUserState({
+    setIsAuthenticated(true);
+    setUser({
       email: response.data.email,
       profileImage: response.data.profileImage,
       nickname: response.data.nickname,
@@ -121,7 +122,7 @@ const ArticlePage = () => {
   return (
     <Container>
       <Box
-        display={isLoggedIn ? (isSubscribed ? "none" : "block") : "block"}
+        display={isAuthenticated ? (isSubscribed ? "none" : "block") : "block"}
         position={"relative"}
         width={"100%"}
         height={"266px"}
@@ -180,7 +181,7 @@ const ArticlePage = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <Box
             sx={{
               ...modalStyle,

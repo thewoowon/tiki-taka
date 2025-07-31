@@ -2,13 +2,16 @@
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RecoilRoot } from "recoil";
 import { SideBar } from "@/components/Layout";
 import { useEffect } from "react";
 import Analytics from "@/components/Analytics";
 import * as gtag from "@/lib/gtag";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { UserProvider } from "@/contexts/UserContext";
+import { ModalProvider } from "@/contexts/ModalContext";
+import { DestinationProvider } from "@/contexts/DestinationContext";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const handleKakaoInit = () => {
@@ -86,12 +89,18 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       />
       <Analytics />
       <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
-          <div className="min-h-screen flex">{children}</div>
-          {/* <Header /> */}
-          <SideBar />
-          {/* <Footer /> */}
-        </RecoilRoot>
+        <AuthProvider>
+          <UserProvider>
+            <ModalProvider>
+              <DestinationProvider>
+                <div className="min-h-screen flex">{children}</div>
+                {/* <Header /> */}
+                <SideBar />
+              </DestinationProvider>
+            </ModalProvider>
+          </UserProvider>
+        </AuthProvider>
+        {/* <Footer /> */}
         <Toaster />
       </QueryClientProvider>
       <GoogleAnalytics gaId={gtag.GA_TRACKING_ID || ""} />

@@ -5,20 +5,20 @@ import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { loginState, userState } from "@/states";
 import { useMe } from "@/hooks/useMe";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import customAxios from "@/lib/axios";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUser } from "@/contexts/UserContext";
 
 const Profile = () => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [myImage, setMyImage] = useState<File | null>(null);
   const [myProfileUrl, setMyProfileUrl] = useState("/assets/black-logo.png");
-  const [, setIsLoggedIn] = useRecoilState(loginState);
-  const [userRecoilState, setUserRecoilState] = useRecoilState(userState);
+  const { setIsAuthenticated } = useAuth();
+  const { user, setUser } = useUser();
   const { isLoading } = useMe();
 
   const encodeFileToBase64 = (fileBlob: File) => {
@@ -38,7 +38,7 @@ const Profile = () => {
         method: "POST",
         url: "/user/logout",
         data: {
-          userId: userRecoilState.userId,
+          userId: user.userId,
         },
       })
         .then((res) => res.data)
@@ -49,8 +49,8 @@ const Profile = () => {
     onSuccess: (data) => {
       if (data.code === "200") {
         localStorage.removeItem("accessToken");
-        setIsLoggedIn(false);
-        setUserRecoilState({
+        setIsAuthenticated(false);
+        setUser({
           userId: null,
           nickname: "",
           email: "",
@@ -132,7 +132,7 @@ const Profile = () => {
             textAlign: "center",
           }}
         >
-          {userRecoilState.nickname}
+          {user.nickname}
         </Typography>
         <Typography
           sx={{
@@ -143,7 +143,7 @@ const Profile = () => {
             textAlign: "center",
           }}
         >
-          {userRecoilState.email}
+          {user.email}
         </Typography>
       </Box>
       <Button

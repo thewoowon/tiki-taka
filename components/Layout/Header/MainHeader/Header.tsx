@@ -6,10 +6,10 @@ import TikitakaLogo from "@/public/svg/tikitaka-logo.svg";
 import TikitakaLogoSmall from "@/public/svg/tikitaka-logo-small.svg";
 import { TikitakaText } from "@/components/svg";
 import { COLORS } from "@/style/color";
-import { useRecoilState } from "recoil";
-import { loginState, modalState } from "@/states";
 import TemporaryDrawer from "@/components/Element/Drawer";
 import TikitakaTextMobile from "@/components/svg/TikitakaTextMobile";
+import { useModal } from "@/contexts/ModalContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const CONSTANT_ROUTER = [
   { pathname: "/interview", label: "AI 면접" },
@@ -23,16 +23,17 @@ const Header = () => {
     pathname: "/auth/kakao",
     label: "로그인",
   });
-  const [state, setState] = useRecoilState(modalState);
-  const [isLoggedIn] = useRecoilState(loginState);
+
+  const { state, setState } = useModal();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       setPathObj({ pathname: "/mypage", label: "마이페이지" });
     } else {
       setPathObj({ pathname: "/auth/kakao", label: "로그인" });
     }
-  }, [isLoggedIn]);
+  }, [isAuthenticated]);
   return (
     <Container>
       <Wrapper>
